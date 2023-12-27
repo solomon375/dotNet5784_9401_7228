@@ -7,5 +7,6 @@ partial class Program
     static partial void Welcome9401()
     {
         Console.WriteLine("Day taazov oti ");
+        Console.WriteLine("Hi im here too ");
     }
 }
