@@ -9,9 +9,9 @@
 /// <param name="level">engineer's level</param>
 public record Engineer
 (
-    int? Id,
-    string Email,
-    double Cost,
-    string Name,
-    DO.EngineerExperience level
+    int? Id = null,
+    string? Email = null,
+    double? Cost = null,
+    string? Name = null,
+    DO.EngineerExperience? level = null
 );

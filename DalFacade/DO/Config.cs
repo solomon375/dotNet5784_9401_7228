@@ -7,7 +7,7 @@
 /// <param name="EndDate">mission's real end date</param>
 public record Config
 (
-    DO.Status? Status,
-    DateTime? StartDate,
-    DateTime? EndDate
+    DO.Status? Status = null,
+    DateTime? StartDate = null,
+    DateTime? EndDate = null
 );

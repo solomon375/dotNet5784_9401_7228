@@ -18,20 +18,20 @@
 /// <param name="Complexity">Complexity of task and needed minimum expiriense of engineer</param>
 public record Task
 (
-    int? Id, 
-    string Alias, 
-    string Describtion,
-    bool IsMilestone,
-    DateTime CreatedAtDate,
-    DateTime? ScheduledDate,
-    DateTime? StartedDate,
-    TimeSpan? RequiredEffortTime,
-    DateTime? DeadLine,
-    DateTime? CompletedDate,
-    string? Deliverable,
-    string? Remarks,
-    int? EngineerID,
-    DO.EngineerExperiense? Complexity
+    int? Id = null, 
+    string? Alias = null, 
+    string? Describtion = null,
+    bool? IsMilestone = null,
+    DateTime? CreatedAtDate = null,
+    DateTime? ScheduledDate = null,
+    DateTime? StartedDate = null,
+    TimeSpan? RequiredEffortTime = null,
+    DateTime? DeadLine = null,
+    DateTime? CompletedDate = null,
+    string? Deliverable = null,
+    string? Remarks = null,
+    int? EngineerID = null,
+    DO.EngineerExperience? Complexity = null
 );
     
 

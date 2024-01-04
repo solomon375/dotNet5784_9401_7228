@@ -7,7 +7,7 @@
 /// <param name="DependsOnTask">id of mission that this mission based on</param>
 public record Dependency
 (
-    int? Id,
-    int? DependentTask,
-    int? DependsOnTask
+    int? Id = null,
+    int? DependentTask = null,
+    int? DependsOnTask = null
 );
