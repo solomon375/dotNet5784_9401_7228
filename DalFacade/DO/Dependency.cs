@@ -7,7 +7,10 @@
 /// <param name="DependsOnTask">id of mission that this mission based on</param>
 public record Dependency
 (
-    int? Id = null,
+    int Id,
     int? DependentTask = null,
     int? DependsOnTask = null
-);
+)
+{
+    public Dependency() : this(0) { }      //ctor for lvl 3
+}

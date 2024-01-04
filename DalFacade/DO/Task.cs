@@ -18,8 +18,8 @@
 /// <param name="Complexity">Complexity of task and needed minimum expiriense of engineer</param>
 public record Task
 (
-    int? Id = null, 
-    string? Alias = null, 
+    int Id,
+    string? Alias = null,
     string? Describtion = null,
     bool? IsMilestone = null,
     DateTime? CreatedAtDate = null,
@@ -32,6 +32,9 @@ public record Task
     string? Remarks = null,
     int? EngineerID = null,
     DO.EngineerExperience? Complexity = null
-);
+)
+{
+    public Task() : this(0) { }      //ctor for lvl 3
+}
     
 

@@ -9,9 +9,12 @@
 /// <param name="level">engineer's level</param>
 public record Engineer
 (
-    int? Id = null,
+    int Id,
     string? Email = null,
     double? Cost = null,
     string? Name = null,
     DO.EngineerExperience? level = null
-);
+)
+{
+    public Engineer() : this(0) { }      //ctor for lvl 3
+}
