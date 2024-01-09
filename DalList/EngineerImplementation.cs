@@ -3,7 +3,7 @@ using DalApi;
 using DO;
 using System.Collections.Generic;
 
-internal class EngineerImplementation : IEngineer
+public class EngineerImplementation : IEngineer
 {
     public int Create(Engineer item)
     {
@@ -20,7 +20,15 @@ internal class EngineerImplementation : IEngineer
 
     public void Delete(int id)
     {
-        throw new NotImplementedException();//need more ditails 
+        foreach (Engineer index in DataSource.Engineers)
+        {
+            if (index.Id == id)
+            {
+                DataSource.Engineers.Remove(index);
+                return;
+            }
+        }
+        throw new Exception($"Dependencys with ID={id} does Not exist");
     }
 
     public Engineer? Read(int id)

@@ -11,9 +11,9 @@ public enum Status
 
 public enum EngineerExperience
 {
-    Beginner,
-    AdvancedBeginner,
-    Intermidate,
-    Advanced,
-    Expert
+    Beginner = 1,
+    AdvancedBeginner = 2,
+    Intermidate = 3,
+    Advanced = 4,
+    Expert = 5
 }

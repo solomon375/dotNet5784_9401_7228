@@ -18,8 +18,15 @@ public class TaskImplementation : ITask
 
     public void Delete(int id)
     {
-        
-        throw new NotImplementedException();
+        foreach (Task index in DataSource.Tasks)
+        {
+            if (index.Id == id)
+            {
+                DataSource.Tasks.Remove(index);
+                return;
+            }
+        }
+        throw new Exception($"Dependencys with ID={id} does Not exist");
     }
 
     public Task? Read(int id)

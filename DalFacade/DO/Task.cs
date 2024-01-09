@@ -22,6 +22,7 @@ public record Task
     string? Alias = null,
     string? Describtion = null,
     bool? IsMilestone = null,
+    DO.EngineerExperience? Complexity = null,
     DateTime? CreatedAtDate = null,
     DateTime? ScheduledDate = null,
     DateTime? StartedDate = null,
@@ -30,11 +31,57 @@ public record Task
     DateTime? CompletedDate = null,
     string? Deliverable = null,
     string? Remarks = null,
-    int? EngineerID = null,
-    DO.EngineerExperience? Complexity = null
+    int? EngineerID = null
 )
 {
     public Task() : this(0) { }      //ctor for lvl 3
 }
     
+
+
+/*//static int readInt()
+    {
+        int value = 0;
+        while (!int.TryParse(Console.ReadLine(), out value))
+        {
+            Console.WriteLine("Wrong number! enter again");
+        }
+        return value;
+    }
+
+    static void readDouble(out double number)
+{
+    while (!double.TryParse(Console.ReadLine(), out number))
+    {
+        Console.WriteLine("Wrong number! enter again");
+    }
+}
+static void readDate(out DateTime date)
+{
+    while (!DateTime.TryParse(Console.ReadLine(), out date))
+    {
+        Console.WriteLine("Wrong number! enter again");
+    }
+}
+
+static Task Create()
+{
+    Console.WriteLine("Enter alias");
+    string? alias = Console.ReadLine();
+
+    readDate(out DateTime createdAtDate);
+
+
+    var task = new Task(alias, createdAtDate);
+    return task;
+
+    task =  _dal.task.Create(task);
+    _dal.Task.Add(task);
+}
+
+internal static class PrintExtansion
+{
+    internal static string PrintList<TEntity>(this IEnumerable<TEntity> entities)
+        => string.Join(Environment.NewLine, entities);
+}*/
 

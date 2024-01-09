@@ -3,7 +3,7 @@ using DalApi;
 using DO;
 using System.Collections.Generic;
 
-internal class DependencyImplementation : IDependency
+public class DependencyImplementation : IDependency
 {
     public int Create(Dependency item)
     {
@@ -18,7 +18,15 @@ internal class DependencyImplementation : IDependency
 
     public void Delete(int id)
     {
-        throw new NotImplementedException();//need more ditails 
+        foreach(Dependency index in DataSource.Dependencys)
+        {
+            if(index.Id == id)
+            {
+                DataSource.Dependencys.Remove(index);
+                return;
+            }
+        }
+        throw new Exception($"Dependencys with ID={id} does Not exist");
     }
 
     public Dependency? Read(int id)
