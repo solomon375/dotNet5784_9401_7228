@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 public class DependencyImplementation : IDependency
 {
+    //method for create dependency
     public int Create(Dependency item)
     {
         int next = DataSource.Config.NextDependencyId;
@@ -16,6 +17,7 @@ public class DependencyImplementation : IDependency
         return item1.Id;
     }
 
+    //method for delete dependency
     public void Delete(int id)
     {
         foreach(Dependency index in DataSource.Dependencys)
@@ -29,6 +31,7 @@ public class DependencyImplementation : IDependency
         throw new DalNotExistException($"Dependencys with ID={id} does Not exist");
     }
 
+    //method for read dependency
     public Dependency? Read(int id)
     {
         foreach (Dependency Index in DataSource.Dependencys)
@@ -41,11 +44,13 @@ public class DependencyImplementation : IDependency
         return null;
     }
 
+    //method for read all dependency
     public List<Dependency> ReadAll()
     {
         return new List<Dependency>(DataSource.Dependencys);
     }
 
+    //method for update dependency
     public void Update(Dependency item)
     {
         foreach (Dependency Index in DataSource.Dependencys)
