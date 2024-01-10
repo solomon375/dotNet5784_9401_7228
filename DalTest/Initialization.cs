@@ -97,7 +97,7 @@ public static class Initialization
                 _Complexity = EngineerExperience.Beginner;
             }
 
-            Task newStu = new(_id, _Alias, _Describtion, _IsMilestone, _Complexity);
+            Task newStu = new(_id, _Alias, _Describtion, _IsMilestone, null , _Complexity);
 
             s_dalTask!.Create(newStu);
         }
