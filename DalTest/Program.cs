@@ -1,6 +1,5 @@
 ﻿using Dal;
 using DalApi;
-using DalList;
 using DO;
 using System;
 using System.Security.Cryptography;
@@ -12,43 +11,54 @@ namespace DalTest
         private static ITask? s_dalTask = new TaskImplementation();
         private static IEngineer? s_dalEngineer = new EngineerImplementation();
         private static IDependency? s_dalDependency = new DependencyImplementation();
+
         static void Main(string[] args)
         {
-            Initialization.Do(s_dalTask, s_dalEngineer, s_dalDependency);
-
-            bool exit = false;
-
-            do
+            try
             {
-                Console.WriteLine("enter a number:\n " +
-                "0 = exit\n 1 = task\n 2 = engineer\n 3 = dependency");
+                Initialization.Do(s_dalTask, s_dalEngineer, s_dalDependency);
 
-                char choice = Console.ReadKey().KeyChar;
+                bool exit = false;
 
-                switch (choice)
+                do
                 {
-                    case '1':
-                        chackTask();
-                        break;
+                    Console.WriteLine("enter a number:\n " +
+                    "0 = exit\n 1 = task\n 2 = engineer\n 3 = dependency");
 
-                    case '2':
-                        chackEngineer();
-                        break;
+                    //choose the case depend on what user enter
+                    char choice = Console.ReadKey().KeyChar;
 
-                    case '3':
-                        chackDependency();
-                        break;
+                    switch (choice)
+                    {
+                        case '1':
+                            checkTask();
+                            break;
 
-                    case '0':
-                        exit = true;
-                        break;
-                    default:
-                        Console.WriteLine("Invalid choice. Please try again.\n");
-                        break;
-                }
-            } while (!exit);
+                        case '2':
+                            checkEngineer();
+                            break;
+
+                        case '3':
+                            checkDependency();
+                            break;
+
+                        case '0':
+                            exit = true;
+                            break;
+                        default:
+                            Console.WriteLine("Invalid choice. Please try again.\n");
+                            break;
+                    }
+                } while (!exit);
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine(ex);
+            }
         }
-        static void chackTask()
+        //check the Task.cs
+        static void checkTask()
         {
             bool exit = false;
             do
@@ -64,13 +74,14 @@ namespace DalTest
                         break;
 
                     default:
-                        Choice(choice , "Task");
+                        Choice(choice, "Task");
                         break;
                 }
             } while (!exit);
         }
 
-        static void chackEngineer()
+        //check the Engineer.cs
+        static void checkEngineer()
         {
             bool exit = false;
             do
@@ -91,7 +102,9 @@ namespace DalTest
                 }
             } while (!exit);
         }
-        static void chackDependency()
+
+        //check the Dependency.cs
+        static void checkDependency()
         {
             bool exit = false;
             do
@@ -112,7 +125,8 @@ namespace DalTest
                 }
             } while (!exit);
         }
-        
+
+        //print the menu for the user to choose what to do next
         static void display()
         {
             Console.WriteLine($"Choose an operation:");
@@ -124,7 +138,8 @@ namespace DalTest
             Console.WriteLine("0. Exit\n");
         }
 
-        static void Choice(char c,string s)
+        //do something depend on what the user chose
+        static void Choice(char c, string s)
         {
             switch (c)
             {
@@ -148,15 +163,16 @@ namespace DalTest
                     Delete(s);
                     break;
 
-                default :
+                default:
                     Console.WriteLine("Invalid choice. Please try again.\n");
                     break;
             }
         }
 
+        //send the user to the right Create method
         static void Create(string s)
         {
-            switch(s)
+            switch (s)
             {
                 case "Task":
                     DO.Task item = GetTaskItem();
@@ -173,7 +189,10 @@ namespace DalTest
                     Console.WriteLine(s_dalDependency?.Create(item2));
                     break;
             }
+            //send the user to the right create method
         }
+
+        //send the user to the right Read method
         static void Read(string s)
         {
             switch (s)
@@ -184,7 +203,7 @@ namespace DalTest
                     {
                         Console.WriteLine("please enter only int type\n");
                     }
-                    Console.WriteLine(s_dalTask?.Read(id)); 
+                    Console.WriteLine(s_dalTask?.Read(id));
                     break;
 
                 case "Engineer":
@@ -206,12 +225,14 @@ namespace DalTest
                     break;
             }
         }
+
+        //send the user to the right ReadAll method
         static void ReadAll(string s)
         {
             switch (s)
             {
                 case "Task":
-                    
+
                     foreach (var item in s_dalTask?.ReadAll())
                     {
                         Console.WriteLine(item);
@@ -233,6 +254,8 @@ namespace DalTest
                     break;
             }
         }
+
+        //send the user to the right Update method
         static void Update(string s)
         {
             switch (s)
@@ -277,6 +300,8 @@ namespace DalTest
                     break;
             }
         }
+
+        //send the user to the right Delete method
         static void Delete(string s)
         {
             switch (s)
@@ -301,6 +326,7 @@ namespace DalTest
             }
         }
 
+        //ask from the user to enter Task's details and recive them
         static DO.Task GetTaskItem()
         {
             Console.WriteLine("create new task item\n");
@@ -317,6 +343,7 @@ namespace DalTest
             return item;
         }
 
+        //ask from the user to enter Engineer's details and recive them
         static DO.Engineer GetEngineerItem()
         {
             Console.WriteLine("create new Engineer item\n");
@@ -343,9 +370,10 @@ namespace DalTest
             return item;
         }
 
+        //ask from the user to enter Dependency's details and recive them
         static DO.Dependency GetDependencyItem()
         {
-            DO.Dependency item = new DO.Dependency(0,0,0);
+            DO.Dependency item = new DO.Dependency(0, 0, 0);
             return item;
         }
     }

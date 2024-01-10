@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 public class EngineerImplementation : IEngineer
 {
+    //method for create engineer
     public int Create(Engineer item)
     {
         foreach(Engineer index in DataSource.Engineers)
@@ -18,6 +19,7 @@ public class EngineerImplementation : IEngineer
         return item.Id;
     }
 
+    //method for delete engineer
     public void Delete(int id)
     {
         foreach (Engineer index in DataSource.Engineers)
@@ -31,6 +33,7 @@ public class EngineerImplementation : IEngineer
         throw new DalNotExistException($"Dependencys with ID={id} does Not exist");
     }
 
+    //method for read engineer
     public Engineer? Read(int id)
     {
         foreach (Engineer Index in DataSource.Engineers)
@@ -43,11 +46,13 @@ public class EngineerImplementation : IEngineer
         return null;
     }
 
+    //method for read all engineer
     public List<Engineer> ReadAll()
     {
         return new List<Engineer>(DataSource.Engineers);
     }
 
+    //method for update engineer
     public void Update(Engineer item)
     {
         foreach(Engineer Index in DataSource.Engineers)

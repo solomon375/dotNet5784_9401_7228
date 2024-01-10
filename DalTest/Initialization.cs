@@ -103,6 +103,7 @@ public static class Initialization
             s_dalTask!.Create(newStu);
         }
     }
+    //method for create engineer
     private static void createEngineer()
     {
         string[] engineerNames =
@@ -155,6 +156,7 @@ public static class Initialization
         }
 
     }
+    //method for create dependency
     private static void createDependency()
     {
         for (int i = 0; i < 40; i++)

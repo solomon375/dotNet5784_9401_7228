@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 public class TaskImplementation : ITask
 {
+    //method for create task
     public int Create(Task item)
     {
         int next = DataSource.Config.NextTaskId;
@@ -16,6 +17,7 @@ public class TaskImplementation : ITask
         return item1.Id;
     }
 
+    //method for delete task
     public void Delete(int id)
     {
         foreach (Task index in DataSource.Tasks)
@@ -29,6 +31,7 @@ public class TaskImplementation : ITask
         throw new DalNotExistException($"Dependencys with ID={id} does Not exist");
     }
 
+    //method for read task
     public Task? Read(int id)
     {
         foreach (Task Index in DataSource.Tasks)
@@ -41,11 +44,13 @@ public class TaskImplementation : ITask
         return null;
     }
 
+    //method for read all task
     public List<Task> ReadAll()
     {
         return new List<Task>(DataSource.Tasks);//need more ditails  
     }
 
+    //method for update task
     public void Update(Task item)
     {
         foreach (Task Index in DataSource.Tasks)
