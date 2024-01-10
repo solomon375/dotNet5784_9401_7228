@@ -8,6 +8,9 @@ namespace DalTest
 {
     internal class Program
     {
+        /// <summary>
+        /// Dal Test main program
+        /// </summary>
         private static ITask? s_dalTask = new TaskImplementation();
         private static IEngineer? s_dalEngineer = new EngineerImplementation();
         private static IDependency? s_dalDependency = new DependencyImplementation();
