@@ -26,7 +26,7 @@ public class TaskImplementation : ITask
                 return;
             }
         }
-        throw new Exception($"Dependencys with ID={id} does Not exist");
+        throw new DalNotExistException($"Dependencys with ID={id} does Not exist");
     }
 
     public Task? Read(int id)
@@ -58,6 +58,6 @@ public class TaskImplementation : ITask
             }
         }
 
-        throw new Exception($"Task with ID={item.Id} does Not exist");
+        throw new DalNotExistException($"Task with ID={item.Id} does Not exist");
     }
 }

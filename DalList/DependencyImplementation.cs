@@ -26,7 +26,7 @@ public class DependencyImplementation : IDependency
                 return;
             }
         }
-        throw new Exception($"Dependencys with ID={id} does Not exist");
+        throw new DalNotExistException($"Dependencys with ID={id} does Not exist");
     }
 
     public Dependency? Read(int id)
@@ -58,6 +58,6 @@ public class DependencyImplementation : IDependency
             }
         }
 
-        throw new Exception($"dependency with ID={item.Id} does Not exist"); 
+        throw new DalNotExistException($"dependency with ID={item.Id} does Not exist"); 
     }
 }

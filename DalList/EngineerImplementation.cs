@@ -11,7 +11,7 @@ public class EngineerImplementation : IEngineer
         {
             if (index.Id == item.Id)
             {
-                throw new Exception($"Engineer with ID={item.Id} already exist");
+                throw new DalAlreadyExistException($"Engineer with ID={item.Id} already exist");
             }
         }
         DataSource.Engineers.Add(item);
@@ -28,7 +28,7 @@ public class EngineerImplementation : IEngineer
                 return;
             }
         }
-        throw new Exception($"Dependencys with ID={id} does Not exist");
+        throw new DalNotExistException($"Dependencys with ID={id} does Not exist");
     }
 
     public Engineer? Read(int id)
@@ -60,6 +60,6 @@ public class EngineerImplementation : IEngineer
             }
         }
 
-        throw new Exception($"Engineer with ID={item.Id} does Not exist"); 
+        throw new DalNotExistException($"Engineer with ID={item.Id} does Not exist"); 
     }
 }
