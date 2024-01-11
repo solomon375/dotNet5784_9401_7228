@@ -7,9 +7,7 @@ using System.Xml.Linq;
 
 public static class Initialization
 {
-    private static ITask? s_dalTask;
-    private static IEngineer? s_dalEngineer;
-    private static IDependency? s_dalDependency;
+    private static IDal? s_dal; //stage 2
 
     private static readonly Random s_rand = new();
 
@@ -100,7 +98,7 @@ public static class Initialization
 
             Task newStu = new(_id, _Alias, _Describtion, _IsMilestone, null , _Complexity);
 
-            s_dalTask!.Create(newStu);
+            s_dal!.Task.Create(newStu);
         }
     }
     //method for create engineer
@@ -116,7 +114,7 @@ public static class Initialization
             int _id;
             do
                 _id = s_rand.Next(100000,1000000 );
-            while (s_dalEngineer!.Read(_id) != null);
+            while (s_dal!.Engineer.Read(_id) != null);
 
             string _email = _name.Substring(0, _name.IndexOf(" "));
             _email = _email+"@jct.com";
@@ -151,7 +149,7 @@ public static class Initialization
             }
             Engineer newStu = new(_id, _email, _cost, _name, _level);
 
-            s_dalEngineer!.Create(newStu);
+            s_dal!.Engineer.Create(newStu);
 
         }
 
@@ -171,18 +169,14 @@ public static class Initialization
 
             Dependency newStu = new(_id, _dependentTask,_dependsOnTask);
 
-            s_dalDependency!.Create(newStu);
+            s_dal!.Dependency.Create(newStu);
         }
     }
 
-    public static void Do(ITask? dalTask,
-        IEngineer? dalEngineer,
-        IDependency? dalDependency)
+    public static void Do(IDal dal) //stage 2
     {
 
-        s_dalTask = dalTask ?? throw new NullReferenceException("DAL can not be null!");
-        s_dalEngineer = dalEngineer ?? throw new NullReferenceException("DAL can not be null!");
-        s_dalDependency = dalDependency ?? throw new NullReferenceException("DAL can not be null!");
+        s_dal = dal ?? throw new NullReferenceException("DAL object can not be null!"); //stage 2
 
         createTask();
         createEngineer();

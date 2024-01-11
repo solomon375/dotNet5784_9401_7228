@@ -11,15 +11,13 @@ namespace DalTest
         /// <summary>
         /// Dal Test main program
         /// </summary>
-        private static ITask? s_dalTask = new TaskImplementation();
-        private static IEngineer? s_dalEngineer = new EngineerImplementation();
-        private static IDependency? s_dalDependency = new DependencyImplementation();
+        static readonly IDal s_dal = new DalList(); //stage 2
 
         static void Main(string[] args)
         {
             try
             {
-                Initialization.Do(s_dalTask, s_dalEngineer, s_dalDependency);
+                Initialization.Do(s_dal); //stage 2
 
                 bool exit = false;
 
@@ -179,17 +177,17 @@ namespace DalTest
             {
                 case "Task":
                     DO.Task item = GetTaskItem();
-                    Console.WriteLine(s_dalTask?.Create(item));
+                    Console.WriteLine(s_dal.Task?.Create(item));
                     break;
 
                 case "Engineer":
                     DO.Engineer item1 = GetEngineerItem();
-                    Console.WriteLine(s_dalEngineer?.Create(item1));
+                    Console.WriteLine(s_dal.Engineer?.Create(item1));
                     break;
 
                 case "dependency":
                     DO.Dependency item2 = GetDependencyItem();
-                    Console.WriteLine(s_dalDependency?.Create(item2));
+                    Console.WriteLine(s_dal.Dependency?.Create(item2));
                     break;
             }
             //send the user to the right create method
@@ -206,7 +204,7 @@ namespace DalTest
                     {
                         Console.WriteLine("please enter only int type\n");
                     }
-                    Console.WriteLine(s_dalTask?.Read(id));
+                    Console.WriteLine(s_dal.Task?.Read(id));
                     break;
 
                 case "Engineer":
@@ -215,7 +213,7 @@ namespace DalTest
                     {
                         Console.WriteLine("please enter only int type\n");
                     }
-                    Console.WriteLine(s_dalEngineer?.Read(id1));
+                    Console.WriteLine(s_dal.Engineer?.Read(id1));
                     break;
 
                 case "dependency":
@@ -224,7 +222,7 @@ namespace DalTest
                     {
                         Console.WriteLine("please enter only int type\n");
                     }
-                    Console.WriteLine(s_dalDependency?.Read(id2));
+                    Console.WriteLine(s_dal.Dependency?.Read(id2));
                     break;
             }
         }
@@ -236,21 +234,21 @@ namespace DalTest
             {
                 case "Task":
 
-                    foreach (var item in s_dalTask?.ReadAll())
+                    foreach (var item in s_dal.Task?.ReadAll())
                     {
                         Console.WriteLine(item);
                     }
                     break;
 
                 case "Engineer":
-                    foreach (var item in s_dalEngineer?.ReadAll())
+                    foreach (var item in s_dal.Engineer?.ReadAll())
                     {
                         Console.WriteLine(item);
                     }
                     break;
 
                 case "dependency":
-                    foreach (var item in s_dalDependency?.ReadAll())
+                    foreach (var item in s_dal.Dependency?.ReadAll())
                     {
                         Console.WriteLine(item);
                     }
@@ -269,11 +267,11 @@ namespace DalTest
                     {
                         Console.WriteLine("please enter only int type\n");
                     }
-                    Console.WriteLine(s_dalTask?.Read(id));
+                    Console.WriteLine(s_dal.Task?.Read(id));
 
                     Console.WriteLine("Enter new values and the same id\n");
                     DO.Task item = GetTaskItem();
-                    s_dalTask?.Update(item);
+                    s_dal.Task?.Update(item);
                     break;
 
                 case "Engineer":
@@ -282,11 +280,11 @@ namespace DalTest
                     {
                         Console.WriteLine("please enter only int type\n");
                     }
-                    Console.WriteLine(s_dalEngineer?.Read(id1));
+                    Console.WriteLine(s_dal.Engineer?.Read(id1));
 
                     Console.WriteLine("Enter new values and the same id\n");
                     DO.Engineer item1 = GetEngineerItem();
-                    s_dalEngineer?.Update(item1);
+                    s_dal.Engineer?.Update(item1);
                     break;
 
                 case "dependency":
@@ -295,11 +293,11 @@ namespace DalTest
                     {
                         Console.WriteLine("please enter only int type\n");
                     }
-                    Console.WriteLine(s_dalDependency?.Read(id2));
+                    Console.WriteLine(s_dal.Dependency?.Read(id2));
 
                     Console.WriteLine("Enter new values and the same id\n");
                     DO.Dependency item2 = GetDependencyItem();
-                    s_dalDependency?.Update(item2);
+                    s_dal.Dependency?.Update(item2);
                     break;
             }
         }
@@ -312,19 +310,19 @@ namespace DalTest
                 case "Task":
                     DO.Task item = GetTaskItem();
                     int ID = item.Id;
-                    s_dalTask?.Delete(ID);
+                    s_dal.Task?.Delete(ID);
                     break;
 
                 case "Engineer":
                     DO.Engineer item1 = GetEngineerItem();
                     int ID1 = item1.Id;
-                    s_dalEngineer?.Delete(ID1);
+                    s_dal.Engineer?.Delete(ID1);
                     break;
 
                 case "dependency":
                     DO.Dependency item2 = GetDependencyItem();
                     int ID2 = item2.Id;
-                    s_dalDependency?.Delete(ID2);
+                    s_dal.Dependency?.Delete(ID2);
                     break;
             }
         }
@@ -335,10 +333,10 @@ namespace DalTest
             Console.WriteLine("create new task item\n");
 
             Console.Write("enter task alias\n");
-            string alias = Console.ReadLine();
+            string? alias = Console.ReadLine();
 
             Console.Write("enter task description\n");
-            string description = Console.ReadLine();
+            string? description = Console.ReadLine();
 
             DateTime createdAtDate = DateTime.Now;
 
@@ -358,7 +356,7 @@ namespace DalTest
             }
 
             Console.Write("enter engineer email\n");
-            string email = Console.ReadLine();
+            string? email = Console.ReadLine();
 
             Console.Write("Enter engineer id\n");
             if (!double.TryParse(Console.ReadLine(), out double cost))
@@ -367,7 +365,7 @@ namespace DalTest
             }
 
             Console.Write("enter engineer email\n");
-            string name = Console.ReadLine();
+            string? name = Console.ReadLine();
 
             DO.Engineer item = new DO.Engineer(id, email, cost, name);
             return item;

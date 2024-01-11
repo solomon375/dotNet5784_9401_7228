@@ -3,7 +3,7 @@ using DalApi;
 using DO;
 using System.Collections.Generic;
 
-public class EngineerImplementation : IEngineer
+internal class EngineerImplementation : IEngineer
 {
     //method for create engineer
     public int Create(Engineer item)
