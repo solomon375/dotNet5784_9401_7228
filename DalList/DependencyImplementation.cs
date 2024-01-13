@@ -34,20 +34,13 @@ internal class DependencyImplementation : IDependency
     //method for read dependency
     public Dependency? Read(int id)
     {
-        foreach (Dependency Index in DataSource.Dependencys)
-        {
-            if (Index.Id == id)
-            {
-                return Index;
-            }
-        }
-        return null;
+        return DataSource.Dependencys.FirstOrDefault(item => item.Id == id);
     }
 
     //method for read all dependency
     public List<Dependency> ReadAll()
     {
-        return new List<Dependency>(DataSource.Dependencys);
+        return DataSource.Dependencys.Select(item => item).ToList();
     }
 
     //method for update dependency

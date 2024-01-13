@@ -36,20 +36,13 @@ internal class EngineerImplementation : IEngineer
     //method for read engineer
     public Engineer? Read(int id)
     {
-        foreach (Engineer Index in DataSource.Engineers)
-        {
-            if (Index.Id == id)
-            {
-                return Index;
-            }
-        }
-        return null;
+        return DataSource.Engineers.FirstOrDefault(item => item.Id == id);
     }
 
     //method for read all engineer
     public List<Engineer> ReadAll()
     {
-        return new List<Engineer>(DataSource.Engineers);
+        return DataSource.Engineers.Select(item => item).ToList();
     }
 
     //method for update engineer

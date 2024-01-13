@@ -34,20 +34,13 @@ internal class TaskImplementation : ITask
     //method for read task
     public Task? Read(int id)
     {
-        foreach (Task Index in DataSource.Tasks)
-        {
-            if (Index.Id == id)
-            {
-                return Index;
-            }
-        }
-        return null;
+        return DataSource.Tasks.FirstOrDefault(item => item.Id == id);
     }
 
     //method for read all task
     public List<Task> ReadAll()
     {
-        return new List<Task>(DataSource.Tasks);//need more ditails  
+        return DataSource.Tasks.Select(item => item).ToList();
     }
 
     //method for update task
