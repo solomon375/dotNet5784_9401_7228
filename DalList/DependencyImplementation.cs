@@ -66,4 +66,8 @@ internal class DependencyImplementation : IDependency
 
         throw new DalNotExistException($"dependency with ID={item.Id} does Not exist"); 
     }
+    public Dependency? Read(Func<Dependency, bool> filter) //stage 2
+    {
+        return DataSource.Dependencys.FirstOrDefault(filter);
+    }
 }

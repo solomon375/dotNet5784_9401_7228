@@ -5,7 +5,20 @@ using System.Collections.Generic;
 
 internal class EngineerImplementation : IEngineer
 {
-    //method for create engineer
+    public int Create(Engineer item)//create that call read
+    {
+        //for entities with normal id (not auto id)
+        if (Read(item.Id) is not null)
+        {
+            throw new DalAlreadyExistException($"Student with ID={item.Id} already exists");
+        }
+
+        DataSource.Engineers.Add(item);
+        
+        return item.Id;
+    }
+
+    /*//method for create engineer
     public int Create(Engineer item)
     {
         foreach(Engineer index in DataSource.Engineers)
@@ -17,7 +30,7 @@ internal class EngineerImplementation : IEngineer
         }
         DataSource.Engineers.Add(item);
         return item.Id;
-    }
+    }*/
 
     //method for delete engineer
     public void Delete(int id)
@@ -67,5 +80,10 @@ internal class EngineerImplementation : IEngineer
         }
 
         throw new DalNotExistException($"Engineer with ID={item.Id} does Not exist"); 
+    }
+
+    public Engineer? Read(Func<Engineer, bool> filter) //stage 2
+    {
+        return DataSource.Engineers.FirstOrDefault(filter);
     }
 }

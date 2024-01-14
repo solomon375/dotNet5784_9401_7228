@@ -66,4 +66,8 @@ internal class TaskImplementation : ITask
 
         throw new DalNotExistException($"Task with ID={item.Id} does Not exist");
     }
+    public Task? Read(Func<Task, bool> filter) //stage 2
+    {
+        return DataSource.Tasks.FirstOrDefault(filter);
+    }
 }
