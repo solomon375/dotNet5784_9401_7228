@@ -40,10 +40,18 @@ internal class EngineerImplementation : IEngineer
     }
 
     //method for read all engineer
-    public List<Engineer> ReadAll()
+    public IEnumerable<Engineer> ReadAll(Func<Engineer, bool>? filter = null) //stage 2
     {
-        return DataSource.Engineers.Select(item => item).ToList();
+        if (filter != null)
+        {
+            return from item in DataSource.Engineers
+                   where filter(item)
+                   select item;
+        }
+        return from item in DataSource.Engineers
+               select item;
     }
+
 
     //method for update engineer
     public void Update(Engineer item)

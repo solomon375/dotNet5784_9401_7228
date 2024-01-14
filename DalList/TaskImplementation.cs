@@ -38,10 +38,18 @@ internal class TaskImplementation : ITask
     }
 
     //method for read all task
-    public List<Task> ReadAll()
+    public IEnumerable<Task> ReadAll(Func<Task, bool>? filter = null) //stage 2
     {
-        return DataSource.Tasks.Select(item => item).ToList();
+        if (filter != null)
+        {
+            return from item in DataSource.Tasks
+                   where filter(item)
+                   select item;
+        }
+        return from item in DataSource.Tasks
+               select item;
     }
+
 
     //method for update task
     public void Update(Task item)

@@ -38,10 +38,18 @@ internal class DependencyImplementation : IDependency
     }
 
     //method for read all dependency
-    public List<Dependency> ReadAll()
+    public IEnumerable<Dependency> ReadAll(Func<Dependency, bool>? filter = null) //stage 2
     {
-        return DataSource.Dependencys.Select(item => item).ToList();
+        if (filter != null)
+        {
+            return from item in DataSource.Dependencys
+                   where filter(item)
+                   select item;
+        }
+        return from item in DataSource.Dependencys
+               select item;
     }
+
 
     //method for update dependency
     public void Update(Dependency item)
