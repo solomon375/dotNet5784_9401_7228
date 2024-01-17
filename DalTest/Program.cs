@@ -185,7 +185,7 @@ namespace DalTest
                     Console.WriteLine(s_dal.Engineer?.Create(item1));
                     break;
 
-                case "dependency":
+                case "Dependency":
                     DO.Dependency item2 = GetDependencyItem();
                     Console.WriteLine(s_dal.Dependency?.Create(item2));
                     break;
@@ -216,7 +216,7 @@ namespace DalTest
                     Console.WriteLine(s_dal.Engineer?.Read(id1));
                     break;
 
-                case "dependency":
+                case "Dependency":
                     Console.Write("Enter task id\n");
                     if (!int.TryParse(Console.ReadLine(), out int id2))
                     {
@@ -247,7 +247,7 @@ namespace DalTest
                     }
                     break;
 
-                case "dependency":
+                case "Dependency":
                     foreach (var item in s_dal.Dependency?.ReadAll())
                     {
                         Console.WriteLine(item);
@@ -287,7 +287,7 @@ namespace DalTest
                     s_dal.Engineer?.Update(item1);
                     break;
 
-                case "dependency":
+                case "Dependency":
                     Console.WriteLine("Enter Dependency ID\n");
                     if (!int.TryParse(Console.ReadLine(), out int id2))
                     {
@@ -319,7 +319,7 @@ namespace DalTest
                     s_dal.Engineer?.Delete(ID1);
                     break;
 
-                case "dependency":
+                case "Dependency":
                     DO.Dependency item2 = GetDependencyItem();
                     int ID2 = item2.Id;
                     s_dal.Dependency?.Delete(ID2);
