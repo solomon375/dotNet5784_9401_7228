@@ -9,7 +9,7 @@ namespace DalTest
     internal class Program
     {
         /// <summary>
-        /// Dal Test main program
+        /// Dal Test main program vv
         /// </summary>
         static readonly IDal s_dal = new DalList(); //stage 2
 
@@ -234,21 +234,21 @@ namespace DalTest
             {
                 case "Task":
 
-                    foreach (var item in s_dal.Task?.ReadAll())
+                    foreach (var item in s_dal.Task.ReadAll())
                     {
                         Console.WriteLine(item);
                     }
                     break;
 
                 case "Engineer":
-                    foreach (var item in s_dal.Engineer?.ReadAll())
+                    foreach (var item in s_dal.Engineer.ReadAll())
                     {
                         Console.WriteLine(item);
                     }
                     break;
 
                 case "Dependency":
-                    foreach (var item in s_dal.Dependency?.ReadAll())
+                    foreach (var item in s_dal.Dependency.ReadAll())
                     {
                         Console.WriteLine(item);
                     }
@@ -377,5 +377,6 @@ namespace DalTest
             DO.Dependency item = new DO.Dependency(0, 0, 0);
             return item;
         }
+
     }
 }
