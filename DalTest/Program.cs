@@ -9,7 +9,7 @@ namespace DalTest
     internal class Program
     {
         /// <summary>
-        /// Dal Test main program vv
+        /// Dal Test main program 
         /// </summary>
         static readonly IDal s_dal = new DalList(); //stage 2
 
