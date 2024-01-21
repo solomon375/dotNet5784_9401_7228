@@ -11,20 +11,20 @@ namespace DalTest
         /// <summary>
         /// Dal Test main program 
         /// </summary>
-        static readonly IDal s_dal = new DalList(); //stage 2
+        //static readonly IDal s_dal = new DalList(); //stage 2
+        static readonly IDal s_dal = new DalXml(); //stage 3
 
         static void Main(string[] args)
         {
             try
             {
-                Initialization.Do(s_dal); //stage 2
 
                 bool exit = false;
 
                 do
                 {
                     Console.WriteLine("enter a number:\n " +
-                    "0 = exit\n 1 = task\n 2 = engineer\n 3 = dependency");
+                    "0 = exit\n 1 = task\n 2 = engineer\n 3 = dependency\n 4 = Initializ");
 
                     //choose the case depend on what user enter
                     char choice = Console.ReadKey().KeyChar;
@@ -41,6 +41,13 @@ namespace DalTest
 
                         case '3':
                             checkDependency();
+                            break;
+
+                        case '4':
+                            Console.Write("Would you like to create Initial data? (Y/N)"); //stage 3
+                            string? ans = Console.ReadLine() ?? throw new FormatException("Wrong input"); //stage 3
+                            if (ans == "Y") //stage 3
+                                Initialization.Do(s_dal); //stage 2
                             break;
 
                         case '0':

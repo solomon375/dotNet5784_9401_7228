@@ -1,3 +1,297 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ArrayOfTask>
+<ArrayOfTask xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Task>
+    <Id>1000</Id>
+    <Alias>a</Alias>
+    <Describtion>aa</Describtion>
+    <IsMilestone>false</IsMilestone>
+    <CreatedAtDate>2024-01-21T21:07:13.3205338+02:00</CreatedAtDate>
+    <Complexity xsi:nil="true" />
+    <ScheduledDate xsi:nil="true" />
+    <StartedDate xsi:nil="true" />
+    <RequiredEffortTime xsi:nil="true" />
+    <DeadLine xsi:nil="true" />
+    <CompletedDate xsi:nil="true" />
+    <EngineerID xsi:nil="true" />
+  </Task>
+  <Task>
+    <Id>1001</Id>
+    <Alias>E4</Alias>
+    <Describtion>Chatbot Interaction: Engage in natural conversations and interactions.</Describtion>
+    <IsMilestone>false</IsMilestone>
+    <CreatedAtDate xsi:nil="true" />
+    <Complexity>Expert</Complexity>
+    <ScheduledDate xsi:nil="true" />
+    <StartedDate xsi:nil="true" />
+    <RequiredEffortTime xsi:nil="true" />
+    <DeadLine xsi:nil="true" />
+    <CompletedDate xsi:nil="true" />
+    <EngineerID xsi:nil="true" />
+  </Task>
+  <Task>
+    <Id>1002</Id>
+    <Alias>E3</Alias>
+    <Describtion>Natural Language Processing: Understand and generate human language.</Describtion>
+    <IsMilestone>false</IsMilestone>
+    <CreatedAtDate xsi:nil="true" />
+    <Complexity>Expert</Complexity>
+    <ScheduledDate xsi:nil="true" />
+    <StartedDate xsi:nil="true" />
+    <RequiredEffortTime xsi:nil="true" />
+    <DeadLine xsi:nil="true" />
+    <CompletedDate xsi:nil="true" />
+    <EngineerID xsi:nil="true" />
+  </Task>
+  <Task>
+    <Id>1003</Id>
+    <Alias>E2</Alias>
+    <Describtion>Neural Network Integration: Use complex algorithms for intelligent tasks.</Describtion>
+    <IsMilestone>false</IsMilestone>
+    <CreatedAtDate xsi:nil="true" />
+    <Complexity>Expert</Complexity>
+    <ScheduledDate xsi:nil="true" />
+    <StartedDate xsi:nil="true" />
+    <RequiredEffortTime xsi:nil="true" />
+    <DeadLine xsi:nil="true" />
+    <CompletedDate xsi:nil="true" />
+    <EngineerID xsi:nil="true" />
+  </Task>
+  <Task>
+    <Id>1004</Id>
+    <Alias>E1</Alias>
+    <Describtion>Machine Learning: Implement learning capabilities from experience or data.</Describtion>
+    <IsMilestone>false</IsMilestone>
+    <CreatedAtDate xsi:nil="true" />
+    <Complexity>Expert</Complexity>
+    <ScheduledDate xsi:nil="true" />
+    <StartedDate xsi:nil="true" />
+    <RequiredEffortTime xsi:nil="true" />
+    <DeadLine xsi:nil="true" />
+    <CompletedDate xsi:nil="true" />
+    <EngineerID xsi:nil="true" />
+  </Task>
+  <Task>
+    <Id>1005</Id>
+    <Alias>D4</Alias>
+    <Describtion>Voice Recognition: Enable the robot to understand and respond to voice commands.</Describtion>
+    <IsMilestone>false</IsMilestone>
+    <CreatedAtDate xsi:nil="true" />
+    <Complexity>Advanced</Complexity>
+    <ScheduledDate xsi:nil="true" />
+    <StartedDate xsi:nil="true" />
+    <RequiredEffortTime xsi:nil="true" />
+    <DeadLine xsi:nil="true" />
+    <CompletedDate xsi:nil="true" />
+    <EngineerID xsi:nil="true" />
+  </Task>
+  <Task>
+    <Id>1006</Id>
+    <Alias>D3</Alias>
+    <Describtion>Facial Recognition: Recognize and respond based on identified faces.</Describtion>
+    <IsMilestone>false</IsMilestone>
+    <CreatedAtDate xsi:nil="true" />
+    <Complexity>Advanced</Complexity>
+    <ScheduledDate xsi:nil="true" />
+    <StartedDate xsi:nil="true" />
+    <RequiredEffortTime xsi:nil="true" />
+    <DeadLine xsi:nil="true" />
+    <CompletedDate xsi:nil="true" />
+    <EngineerID xsi:nil="true" />
+  </Task>
+  <Task>
+    <Id>1007</Id>
+    <Alias>D2</Alias>
+    <Describtion>Navigation with GPS and Compass: Make the robot navigate or follow paths.</Describtion>
+    <IsMilestone>false</IsMilestone>
+    <CreatedAtDate xsi:nil="true" />
+    <Complexity>Advanced</Complexity>
+    <ScheduledDate xsi:nil="true" />
+    <StartedDate xsi:nil="true" />
+    <RequiredEffortTime xsi:nil="true" />
+    <DeadLine xsi:nil="true" />
+    <CompletedDate xsi:nil="true" />
+    <EngineerID xsi:nil="true" />
+  </Task>
+  <Task>
+    <Id>1008</Id>
+    <Alias>D1</Alias>
+    <Describtion>Balance and Motion: Use gyroscope/accelerometer for balancing or tricks.</Describtion>
+    <IsMilestone>false</IsMilestone>
+    <CreatedAtDate xsi:nil="true" />
+    <Complexity>Advanced</Complexity>
+    <ScheduledDate xsi:nil="true" />
+    <StartedDate xsi:nil="true" />
+    <RequiredEffortTime xsi:nil="true" />
+    <DeadLine xsi:nil="true" />
+    <CompletedDate xsi:nil="true" />
+    <EngineerID xsi:nil="true" />
+  </Task>
+  <Task>
+    <Id>1009</Id>
+    <Alias>C4</Alias>
+    <Describtion>Gripper Control: Control a gripper to pick and drop objects.</Describtion>
+    <IsMilestone>false</IsMilestone>
+    <CreatedAtDate xsi:nil="true" />
+    <Complexity>Intermidate</Complexity>
+    <ScheduledDate xsi:nil="true" />
+    <StartedDate xsi:nil="true" />
+    <RequiredEffortTime xsi:nil="true" />
+    <DeadLine xsi:nil="true" />
+    <CompletedDate xsi:nil="true" />
+    <EngineerID xsi:nil="true" />
+  </Task>
+  <Task>
+    <Id>1010</Id>
+    <Alias>C3</Alias>
+    <Describtion>Camera Functionality: Capture and stream video or store it.</Describtion>
+    <IsMilestone>false</IsMilestone>
+    <CreatedAtDate xsi:nil="true" />
+    <Complexity>Intermidate</Complexity>
+    <ScheduledDate xsi:nil="true" />
+    <StartedDate xsi:nil="true" />
+    <RequiredEffortTime xsi:nil="true" />
+    <DeadLine xsi:nil="true" />
+    <CompletedDate xsi:nil="true" />
+    <EngineerID xsi:nil="true" />
+  </Task>
+  <Task>
+    <Id>1011</Id>
+    <Alias>C2</Alias>
+    <Describtion>Audio I/O: Integrate speaker and microphone for sound playback and recording.</Describtion>
+    <IsMilestone>false</IsMilestone>
+    <CreatedAtDate xsi:nil="true" />
+    <Complexity>Intermidate</Complexity>
+    <ScheduledDate xsi:nil="true" />
+    <StartedDate xsi:nil="true" />
+    <RequiredEffortTime xsi:nil="true" />
+    <DeadLine xsi:nil="true" />
+    <CompletedDate xsi:nil="true" />
+    <EngineerID xsi:nil="true" />
+  </Task>
+  <Task>
+    <Id>1012</Id>
+    <Alias>C1</Alias>
+    <Describtion>Bluetooth Communication: Establish communication between robot and external devices.</Describtion>
+    <IsMilestone>false</IsMilestone>
+    <CreatedAtDate xsi:nil="true" />
+    <Complexity>Intermidate</Complexity>
+    <ScheduledDate xsi:nil="true" />
+    <StartedDate xsi:nil="true" />
+    <RequiredEffortTime xsi:nil="true" />
+    <DeadLine xsi:nil="true" />
+    <CompletedDate xsi:nil="true" />
+    <EngineerID xsi:nil="true" />
+  </Task>
+  <Task>
+    <Id>1013</Id>
+    <Alias>B4</Alias>
+    <Describtion>Temperature Display: Display temperature using a sensor, either on a screen or serial monitor.</Describtion>
+    <IsMilestone>false</IsMilestone>
+    <CreatedAtDate xsi:nil="true" />
+    <Complexity>AdvancedBeginner</Complexity>
+    <ScheduledDate xsi:nil="true" />
+    <StartedDate xsi:nil="true" />
+    <RequiredEffortTime xsi:nil="true" />
+    <DeadLine xsi:nil="true" />
+    <CompletedDate xsi:nil="true" />
+    <EngineerID xsi:nil="true" />
+  </Task>
+  <Task>
+    <Id>1014</Id>
+    <Alias>B3</Alias>
+    <Describtion>Light Sensing Behavior: Program robot to move towards or away from light.</Describtion>
+    <IsMilestone>false</IsMilestone>
+    <CreatedAtDate xsi:nil="true" />
+    <Complexity>AdvancedBeginner</Complexity>
+    <ScheduledDate xsi:nil="true" />
+    <StartedDate xsi:nil="true" />
+    <RequiredEffortTime xsi:nil="true" />
+    <DeadLine xsi:nil="true" />
+    <CompletedDate xsi:nil="true" />
+    <EngineerID xsi:nil="true" />
+  </Task>
+  <Task>
+    <Id>1015</Id>
+    <Alias>B2</Alias>
+    <Describtion>Line Following Capability: Enable the robot to track and follow lines on a surface.</Describtion>
+    <IsMilestone>false</IsMilestone>
+    <CreatedAtDate xsi:nil="true" />
+    <Complexity>AdvancedBeginner</Complexity>
+    <ScheduledDate xsi:nil="true" />
+    <StartedDate xsi:nil="true" />
+    <RequiredEffortTime xsi:nil="true" />
+    <DeadLine xsi:nil="true" />
+    <CompletedDate xsi:nil="true" />
+    <EngineerID xsi:nil="true" />
+  </Task>
+  <Task>
+    <Id>1016</Id>
+    <Alias>B1</Alias>
+    <Describtion>Obstacle Detection: Implement an ultrasonic sensor to stop on detecting obstacles.</Describtion>
+    <IsMilestone>false</IsMilestone>
+    <CreatedAtDate xsi:nil="true" />
+    <Complexity>AdvancedBeginner</Complexity>
+    <ScheduledDate xsi:nil="true" />
+    <StartedDate xsi:nil="true" />
+    <RequiredEffortTime xsi:nil="true" />
+    <DeadLine xsi:nil="true" />
+    <CompletedDate xsi:nil="true" />
+    <EngineerID xsi:nil="true" />
+  </Task>
+  <Task>
+    <Id>1017</Id>
+    <Alias>A4</Alias>
+    <Describtion>Button Control and Speed Regulation: Use push button &amp; potentiometer to control movement.</Describtion>
+    <IsMilestone>false</IsMilestone>
+    <CreatedAtDate xsi:nil="true" />
+    <Complexity>Beginner</Complexity>
+    <ScheduledDate xsi:nil="true" />
+    <StartedDate xsi:nil="true" />
+    <RequiredEffortTime xsi:nil="true" />
+    <DeadLine xsi:nil="true" />
+    <CompletedDate xsi:nil="true" />
+    <EngineerID xsi:nil="true" />
+  </Task>
+  <Task>
+    <Id>1018</Id>
+    <Alias>A3</Alias>
+    <Describtion>Sound and Light Indicators: Integrate buzzer, LED, and create indicators for movement.</Describtion>
+    <IsMilestone>false</IsMilestone>
+    <CreatedAtDate xsi:nil="true" />
+    <Complexity>Beginner</Complexity>
+    <ScheduledDate xsi:nil="true" />
+    <StartedDate xsi:nil="true" />
+    <RequiredEffortTime xsi:nil="true" />
+    <DeadLine xsi:nil="true" />
+    <CompletedDate xsi:nil="true" />
+    <EngineerID xsi:nil="true" />
+  </Task>
+  <Task>
+    <Id>1019</Id>
+    <Alias>A2</Alias>
+    <Describtion>Power Management: Add battery, switch, ensure functionality.</Describtion>
+    <IsMilestone>false</IsMilestone>
+    <CreatedAtDate xsi:nil="true" />
+    <Complexity>Beginner</Complexity>
+    <ScheduledDate xsi:nil="true" />
+    <StartedDate xsi:nil="true" />
+    <RequiredEffortTime xsi:nil="true" />
+    <DeadLine xsi:nil="true" />
+    <CompletedDate xsi:nil="true" />
+    <EngineerID xsi:nil="true" />
+  </Task>
+  <Task>
+    <Id>1020</Id>
+    <Alias>A1</Alias>
+    <Describtion>Basic Assembly and Movement: Construct robot, connect motors, and program basic movements.</Describtion>
+    <IsMilestone>false</IsMilestone>
+    <CreatedAtDate xsi:nil="true" />
+    <Complexity>Beginner</Complexity>
+    <ScheduledDate xsi:nil="true" />
+    <StartedDate xsi:nil="true" />
+    <RequiredEffortTime xsi:nil="true" />
+    <DeadLine xsi:nil="true" />
+    <CompletedDate xsi:nil="true" />
+    <EngineerID xsi:nil="true" />
+  </Task>
 </ArrayOfTask>
