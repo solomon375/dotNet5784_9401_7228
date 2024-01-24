@@ -173,11 +173,12 @@ public static class Initialization
         }
     }
 
-    public static void Do(IDal dal) //stage 2
+   //public static void Do(IDal dal) //stage 2
+    public static void Do() //stage 4
     {
 
-        s_dal = dal ?? throw new NullReferenceException("DAL object can not be null!"); //stage 2
-
+        //s_dal = dal ?? throw new NullReferenceException("DAL object can not be null!"); //stage 2
+        s_dal = DalApi.Factory.Get; //stage 4
         createTask();
         createEngineer();
         createDependency();
