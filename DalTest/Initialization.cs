@@ -18,86 +18,93 @@ public static class Initialization
 
         string[] TaskAlias =
     {//Expert
-        "E1",
+        "A1","A2","A3","A4","A5","A6","A7","A8",
     //Advanced:
-        "D1",
+        "B1","B2","B3","B4","B5","B6",
     //Intermediate:
-        "C4","C3","C2","C1",
+        "C1","C2","C3","C4",
     //Advanced Beginner:
-        "B6","B5","B4","B3","B2","B1",
+        "D1",
     //Beginner:
-        "A8","A7","A6","A5","A4","A3","A2","A1"
+        "E1"
     };
         string[] Taskdescription =
-    {//Expert
-        "Chatbot Interaction: Engage in natural conversations and interactions.",
-        "Natural Language Processing: Understand and generate human language.",
-        "Neural Network Integration: Use complex algorithms for intelligent tasks.",
-        "Machine Learning: Implement learning capabilities from experience or data.",
-    //Advanced
-        "Voice Recognition: Enable the robot to understand and respond to voice commands.",
-        "Facial Recognition: Recognize and respond based on identified faces.",
-        "Navigation with GPS and Compass: Make the robot navigate or follow paths.",
-        "Balance and Motion: Use gyroscope/accelerometer for balancing or tricks.",
-    //Intermediate:
-        "Gripper Control: Control a gripper to pick and drop objects.",
-        "Camera Functionality: Capture and stream video or store it.",
-        "Audio I/O: Integrate speaker and microphone for sound playback and recording.",
-        "Bluetooth Communication: Establish communication between robot and external devices.",
-    //Advanced Beginner:
-        "Temperature Display: Display temperature using a sensor, either on a screen or serial monitor.",
-        "Light Sensing Behavior: Program robot to move towards or away from light.",
-        "Line Following Capability: Enable the robot to track and follow lines on a surface.",
-        "Obstacle Detection: Implement an ultrasonic sensor to stop on detecting obstacles.",
+    {
     //Beginner:
-        "Button Control and Speed Regulation: Use push button & potentiometer to control movement.",
-        "Sound and Light Indicators: Integrate buzzer, LED, and create indicators for movement.",
-        "Power Management: Add battery, switch, ensure functionality.",
-        "Basic Assembly and Movement: Construct robot, connect motors, and program basic movements."
-    };
+        "Assemble the robot's frame.",
+        "Install the motors.",
+        "Connect the wheels.",
+        "Add the battery.",
+        "Program basic movements (forward, backward, left, right).",
+        "Add sensors.",
+        "Program sensor-based movements.",
+        "Add a camera.",
+    //Advanced Beginner:
+        "Add a display.",
+        "Add voice recognition.",
+        "Add speech synthesis.",
+        "Add wireless communication.",
+        "Add a gyroscope.",
+        "Program advanced movements.",
+    //Intermediate:
+        "Add machine learning.",
+        "Add object recognition.",
+        "Add facial recognition.",
+        "Add emotion recognition.",
+    //Advanced
+        "Add autonomous navigation.",
+    //Expert
+        "Create a custom robot with advanced features according to user requirements."
 
-        for (int i = 0; i < 20; i++)
+
+    };
+        int daycounter = 20;
+
+        for (int i = 1; i <= 20; i++)
         {
+
             int _id = i;
 
-            string _Alias = TaskAlias[i];
+            string _Alias = TaskAlias[i-1];
 
-            string _Describtion = Taskdescription[i];
+            string _Describtion = Taskdescription[i-1];
 
             bool _IsMilestone = false;
 
             DateTime currentTime = DateTime.Now;
 
-            DateTime _CreatedAtDate = currentTime.AddDays((-i)*2);//before datetime.now
+            DateTime _CreatedAtDate = currentTime.AddDays((-daycounter)*2);//before datetime.now
 
             DO.EngineerExperience _Complexity;
 
-            if (i <= 3)
+            if (i < 9 && i >= 1)
             {
-                _Complexity = EngineerExperience.Expert;
+                _Complexity = EngineerExperience.Beginner;
             }
-            else if (i <= 7 && i > 3)
-            {
-                _Complexity = EngineerExperience.Advanced;
-            }
-            else if (i <= 11 && i > 7)
-            {
-                _Complexity = EngineerExperience.Intermidate;
-            }
-            else if (i <= 15 && i > 11)
+            else if (i < 15 && i >= 9)
             {
                 _Complexity = EngineerExperience.AdvancedBeginner;
             }
-            else if (i <= 19 && i > 15)
+            else if (i < 19 && i >= 15)
             {
-                _Complexity = EngineerExperience.Beginner;
+                _Complexity = EngineerExperience.Intermidate;
+            }
+            else if (i < 20 && i >= 19)
+            {
+                _Complexity = EngineerExperience.Advanced;
+            }
+            else if (i <= 20)
+            {
+                _Complexity = EngineerExperience.Expert;
             }
             else
             {
                 _Complexity = EngineerExperience.Beginner;
             }
 
-            Task newStu = new(_id, _Alias, _Describtion, _IsMilestone, null , _Complexity);
+            daycounter--;
+
+            Task newStu = new(_id, _Alias, _Describtion, _IsMilestone, _CreatedAtDate, _Complexity);
 
             s_dal!.Task.Create(newStu);
         }
