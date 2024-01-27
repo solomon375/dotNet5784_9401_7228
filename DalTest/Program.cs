@@ -366,16 +366,43 @@ namespace DalTest
             Console.Write("enter engineer email\n");
             string? email = Console.ReadLine();
 
-            Console.Write("Enter engineer id\n");
+            Console.Write("Enter engineer cost\n");
             if (!double.TryParse(Console.ReadLine(), out double cost))
             {
                 Console.WriteLine("please enter only int type\n");
             }
 
-            Console.Write("enter engineer email\n");
+            Console.Write("enter engineer name\n");
             string? name = Console.ReadLine();
 
-            DO.Engineer item = new DO.Engineer(id, email, cost, name);
+            EngineerExperience? level;
+
+            if (cost <= 400)
+            {
+                level = EngineerExperience.Beginner;
+            }
+            else if (cost <= 500 && cost > 400)
+            {
+                level = EngineerExperience.AdvancedBeginner;
+            }
+            else if (cost <= 600 && cost > 500)
+            {
+                level = EngineerExperience.Intermidate;
+            }
+            else if (cost <= 700 && cost > 600)
+            {
+                level = EngineerExperience.Advanced;
+            }
+            else if (cost <= 800 && cost > 700)
+            {
+                level = EngineerExperience.Expert;
+            }
+            else
+            {
+                level = null;
+            }
+
+            DO.Engineer item = new DO.Engineer(id, email, cost, name,level);
             return item;
         }
 

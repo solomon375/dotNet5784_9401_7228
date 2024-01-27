@@ -2,6 +2,7 @@
 
 using DalApi;
 using DO;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.Cryptography;
 using System.Xml.Linq;
 
@@ -17,15 +18,15 @@ public static class Initialization
 
         string[] TaskAlias =
     {//Expert
-        "E4","E3","E2","E1",
+        "E1",
     //Advanced:
-        "D4","D3","D2","D1",
+        "D1",
     //Intermediate:
         "C4","C3","C2","C1",
     //Advanced Beginner:
-        "B4","B3","B2","B1",
+        "B6","B5","B4","B3","B2","B1",
     //Beginner:
-        "A4","A3","A2","A1"
+        "A8","A7","A6","A5","A4","A3","A2","A1"
     };
         string[] Taskdescription =
     {//Expert
@@ -109,6 +110,7 @@ public static class Initialization
         "Dani Levi", "Eli Amar", "Yair Cohen",
         "Ariela Levin", "Dina Klein"
     };
+        int counter = 0;
         foreach (var _name in engineerNames)
         {
             int _id;
@@ -119,7 +121,7 @@ public static class Initialization
             string _email = _name.Substring(0, _name.IndexOf(" "));
             _email = _email+"@jct.com";
 
-            int _cost = s_rand.Next(200, 800);
+            int _cost = 350 + counter * 100;
 
             EngineerExperience? _level;
 
@@ -147,6 +149,9 @@ public static class Initialization
             {
                 _level = null;
             }
+
+            counter++;
+
             Engineer newStu = new(_id, _email, _cost, _name, _level);
 
             s_dal!.Engineer.Create(newStu);
