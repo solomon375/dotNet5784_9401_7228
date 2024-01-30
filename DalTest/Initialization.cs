@@ -6,26 +6,31 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.Cryptography;
 using System.Xml.Linq;
 
+/// <summary>
+/// Provides methods for initializing the data in the Data Access Layer for testing purposes.
+/// </summary>
 public static class Initialization
 {
     private static IDal? s_dal; //stage 2
 
     private static readonly Random s_rand = new();
 
-    //method for create task
+    /// <summary>
+    /// Creates and initializes task entities.
+    /// </summary>
     private static void createTask()
     {
 
         string[] TaskAlias =
-    {//Expert
+    {//Beginner:
         "A1","A2","A3","A4","A5","A6","A7","A8",
-    //Advanced:
+    //Advanced Beginner:
         "B1","B2","B3","B4","B5","B6",
     //Intermediate:
         "C1","C2","C3","C4",
-    //Advanced Beginner:
+    //Advanced:
         "D1",
-    //Beginner:
+    //Expert
         "E1"
     };
         string[] Taskdescription =
@@ -55,9 +60,8 @@ public static class Initialization
         "Add autonomous navigation.",
     //Expert
         "Create a custom robot with advanced features according to user requirements."
-
-
     };
+
         int daycounter = 20;
 
         for (int i = 1; i <= 20; i++)
@@ -109,7 +113,10 @@ public static class Initialization
             s_dal!.Task.Create(newStu);
         }
     }
-    //method for create engineer
+
+    /// <summary>
+    /// Creates and initializes engineer entities.
+    /// </summary>
     private static void createEngineer()
     {
         string[] engineerNames =
@@ -166,7 +173,9 @@ public static class Initialization
         }
 
     }
-    //method for create dependency
+    /// <summary>
+    /// Creates and initializes dependency entities.
+    /// </summary>
     private static void createDependency()
     {
         for (int i = 0; i < 40; i++)
@@ -185,7 +194,9 @@ public static class Initialization
         }
     }
 
-   //public static void Do(IDal dal) //stage 2
+    /// <summary>
+    /// Initializes the data in the Data Access Layer for testing purposes.
+    /// </summary>
     public static void Do() //stage 4
     {
 

@@ -9,11 +9,16 @@ namespace DalTest
     internal class Program
     {
         /// <summary>
-        /// Dal Test main program 
+        /// Data Access Layer instance for interacting with tasks, engineers, and dependencies.
         /// </summary>
         //static readonly IDal s_dal = new DalList(); //stage 2
         //static readonly IDal s_dal = new DalXml(); //stage 3
         static readonly IDal s_dal = Factory.Get; //stage 4
+
+        /// <summary>
+        /// Main method for the Dal Test program.
+        /// </summary>
+        /// <param name="args">Command line arguments.</param>
         static void Main(string[] args)
         {
             try
@@ -23,24 +28,25 @@ namespace DalTest
 
                 do
                 {
+                    /// Display menu for user input
                     Console.WriteLine("enter a number:\n " +
                     "0 = exit\n 1 = task\n 2 = engineer\n 3 = dependency\n 4 = Initializ");
 
-                    //choose the case depend on what user enter
+                    // Choose the case based on user input
                     char choice = Console.ReadKey().KeyChar;
 
                     switch (choice)
                     {
                         case '1':
-                            checkTask();
+                            checkTask();// Perform operations related to tasks
                             break;
 
                         case '2':
-                            checkEngineer();
+                            checkEngineer();// Perform operations related to engineers
                             break;
 
                         case '3':
-                            checkDependency();
+                            checkDependency();// Perform operations related to dependencies
                             break;
 
                         case '4':
@@ -66,13 +72,15 @@ namespace DalTest
                 Console.WriteLine(ex);
             }
         }
-        //check the Task.cs
+        /// <summary>
+        /// Method to handle operations related to Task.
+        /// </summary>
         static void checkTask()
         {
             bool exit = false;
             do
             {
-                display();
+                display();// Display menu for CRUD operations
 
                 char choice = Console.ReadKey().KeyChar;
 
@@ -89,13 +97,15 @@ namespace DalTest
             } while (!exit);
         }
 
-        //check the Engineer.cs
+        /// <summary>
+        /// Method to handle operations related to Engineer.
+        /// </summary>
         static void checkEngineer()
         {
             bool exit = false;
             do
             {
-                display();
+                display();// Display menu for CRUD operations
 
                 char choice = Console.ReadKey().KeyChar;
 
@@ -112,13 +122,15 @@ namespace DalTest
             } while (!exit);
         }
 
-        //check the Dependency.cs
+        /// <summary>
+        /// Method to handle operations related to Dependency.
+        /// </summary>
         static void checkDependency()
         {
             bool exit = false;
             do
             {
-                display();
+                display();// Display menu for CRUD operations
 
                 char choice = Console.ReadKey().KeyChar;
 
@@ -135,7 +147,9 @@ namespace DalTest
             } while (!exit);
         }
 
-        //print the menu for the user to choose what to do next
+        /// <summary>
+        /// Display menu for CRUD operations.
+        /// </summary>
         static void display()
         {
             Console.WriteLine($"Choose an operation:");
@@ -147,7 +161,11 @@ namespace DalTest
             Console.WriteLine("0. Exit\n");
         }
 
-        //do something depend on what the user chose
+        /// <summary>
+        /// Perform CRUD operations based on user choice.
+        /// </summary>
+        /// <param name="c">User choice character.</param>
+        /// <param name="s">Entity type (Task, Engineer, Dependency).</param>
         static void Choice(char c, string s)
         {
             switch (c)
@@ -178,7 +196,10 @@ namespace DalTest
             }
         }
 
-        //send the user to the right Create method
+        /// <summary>
+        /// Create a new item based on the user's choice (Task, Engineer, Dependency).
+        /// </summary>
+        /// <param name="s">Entity type (Task, Engineer, Dependency).</param>
         static void Create(string s)
         {
             switch (s)
@@ -201,7 +222,10 @@ namespace DalTest
             //send the user to the right create method
         }
 
-        //send the user to the right Read method
+        /// <summary>
+        /// Read an item based on the user's choice (Task, Engineer, Dependency).
+        /// </summary>
+        /// <param name="s">Entity type (Task, Engineer, Dependency).</param>
         static void Read(string s)
         {
             switch (s)
@@ -235,7 +259,10 @@ namespace DalTest
             }
         }
 
-        //send the user to the right ReadAll method
+        /// <summary>
+        /// Read all items based on the user's choice (Task, Engineer, Dependency).
+        /// </summary>
+        /// <param name="s">Entity type (Task, Engineer, Dependency).</param>
         static void ReadAll(string s)
         {
             switch (s)
@@ -264,7 +291,10 @@ namespace DalTest
             }
         }
 
-        //send the user to the right Update method
+        /// <summary>
+        /// Update an item based on the user's choice (Task, Engineer, Dependency).
+        /// </summary>
+        /// <param name="s">Entity type (Task, Engineer, Dependency).</param>
         static void Update(string s)
         {
             switch (s)
@@ -310,35 +340,55 @@ namespace DalTest
             }
         }
 
-        //send the user to the right Delete method
+        /// <summary>
+        /// Delete an item based on the user's choice (Task, Engineer, Dependency).
+        /// </summary>
+        /// <param name="s">Entity type (Task, Engineer, Dependency).</param>
         static void Delete(string s)
         {
             switch (s)
             {
                 case "Task":
-                    DO.Task item = GetTaskItem();
-                    int ID = item.Id;
-                    s_dal.Task?.Delete(ID);
+                    Console.Write("Enter task id\n");
+                    if (!int.TryParse(Console.ReadLine(), out int id))
+                    {
+                        Console.WriteLine("please enter only int type\n");
+                    }
+                    s_dal.Task?.Delete(id);
                     break;
 
                 case "Engineer":
-                    DO.Engineer item1 = GetEngineerItem();
-                    int ID1 = item1.Id;
-                    s_dal.Engineer?.Delete(ID1);
+                    Console.Write("Enter task id\n");
+                    if (!int.TryParse(Console.ReadLine(), out int id1))
+                    {
+                        Console.WriteLine("please enter only int type\n");
+                    }
+                    s_dal.Engineer?.Delete(id1);
                     break;
 
                 case "Dependency":
-                    DO.Dependency item2 = GetDependencyItem();
-                    int ID2 = item2.Id;
-                    s_dal.Dependency?.Delete(ID2);
+                    Console.Write("Enter task id\n");
+                    if (!int.TryParse(Console.ReadLine(), out int id2))
+                    {
+                        Console.WriteLine("please enter only int type\n");
+                    }
+                    s_dal.Dependency?.Delete(id2);
                     break;
             }
         }
 
-        //ask from the user to enter Task's details and recive them
+        /// <summary>
+        /// Ask the user to enter Task's details and receive them.
+        /// </summary>
+        /// <returns>A new Task object with user-entered details.</returns>
         static DO.Task GetTaskItem()
         {
             Console.WriteLine("create new task item\n");
+            Console.Write("Enter task id\n");
+            if (!int.TryParse(Console.ReadLine(), out int id))
+            {
+                Console.WriteLine("please enter only int type\n");
+            }
 
             Console.Write("enter task alias\n");
             string? alias = Console.ReadLine();
@@ -348,11 +398,47 @@ namespace DalTest
 
             DateTime createdAtDate = DateTime.Now;
 
-            DO.Task item = new DO.Task(0, alias, description, false, createdAtDate);
+            Console.Write("enter task complexity\n 1=Beginner\n 2=AdvancedBeginner\n 3=Intermidate\n" +
+                "4=Advanced\n 5=Expert\n");
+            if (!int.TryParse(Console.ReadLine(), out int num))
+            {
+                Console.WriteLine("please enter only int type\n");
+            }
+
+            DO.EngineerExperience complexity;
+            if (num == 1)
+            {
+                complexity = EngineerExperience.Beginner;
+            }
+            else if (num == 2)
+            {
+                complexity = EngineerExperience.AdvancedBeginner;
+            }
+            else if (num == 3)
+            {
+                complexity = EngineerExperience.Intermidate;
+            }
+            else if (num == 4)
+            {
+                complexity = EngineerExperience.Advanced;
+            }
+            else if (num == 5)
+            {
+                complexity = EngineerExperience.Expert;
+            }
+            else
+            {
+                complexity = EngineerExperience.Beginner;
+            }
+
+            DO.Task item = new DO.Task(id, alias, description, false, createdAtDate, complexity);
             return item;
         }
 
-        //ask from the user to enter Engineer's details and recive them
+        /// <summary>
+        /// Ask the user to enter Engineer's details and receive them.
+        /// </summary>
+        /// <returns>A new Engineer object with user-entered details.</returns>
         static DO.Engineer GetEngineerItem()
         {
             Console.WriteLine("create new Engineer item\n");
@@ -406,10 +492,31 @@ namespace DalTest
             return item;
         }
 
-        //ask from the user to enter Dependency's details and recive them
+        /// <summary>
+        /// Ask the user to enter Dependency's details and receive them.
+        /// </summary>
+        /// <returns>A new Dependency object with user-entered details.</returns>
         static DO.Dependency GetDependencyItem()
         {
-            DO.Dependency item = new DO.Dependency(0, 0, 0);
+            Console.Write("Enter task id\n");
+            if (!int.TryParse(Console.ReadLine(), out int id))
+            {
+                Console.WriteLine("please enter only int type\n");
+            }
+
+            Console.Write("enter Dependency DependentTask\n");
+            if (!int.TryParse(Console.ReadLine(), out int DependentTask))
+            {
+                Console.WriteLine("please enter only int type\n");
+            }
+
+            Console.Write("enter Dependency DependsOnTask\n");
+            if (!int.TryParse(Console.ReadLine(), out int DependsOnTask))
+            {
+                Console.WriteLine("please enter only int type\n");
+            }
+
+            DO.Dependency item = new DO.Dependency(id, DependentTask, DependsOnTask);
             return item;
         }
 
