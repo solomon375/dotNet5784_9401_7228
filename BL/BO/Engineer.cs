@@ -10,10 +10,10 @@
 /// <param name="Task">>the task's id and alias that the engineer currently work on</param>
 public class Engineer
 {
-    public int Id { get; init; }
+    public int Id { get; set; }
     public string? Email { get; set; }
     public double? Cost { get; set; }
-    public string? Name { get; init; }
+    public string? Name { get; set; }
     public DO.EngineerExperience? Level { get; set; }
-    public Tuple<BO.TaskInEngineer>? Task {  get; set; }
+    public BO.TaskInEngineer? Task {  get; set; }
 }

@@ -23,16 +23,16 @@ public record Task
     string? Describtion = null,
     bool? IsMilestone = null,
     DateTime? CreatedAtDate = null,
+    TimeSpan? RequiredEffortTime = null,
+    DateTime? DeadLine = null,
     DO.EngineerExperience? Complexity = null,
     DateTime? ScheduledDate = null,
     DateTime? StartedDate = null,
-    TimeSpan? RequiredEffortTime = null,
-    DateTime? DeadLine = null,
     DateTime? CompletedDate = null,
     string? Deliverable = null,
     string? Remarks = null,
     int? EngineerID = null
 )
 {
-    public Task() : this(0) { }      //ctor for lvl 3
+    public Task(int id, string? alias) : this(0) { }      //ctor for lvl 3
 }

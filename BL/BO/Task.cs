@@ -26,7 +26,7 @@ public class Task
     public BO.Status status { get; set; }
     public List<BO.TaskInList>? Dependencies { get; set; }
     public bool? IsMilestone { get; set; }
-    public DateTime? CreatedAtDate { get; init; }
+    public DateTime? CreatedAtDate { get; set; }
     public BO.EngineerExperience? Complexity { get; set; }
     public DateTime? ScheduledDate { get; set; }
     public DateTime? StartedDate { get; set; }
@@ -35,5 +35,5 @@ public class Task
     public DateTime? CompletedDate { get; set; }
     public string? Deliverable { get; set; }
     public string? Remarks { get; set; }
-    public Tuple<BO.EngineerInTask>? Engineer { get; set; }
+    public BO.EngineerInTask? Engineer { get; set; }
 }

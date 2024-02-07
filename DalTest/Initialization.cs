@@ -75,40 +75,81 @@ public static class Initialization
 
             bool _IsMilestone = false;
 
-            DateTime currentTime = DateTime.Now;
+            DateTime _CreatedAtDate = DateTime.Now;
 
-            DateTime _CreatedAtDate = currentTime.AddDays((-daycounter)*2);//before datetime.now
+            TimeSpan _RequiredEffortTime = TimeSpan.Zero;
+
+            DateTime _DeadLine = DateTime.Now;
+
+            //DateTime _CreatedAtDate = currentTime.AddDays((-daycounter)*2);//before datetime.now
 
             DO.EngineerExperience _Complexity;
 
             if (i < 9 && i >= 1)
             {
                 _Complexity = EngineerExperience.Beginner;
+
+                _CreatedAtDate = new DateTime(2025, 5, 1);
+
+                _DeadLine = new DateTime(2025, 5, 29);
+
+                _RequiredEffortTime = new(7, 0, 0);
             }
             else if (i < 15 && i >= 9)
             {
                 _Complexity = EngineerExperience.AdvancedBeginner;
+
+                _CreatedAtDate = new DateTime(2025, 6, 1);
+
+                _DeadLine = new DateTime(2025, 6, 29);
+
+                _RequiredEffortTime = new(7, 0, 0);
             }
             else if (i < 19 && i >= 15)
             {
                 _Complexity = EngineerExperience.Intermidate;
+
+                _CreatedAtDate = new DateTime(2025, 7, 1);
+
+                _DeadLine = new DateTime(2025, 7, 29);
+
+                _RequiredEffortTime = new(10, 0, 0);
             }
             else if (i < 20 && i >= 19)
             {
                 _Complexity = EngineerExperience.Advanced;
+
+                _CreatedAtDate = new DateTime(2025, 8, 1);
+
+                _DeadLine = new DateTime(2025, 8, 29);
+
+                _RequiredEffortTime = new(15, 0, 0);
             }
             else if (i <= 20)
             {
                 _Complexity = EngineerExperience.Expert;
+
+                _CreatedAtDate = new DateTime(2025, 9, 1);
+
+                _DeadLine = new DateTime(2025, 9, 29);
+
+                _RequiredEffortTime = new(25, 0, 0);
             }
             else
             {
                 _Complexity = EngineerExperience.Beginner;
+
+                _CreatedAtDate = new DateTime(2025, 5, 1);
+
+                _DeadLine = new DateTime(2025, 5, 29);
+
+                _RequiredEffortTime = new(7, 0, 0);
             }
 
             daycounter--;
 
-            Task newStu = new(_id, _Alias, _Describtion, _IsMilestone, _CreatedAtDate, _Complexity);
+            Task newStu = new(_id, _Alias, _Describtion, _IsMilestone, _CreatedAtDate, _RequiredEffortTime,
+                _DeadLine ,_Complexity);
 
             s_dal!.Task.Create(newStu);
         }
@@ -182,13 +223,11 @@ public static class Initialization
         {
             int _id = i;
 
-            int num = s_rand.Next(0, 20);
+            int _dependentTask = s_rand.Next(0, 20);
 
-            int _dependentTask = s_rand.Next(0, num);
+            int _dependsOnTask = s_rand.Next(0, _dependentTask);
 
-            int _dependsOnTask = s_rand.Next(num, 20);
-
-            Dependency newStu = new(_id, _dependentTask,_dependsOnTask);
+            Dependency newStu = new(_id, _dependentTask, _dependsOnTask);
 
             s_dal!.Dependency.Create(newStu);
         }

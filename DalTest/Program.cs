@@ -60,6 +60,7 @@ namespace DalTest
                         case '0':
                             exit = true;
                             break;
+
                         default:
                             Console.WriteLine("Invalid choice. Please try again.\n");
                             break;
@@ -68,7 +69,6 @@ namespace DalTest
             }
             catch (Exception ex)
             {
-
                 Console.WriteLine(ex);
             }
         }
@@ -398,6 +398,10 @@ namespace DalTest
 
             DateTime createdAtDate = DateTime.Now;
 
+            TimeSpan RequiredEffortTime = new(7, 0, 0);
+
+            DateTime DeadLine = DateTime.Now.AddDays(7);
+
             Console.Write("enter task complexity\n 1=Beginner\n 2=AdvancedBeginner\n 3=Intermidate\n" +
                 "4=Advanced\n 5=Expert\n");
             if (!int.TryParse(Console.ReadLine(), out int num))
@@ -406,6 +410,7 @@ namespace DalTest
             }
 
             DO.EngineerExperience complexity;
+
             if (num == 1)
             {
                 complexity = EngineerExperience.Beginner;
@@ -431,7 +436,8 @@ namespace DalTest
                 complexity = EngineerExperience.Beginner;
             }
 
-            DO.Task item = new DO.Task(id, alias, description, false, createdAtDate, complexity);
+            DO.Task item = new DO.Task(id, alias, description, false, createdAtDate, RequiredEffortTime,
+                DeadLine, complexity);
             return item;
         }
 
