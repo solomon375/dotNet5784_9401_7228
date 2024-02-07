@@ -121,7 +121,7 @@ namespace BlTest
                 {
                     Console.WriteLine("please enter only int type\n");
                 }
-                Console.WriteLine(s_bl.task.Read(id));
+                Console.WriteLine(s_bl.task?.Read(id));
             }
 
             if (typeof(T) == typeof(BO.Engineer))
@@ -141,15 +141,16 @@ namespace BlTest
             {
                 foreach (var item in s_bl.task.ReadAll())
                 {
-                    Console.WriteLine(item);
+                    Console.WriteLine($"task id = {item.Id}, task alias = {item.Alias}, " +
+                        $"task Description = {item.Description}, task status = {item.Status}");
                 }
             }
 
             if (typeof(T) == typeof(BO.Engineer))
             {
-                foreach (var item in s_bl.task.ReadAll())
+                foreach (var item in s_bl.engineer.ReadAll())
                 {
-                    Console.WriteLine(item);
+                    Console.WriteLine(item.Name);
                 }
             }
         }
@@ -284,7 +285,7 @@ namespace BlTest
                     break;
             }
 
-            Console.WriteLine("enter the engineer Scheduled Date");
+            Console.WriteLine("enter the task Scheduled Date");
             if (!DateTime.TryParse(Console.ReadLine(), out DateTime date))
             {
                 Console.WriteLine("please enter only datetime type\n");
@@ -296,7 +297,9 @@ namespace BlTest
 
             task1.StartedDate = null;
 
-            Console.WriteLine("enter the engineer Effort Time");
+            Console.WriteLine("enter the task Effort Time");
+            task1.RequiredEffortTime = new(7, 0, 0);
+            Console.WriteLine("(default time is 7 days)\n");
             if (!TimeSpan.TryParse(Console.ReadLine(), out TimeSpan time))
             {
                 Console.WriteLine("please enter only timespan type\n");
@@ -307,10 +310,10 @@ namespace BlTest
 
             task1.CompletedDate = null;
 
-            Console.WriteLine("enter the engineer Deliverable");
+            Console.WriteLine("enter the task Deliverable");
             task1.Deliverable = Console.ReadLine();
 
-            Console.WriteLine("enter the engineer Remarks");
+            Console.WriteLine("enter the task Remarks");
             task1.Remarks = Console.ReadLine();
 
             task1.Engineer = null;
