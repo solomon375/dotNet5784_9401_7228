@@ -5,7 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace BlApi;
-
+/// <summary>
+/// crud methad for task 
+/// </summary>
 public interface ITask
 {
     public IEnumerable<BO.TaskInList?> ReadAll(Func<DO.Task, bool>? filter = null);

@@ -5,7 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace BlApi;
-
+/// <summary>
+/// crud method for engineer
+/// </summary>
 public interface IEngineer
 {
     public IEnumerable<BO.Engineer?> ReadAll(Func<DO.Engineer, bool>? filter = null);

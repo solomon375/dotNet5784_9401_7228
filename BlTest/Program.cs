@@ -1,13 +1,28 @@
-﻿using DalApi;
+﻿/// <summary>
+/// Test Program for BL (Business Logic) functionality.
+/// </summary>
+/// <remarks>
+/// The program allows manual testing of the main functionalities provided by the BL layer.
+/// The supported entities are Task and Engineer.
+/// </remarks>
+using BO;
+using DalApi;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Timers;
 
 namespace BlTest
 {
+    /// <summary>
+    /// The instance of the BL interface used throughout the program.
+    /// </summary>
     internal class Program
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
-        
+
+        /// <summary>
+        /// The main entry point of the program.
+        /// </summary>
         static void Main()
         {
             Console.WriteLine("Welcome to BL Test Program!");
@@ -22,6 +37,9 @@ namespace BlTest
             MainMenu();
         }
 
+        /// <summary>
+        /// Displays the main menu and handles user input for entity testing.
+        /// </summary>
         static void MainMenu()
         {
             bool exit = false;
@@ -56,6 +74,10 @@ namespace BlTest
 
             } while (!exit);
         }
+        /// <summary>
+        /// Displays the sub-menu for testing operations on a specific entity.
+        /// </summary>
+        /// <typeparam name="T">The type of entity to test.</typeparam>
         static void TestEntity<T>() where T : class
         {
             bool exit = false;
@@ -111,6 +133,10 @@ namespace BlTest
 
             } while (!exit);
         }
+        /// <summary>
+        /// Tests the Read operation for a specified entity.
+        /// </summary>
+        /// <typeparam name="T">The type of entity to test.</typeparam>
         static void TestRead<T>() where T : class
         {
             if (typeof(T) == typeof(BO.Task))
@@ -135,14 +161,17 @@ namespace BlTest
                 Console.WriteLine(s_bl.engineer.Read(id));
             }
         }
+        /// <summary>
+        /// Tests the ReadAll operation for a specified entity.
+        /// </summary>
+        /// <typeparam name="T">The type of entity to test.</typeparam>
         static void TestReadAll<T>() where T : class
         {
             if (typeof(T) == typeof(BO.Task))
             {
                 foreach (var item in s_bl.task.ReadAll())
                 {
-                    Console.WriteLine($"task id = {item.Id}, task alias = {item.Alias}, " +
-                        $"task Description = {item.Description}, task status = {item.Status}");
+                    Console.WriteLine(item);
                 }
             }
 
@@ -150,25 +179,30 @@ namespace BlTest
             {
                 foreach (var item in s_bl.engineer.ReadAll())
                 {
-                    Console.WriteLine(item.Name);
+                    Console.WriteLine(item);
                 }
             }
         }
+        /// <summary>
+        /// Tests the Create operation for a specified entity.
+        /// </summary>
+        /// <typeparam name="T">The type of entity to test.</typeparam>
         static void TestCreate<T>() where T : class
         {
             if (typeof(T) == typeof(BO.Task))
             {
-                BO.Task item = GetTaskItem();
-                Console.WriteLine(s_bl.task?.Create(item));
+                Console.WriteLine(s_bl.task.Create(GetTaskItem()));
             }
 
             if (typeof(T) == typeof(BO.Engineer))
             {
-                BO.Engineer item1 = GetEngineerItem();
-                Console.WriteLine(s_bl.engineer?.Create(item1));
+                Console.WriteLine(s_bl.engineer.Create(GetEngineerItem()));
             }
         }
-
+        /// <summary>
+        /// Tests the update operation for a specified entity.
+        /// </summary>
+        /// <typeparam name="T">The type of entity to test.</typeparam>
         static void TestUpdate<T>() where T : class
         {
             if (typeof(T) == typeof(BO.Task))
@@ -181,8 +215,8 @@ namespace BlTest
                 Console.WriteLine(s_bl.task?.Read(id));
 
                 Console.WriteLine("Enter new values and the same id\n");
-                BO.Task item = GetTaskItem();
-                s_bl.task?.Update(item);
+                //BO.Task item = GetTaskItem();
+                s_bl.task?.Update(GetTaskItem());
             }
 
             if (typeof(T) == typeof(BO.Engineer))
@@ -195,10 +229,14 @@ namespace BlTest
                 Console.WriteLine(s_bl.engineer?.Read(id));
 
                 Console.WriteLine("Enter new values and the same id\n");
-                BO.Engineer item = GetEngineerItem();
-                s_bl.engineer?.Update(item);
+                //BO.Engineer item = GetEngineerItem();
+                s_bl.engineer?.Update(GetEngineerItem());
             }
         }
+        /// <summary>
+        /// Tests the delete operation for a specified entity.
+        /// </summary>
+        /// <typeparam name="T">The type of entity to test.</typeparam>
         static void TestDelete<T>() where T : class
         {
             if (typeof(T) == typeof(BO.Task))
@@ -221,6 +259,10 @@ namespace BlTest
                 s_bl.engineer?.Delete(id);
             }
         }
+        /// <summary>
+        /// Tests the update or add time operation for a specified entity.
+        /// </summary>
+        /// <typeparam name="T">The type of entity to test.</typeparam>
         static void TestUpdataOrAddDate<T>() where T : class
         {
             Console.Write($"\n enter Task id and start date");
@@ -238,7 +280,10 @@ namespace BlTest
             s_bl.task.UpdataOrAddDate(id,date);
         }
 
-
+        /// <summary>
+        /// Gets a new BO.Task item from user input.
+        /// </summary>
+        /// <returns>The created BO.Task item.</returns>
         private static BO.Task GetTaskItem()
         {
             BO.Task task1 = new BO.Task();
@@ -285,12 +330,18 @@ namespace BlTest
                     break;
             }
 
+            task1.Dependencies = new List<TaskInList>();
+
             Console.WriteLine("enter the task Scheduled Date");
             if (!DateTime.TryParse(Console.ReadLine(), out DateTime date))
             {
                 Console.WriteLine("please enter only datetime type\n");
             }
             task1.ScheduledDate = date;
+            if(date ==  DateTime.MinValue)
+            {
+                task1.ScheduledDate = new DateTime(2025, 1, 1);
+            }
 
             if(date <= DateTime.Now) { task1.status = BO.Status.Scheduled; }
             else { task1.status = BO.Status.Unscheduled; }
@@ -298,13 +349,16 @@ namespace BlTest
             task1.StartedDate = null;
 
             Console.WriteLine("enter the task Effort Time");
-            task1.RequiredEffortTime = new(7, 0, 0);
             Console.WriteLine("(default time is 7 days)\n");
             if (!TimeSpan.TryParse(Console.ReadLine(), out TimeSpan time))
             {
                 Console.WriteLine("please enter only timespan type\n");
             }
             task1.RequiredEffortTime = time;
+            if(task1.RequiredEffortTime == (TimeSpan)TimeSpan.Zero)
+            {
+                task1.RequiredEffortTime = new(7, 0, 0);
+            }
 
             task1.DeadLine = null;
 
@@ -318,12 +372,16 @@ namespace BlTest
 
             task1.Engineer = null;
 
-            s_bl.task.Create(task1);
+            //Console.WriteLine(s_bl.task.Create(task1));
 
             return task1;
         }
 
 
+        /// <summary>
+        /// Gets a new BO.Engineer item from user input.
+        /// </summary>
+        /// <returns>The created BO.Engineer item.</returns>
 
         private static BO.Engineer GetEngineerItem()
         {
@@ -344,6 +402,13 @@ namespace BlTest
 
             Console.Write($"\n enter engineer cost");
 
+            Console.WriteLine("enter the engineer level");
+            Console.WriteLine("Beginner cost between 0-400");
+            Console.WriteLine("AdvancedBeginner cost between 400-500");
+            Console.WriteLine("Intermidate cost between 500-600");
+            Console.WriteLine("Advanced cost between 600-700");
+            Console.WriteLine("Expert cost between 700-800");
+
             if (!int.TryParse(Console.ReadLine(), out int cost))
             {
                 Console.WriteLine("please enter only int type\n");
@@ -355,45 +420,34 @@ namespace BlTest
 
             engineer1.Email = Console.ReadLine();
 
-            Console.WriteLine("enter the engineer level");
-            Console.WriteLine("1. Beginner");
-            Console.WriteLine("2. AdvancedBeginner");
-            Console.WriteLine("3. Intermidate");
-            Console.WriteLine("4. Advanced");
-            Console.WriteLine("5. Expert");
-
-            string? choice = Console.ReadLine();
-
-            switch (choice)
+            if (cost <= 400)
             {
-                case "1":
-                    engineer1.Level = DO.EngineerExperience.Beginner;
-                    break;
-
-                case "2":
-                    engineer1.Level = DO.EngineerExperience.AdvancedBeginner;
-                    break;
-
-                case "3":
-                    engineer1.Level = DO.EngineerExperience.Intermidate;
-                    break;
-
-                case "4":
-                    engineer1.Level = DO.EngineerExperience.Advanced;
-                    break;
-
-                case "5":
-                    engineer1.Level = DO.EngineerExperience.Expert;
-                    break;
-
-                default:
-                    engineer1.Level = DO.EngineerExperience.Beginner;
-                    break;
+                engineer1.Level = DO.EngineerExperience.Beginner;
+            }
+            else if (cost <= 500 && cost > 400)
+            {
+                engineer1.Level = DO.EngineerExperience.AdvancedBeginner;
+            }
+            else if (cost <= 600 && cost > 500)
+            {
+                engineer1.Level = DO.EngineerExperience.Intermidate;
+            }
+            else if (cost <= 700 && cost > 600)
+            {
+                engineer1.Level = DO.EngineerExperience.Advanced;
+            }
+            else if (cost <= 800 && cost > 700)
+            {
+                engineer1.Level = DO.EngineerExperience.Expert;
+            }
+            else
+            {
+                engineer1.Level = DO.EngineerExperience.Beginner;
             }
 
             engineer1.Task = null;
 
-            s_bl.engineer.Create(engineer1);
+            //Console.WriteLine(s_bl.engineer.Create(engineer1));
 
             return engineer1;
         }

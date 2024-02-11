@@ -20,7 +20,7 @@
 /// <param name="Complexity">Complexity of task and needed minimum expiriense of engineer</param>
 public class Task
 {
-    public int Id { get; init; }
+    public int Id { get; set; }
     public string? Alias { get; set; }
     public string? Describtion { get; set; }
     public BO.Status status { get; set; }
@@ -36,4 +36,6 @@ public class Task
     public string? Deliverable { get; set; }
     public string? Remarks { get; set; }
     public BO.EngineerInTask? Engineer { get; set; }
+
+    public override string ToString() => this.ToStringProperty();
 }
