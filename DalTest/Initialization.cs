@@ -77,6 +77,8 @@ public static class Initialization
 
             DateTime _CreatedAtDate = DateTime.Now;
 
+            DateTime _ScheduledDate = DateTime.Now;
+
             TimeSpan _RequiredEffortTime = TimeSpan.Zero;
 
             DateTime _DeadLine = DateTime.Now;
@@ -85,71 +87,85 @@ public static class Initialization
 
             DO.EngineerExperience _Complexity;
 
+            DO.Status _status = DO.Status.Scheduled;
+
             if (i < 9 && i >= 1)
             {
                 _Complexity = EngineerExperience.Beginner;
 
-                _CreatedAtDate = new DateTime(2025, 5, 1);
+                //_CreatedAtDate = new DateTime(2025, 4, 1);
 
-                _DeadLine = new DateTime(2025, 5, 29);
+                _ScheduledDate = DateTime.Now.AddMonths(1);
 
-                _RequiredEffortTime = new(7, 0, 0);
+                _DeadLine = DateTime.Now.AddMonths(2);
+
+                _RequiredEffortTime = new(7, 0, 0, 0);
             }
             else if (i < 15 && i >= 9)
             {
                 _Complexity = EngineerExperience.AdvancedBeginner;
 
-                _CreatedAtDate = new DateTime(2025, 6, 1);
+                //_CreatedAtDate = new DateTime(2025, 4, 1);
 
-                _DeadLine = new DateTime(2025, 6, 29);
+                _ScheduledDate = DateTime.Now.AddMonths(2);
 
-                _RequiredEffortTime = new(7, 0, 0);
+                _DeadLine = DateTime.Now.AddMonths(3);
+
+                _RequiredEffortTime = new(7, 0, 0,0);
             }
             else if (i < 19 && i >= 15)
             {
                 _Complexity = EngineerExperience.Intermidate;
 
-                _CreatedAtDate = new DateTime(2025, 7, 1);
+                //_CreatedAtDate = new DateTime(2025, 4, 1);
 
-                _DeadLine = new DateTime(2025, 7, 29);
+                _ScheduledDate = DateTime.Now.AddMonths(3);
 
-                _RequiredEffortTime = new(10, 0, 0);
+                _DeadLine = DateTime.Now.AddMonths(4);
+
+                _RequiredEffortTime = new(10, 0, 0, 0);
             }
             else if (i < 20 && i >= 19)
             {
                 _Complexity = EngineerExperience.Advanced;
 
-                _CreatedAtDate = new DateTime(2025, 8, 1);
+                //_CreatedAtDate = new DateTime(2025, 4, 1);
 
-                _DeadLine = new DateTime(2025, 8, 29);
+                _ScheduledDate = DateTime.Now.AddMonths(4);
 
-                _RequiredEffortTime = new(15, 0, 0);
+                _DeadLine = DateTime.Now.AddMonths(5);
+
+                _RequiredEffortTime = new(15, 0, 0,0);
             }
             else if (i <= 20)
             {
                 _Complexity = EngineerExperience.Expert;
 
-                _CreatedAtDate = new DateTime(2025, 9, 1);
+                //_CreatedAtDate = new DateTime(2025, 4, 1);
 
-                _DeadLine = new DateTime(2025, 9, 29);
+                _ScheduledDate = DateTime.Now.AddMonths(5);
 
-                _RequiredEffortTime = new(25, 0, 0);
+                _DeadLine = DateTime.Now.AddMonths(6);
+
+                _RequiredEffortTime = new(25, 0, 0, 0);
             }
             else
             {
                 _Complexity = EngineerExperience.Beginner;
 
-                _CreatedAtDate = new DateTime(2025, 5, 1);
+                //_CreatedAtDate = new DateTime(2025, 4, 1);
 
-                _DeadLine = new DateTime(2025, 5, 29);
+                _ScheduledDate = DateTime.Now.AddMonths(1);
 
-                _RequiredEffortTime = new(7, 0, 0);
+                _DeadLine = DateTime.Now.AddMonths(2);
+
+                _RequiredEffortTime = new(7, 0, 0,0);
             }
 
             daycounter--;
 
             Task newStu = new(_id, _Alias, _Describtion, _IsMilestone, _CreatedAtDate, _RequiredEffortTime,
-                _DeadLine ,_Complexity);
+                _DeadLine ,_Complexity, _status);
 
             s_dal!.Task.Create(newStu);
         }
@@ -219,7 +235,45 @@ public static class Initialization
     /// </summary>
     private static void createDependency()
     {
-        for (int i = 0; i < 40; i++)
+        //create good dependency list
+        int counter = 9;
+        
+        int _id = 0, _dependentTask,_dependsOnTask;
+
+        while (counter>=9&&counter<15) { for (int j = 0; j<4; j++) { 
+            if(j==0){_dependentTask=counter; _dependsOnTask=s_rand.Next(0, 2); }
+            else if(j==1){_dependentTask=counter; _dependsOnTask=s_rand.Next(2, 4); }
+            else if(j==2){_dependentTask=counter; _dependsOnTask=s_rand.Next(4, 6); }
+            else if(j==3){_dependentTask=counter; _dependsOnTask=s_rand.Next(6, 8); }
+            else { _dependentTask=counter; _dependsOnTask=s_rand.Next(6, 8); }
+            Dependency newStu = new(_id, _dependentTask, _dependsOnTask);
+            s_dal!.Dependency.Create(newStu);_id++;} counter++;}
+
+        while (counter>=15&&counter<19) { for (int j = 0; j<3; j++) { 
+            if(j==0){_dependentTask=counter; _dependsOnTask=s_rand.Next(8, 10); }
+            else if(j==1){_dependentTask=counter; _dependsOnTask=s_rand.Next(10, 12); }
+            else if(j==2){_dependentTask=counter; _dependsOnTask=s_rand.Next(12, 14); }
+            else { _dependentTask=counter; _dependsOnTask=s_rand.Next(8, 14); }
+            Dependency newStu = new(_id, _dependentTask, _dependsOnTask);
+            s_dal!.Dependency.Create(newStu);_id++;} counter++;}
+
+        if (counter == 19) { for (int j = 0; j<3; j++) { 
+            _dependentTask=counter; _dependsOnTask=s_rand.Next(14, 19); 
+            if(j==0){_dependentTask=counter; _dependsOnTask=s_rand.Next(14, 16); }
+            else if(j==1){_dependentTask=counter; _dependsOnTask=s_rand.Next(16, 17); }
+            else if(j==2){_dependentTask=counter; _dependsOnTask=s_rand.Next(17, 18); }
+            else { _dependentTask=counter; _dependsOnTask=s_rand.Next(14, 18); }
+            Dependency newStu = new(_id, _dependentTask, _dependsOnTask);
+            s_dal!.Dependency.Create(newStu);_id++;} counter++;}
+
+        if (counter == 20) { _dependentTask=counter; _dependsOnTask=19; 
+        Dependency newStu = new(_id, _dependentTask, _dependsOnTask);
+            s_dal!.Dependency.Create(newStu);_id++;counter++;}
+
+        
+        
+
+        /*for (int i = 0; i < 41; i++)
         {
             int _id = i;
 
@@ -230,7 +284,7 @@ public static class Initialization
             Dependency newStu = new(_id, _dependentTask, _dependsOnTask);
 
             s_dal!.Dependency.Create(newStu);
-        }
+        }*/
     }
 
     /// <summary>

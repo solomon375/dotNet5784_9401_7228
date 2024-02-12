@@ -216,7 +216,15 @@ namespace BlTest
 
                 Console.WriteLine("Enter new values and the same id\n");
                 //BO.Task item = GetTaskItem();
-                s_bl.task?.Update(GetTaskItem());
+                BO.Task t = s_bl.task.Read(id);
+                BO.Task t1 = GetTaskItem();
+                if (t1.status == Status.Done)
+                {
+                    t1.StartedDate = t.StartedDate;
+                    t1.DeadLine=t.DeadLine;
+                    t1.CompletedDate=DateTime.Now;
+                }
+                s_bl.task?.Update(t1);
             }
 
             if (typeof(T) == typeof(BO.Engineer))
@@ -296,7 +304,7 @@ namespace BlTest
 
             task1.CreatedAtDate = DateTime.Now;
 
-            Console.WriteLine("enter the engineer level");
+            Console.WriteLine("enter the task level");
             Console.WriteLine("1. Beginner");
             Console.WriteLine("2. AdvancedBeginner");
             Console.WriteLine("3. Intermidate");
@@ -332,32 +340,59 @@ namespace BlTest
 
             task1.Dependencies = new List<TaskInList>();
 
-            Console.WriteLine("enter the task Scheduled Date");
-            if (!DateTime.TryParse(Console.ReadLine(), out DateTime date))
-            {
-                Console.WriteLine("please enter only datetime type\n");
-            }
-            task1.ScheduledDate = date;
-            if(date ==  DateTime.MinValue)
-            {
-                task1.ScheduledDate = new DateTime(2025, 1, 1);
-            }
-
-            if(date <= DateTime.Now) { task1.status = BO.Status.Scheduled; }
-            else { task1.status = BO.Status.Unscheduled; }
-
             task1.StartedDate = null;
 
-            Console.WriteLine("enter the task Effort Time");
+            Console.WriteLine("enter the task Scheduled Date");
+            task1 = entertaskScheduledDate(task1);
+
+            if (task1.ScheduledDate <= DateTime.Now) { task1.status = BO.Status.Scheduled; }
+            else { task1.status = BO.Status.Unscheduled; }
+
+            Console.WriteLine("enter the task status only when update\n when create press enter");
+            Console.WriteLine("(default status is unscheduled)\n");
+            Console.WriteLine("1. Unscheduled");
+            Console.WriteLine("2. Scheduled");
+            Console.WriteLine("3. OnTrack");
+            Console.WriteLine("4. InJeopardy");
+            Console.WriteLine("5. Done");
+            string? choice1 = Console.ReadLine();
+            switch (choice1)
+            {
+                case "1":
+                    task1.status = BO.Status.Unscheduled;
+                    break;
+
+                case "2":
+                    task1.status = BO.Status.Scheduled;
+                    break;
+
+                case "3":
+                    task1.status = BO.Status.OnTrack;
+                    break;
+
+                case "4":
+                    task1.status = BO.Status.InJeopardy;
+                    break;
+
+                case "5":
+                    task1.status = BO.Status.Done;
+                    break;
+
+                default:
+                    task1.status = BO.Status.Unscheduled;
+                    break;
+            }
+
+            Console.WriteLine("enter the task Effort Time(in days)");
             Console.WriteLine("(default time is 7 days)\n");
-            if (!TimeSpan.TryParse(Console.ReadLine(), out TimeSpan time))
+            if (!int.TryParse(Console.ReadLine(), out int days))
             {
                 Console.WriteLine("please enter only timespan type\n");
             }
-            task1.RequiredEffortTime = time;
+            task1.RequiredEffortTime = new TimeSpan(days,0,0,0);
             if(task1.RequiredEffortTime == (TimeSpan)TimeSpan.Zero)
             {
-                task1.RequiredEffortTime = new(7, 0, 0);
+                task1.RequiredEffortTime = new(7, 0, 0,0);
             }
 
             task1.DeadLine = null;
@@ -377,6 +412,43 @@ namespace BlTest
             return task1;
         }
 
+        private static BO.Task entertaskScheduledDate(BO.Task task)
+        {
+            if (!DateTime.TryParse(Console.ReadLine(), out DateTime date))
+            {
+                Console.WriteLine("please enter only datetime type\n");
+            }
+            if (date ==  DateTime.MinValue)
+            {
+                if (task.Complexity == EngineerExperience.Beginner)
+                {
+                    task.ScheduledDate = DateTime.Now.AddMonths(1);
+                    Console.WriteLine($"(task Scheduled Date {task.ScheduledDate})\n");
+                }
+                else if (task.Complexity == EngineerExperience.AdvancedBeginner)
+                {
+                    task.ScheduledDate = DateTime.Now.AddMonths(2);
+                    Console.WriteLine($"(task Scheduled Date {task.ScheduledDate})\n");
+                }
+                else if (task.Complexity == EngineerExperience.Intermidate)
+                {
+                    task.ScheduledDate = DateTime.Now.AddMonths(3);
+                    Console.WriteLine($"(task Scheduled Date {task.ScheduledDate})\n");
+                }
+                else if (task.Complexity == EngineerExperience.Advanced)
+                {
+                    task.ScheduledDate = DateTime.Now.AddMonths(4);
+                    Console.WriteLine($"(task Scheduled Date {task.ScheduledDate})\n");
+                }
+                else if (task.Complexity == EngineerExperience.Expert)
+                {
+                    task.ScheduledDate = DateTime.Now.AddMonths(5);
+                    Console.WriteLine($"(task Scheduled Date {task.ScheduledDate})\n");
+                }
+            }
+            else { task.ScheduledDate = date; }
+            return task;
+        }
 
         /// <summary>
         /// Gets a new BO.Engineer item from user input.

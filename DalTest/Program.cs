@@ -504,7 +504,7 @@ namespace DalTest
         /// <returns>A new Dependency object with user-entered details.</returns>
         static DO.Dependency GetDependencyItem()
         {
-            Console.Write("Enter task id\n");
+            Console.Write("Enter Dependency id\n");
             if (!int.TryParse(Console.ReadLine(), out int id))
             {
                 Console.WriteLine("please enter only int type\n");

@@ -6,7 +6,9 @@
 /// </remarks>
 using BlApi;
 using BO;
+using DO;
 using System.ComponentModel.DataAnnotations;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BlImplementation;
 internal class TaskImplementation : ITask
@@ -21,7 +23,7 @@ internal class TaskImplementation : ITask
     {
         DO.Task doTask = new DO.Task(item.Id, item.Alias, item.Describtion, item.IsMilestone,
             item.CreatedAtDate, item.RequiredEffortTime, item.DeadLine,
-            (DO.EngineerExperience?)item.Complexity, item.ScheduledDate, item.StartedDate,
+            (DO.EngineerExperience?)item.Complexity,(DO.Status?)item.status ,item.ScheduledDate, item.StartedDate,
             item.CompletedDate, item.Deliverable, item.Remarks, null);
 
         if (doTask.Alias =="")
@@ -29,7 +31,18 @@ internal class TaskImplementation : ITask
             throw new BO.BlInvalidException("INVALID ALIAS");
         }
 
-        if (item.Id <=20 || item.Id == 0)
+        
+        int it;
+        try
+        {
+            it = _dal.Task.Create(doTask);
+        }
+        catch (DO.DalAlreadyExistException ex)
+        {
+            throw new BO.BlAlreadyExistException($"task with ID={item.Id} already exists", ex);
+        }
+
+        /*if (item.Id <=20 || item.Id == 0)
         {
             foreach (var d in _dal.Dependency.ReadAll())
             {
@@ -43,8 +56,9 @@ internal class TaskImplementation : ITask
                             Id = t.Id,
                             Alias = t.Alias,
                             Description = t.Describtion,
-                            Status = Status.Scheduled
+                            Status = BO.Status.Scheduled
                         });
+
                     }
                     else
                     {
@@ -53,88 +67,113 @@ internal class TaskImplementation : ITask
 
                 }
             }
-        }
-        else
+        }*/
+        //else
         {
-            if (item.Complexity == EngineerExperience.Beginner)
+            foreach (var t in _dal.Task.ReadAll())
+            {
+                if ((BO.EngineerExperience?)t.Complexity == item.Complexity-1 && t.Id != it)
+                {
+                    item.Dependencies.Add(new TaskInList
+                    {
+                        Id = t.Id,
+                        Alias = t.Alias,
+                        Description = t.Describtion,
+                        Status = BO.Status.Scheduled
+                    });
+                    Dependency nd = new Dependency(0, it, t.Id);
+                    _dal!.Dependency.Create(nd);
+                }
+            }
+            /*if (item.Complexity == BO.EngineerExperience.Beginner)
             {
                 item.Dependencies = null;
             }
 
-            else if (item.Complexity == EngineerExperience.AdvancedBeginner)
+            else if (item.Complexity == BO.EngineerExperience.AdvancedBeginner && item.Dependencies.Count == 0)
             {
                 foreach (var t in _dal.Task.ReadAll())
                 {
-                    if (t.Complexity == DO.EngineerExperience.Beginner && t.Id != item.Id)
+                    if (t.Complexity == DO.EngineerExperience.Beginner && t.Id != it)
                     {
                         item.Dependencies.Add(new TaskInList
                         {
                             Id = t.Id,
                             Alias = t.Alias,
                             Description = t.Describtion,
-                            Status = Status.Scheduled
+                            Status = BO.Status.Scheduled
                         });
+                        Dependency nd = new Dependency(0,it, t.Id);
+                        _dal!.Dependency.Create(nd);
                     }
                 }
             }
-            else if (item.Complexity == EngineerExperience.Intermidate)
+            else if (item.Complexity == BO.EngineerExperience.Intermidate && item.Dependencies.Count == 0)
             {
                 foreach (var t in _dal.Task.ReadAll())
                 {
-                    if (t.Complexity == DO.EngineerExperience.AdvancedBeginner)
+                    if (t.Complexity == DO.EngineerExperience.AdvancedBeginner && t.Id != it)
                     {
                         item.Dependencies.Add(new TaskInList
                         {
                             Id = t.Id,
                             Alias = t.Alias,
                             Description = t.Describtion,
-                            Status = Status.Scheduled
+                            Status = BO.Status.Scheduled
                         });
+                        Dependency nd = new Dependency(0,it, t.Id);
+                        _dal!.Dependency.Create(nd);
                     }
                 }
             }
-            else if (item.Complexity == EngineerExperience.Advanced)
+            else if (item.Complexity == BO.EngineerExperience.Advanced && item.Dependencies.Count == 0)
             {
                 foreach (var t in _dal.Task.ReadAll())
                 {
-                    if (t.Complexity == DO.EngineerExperience.Intermidate)
+                    if (t.Complexity == DO.EngineerExperience.Intermidate && t.Id != it)
                     {
                         item.Dependencies.Add(new TaskInList
                         {
                             Id = t.Id,
                             Alias = t.Alias,
                             Description = t.Describtion,
-                            Status = Status.Scheduled
+                            Status = BO.Status.Scheduled
                         });
+                        Dependency nd = new Dependency(0,it, t.Id);
+                        _dal!.Dependency.Create(nd);
                     }
                 }
             }
-            else if (item.Complexity == EngineerExperience.Expert)
+            else if (item.Complexity == BO.EngineerExperience.Expert && item.Dependencies.Count == 0)
             {
                 foreach (var t in _dal.Task.ReadAll())
                 {
-                    if (t.Complexity == DO.EngineerExperience.Advanced)
+                    if (t.Complexity == DO.EngineerExperience.Advanced && t.Id != it)
                     {
                         item.Dependencies.Add(new TaskInList
                         {
                             Id = t.Id,
                             Alias = t.Alias,
                             Description = t.Describtion,
-                            Status = Status.Scheduled
+                            Status = BO.Status.Scheduled
                         });
+                        Dependency nd = new Dependency(0,it, t.Id);
+                        _dal!.Dependency.Create(nd);
                     }
                 }
+            }*/
+        }
+
+        foreach (var i in item.Dependencies)
+        {
+            if (item.ScheduledDate < _dal.Task.Read(i.Id).ScheduledDate)
+            {
+                throw new BO.BlStartDataOfDependsOnTaskException($"The task with the ID={item.Id} schedule date is after the entered date" +
+                    $" and this task depends on it");
             }
         }
 
-        try
-        {
-            return _dal.Task.Create(doTask);
-        }
-        catch (DO.DalAlreadyExistException ex)
-        {
-            throw new BO.BlAlreadyExistException($"task with ID={item.Id} already exists", ex);
-        }
+        return it;
     }
 
     /// <summary>
@@ -178,7 +217,7 @@ internal class TaskImplementation : ITask
 
         List<TaskInList> d = new List<TaskInList>();
 
-        if (item.Id <=20 || item.Id == 0)
+        //if (item.Id <=20 || item.Id == 0)
         {
             foreach (var de in _dal.Dependency.ReadAll())
             {
@@ -192,19 +231,19 @@ internal class TaskImplementation : ITask
                             Id = t.Id,
                             Alias = t.Alias,
                             Description = t.Describtion,
-                            Status = Status.Scheduled
+                            Status = BO.Status.Scheduled
                         });
                     }
-                    else
+                    /*else
                     {
                         d = null;
-                    }
+                    }*/
 
                 }
             }
         }
-
-        else
+        //
+        /*else
         {
             if (item.Complexity == DO.EngineerExperience.Beginner)
             {
@@ -222,8 +261,10 @@ internal class TaskImplementation : ITask
                             Id = t.Id,
                             Alias = t.Alias,
                             Description = t.Describtion,
-                            Status = Status.Scheduled
+                            Status = BO.Status.Scheduled
                         });
+                        Dependency nd = new Dependency(0, item.Id, t.Id);
+                        _dal!.Dependency.Create(nd);
                     }
                 }
             }
@@ -238,8 +279,10 @@ internal class TaskImplementation : ITask
                             Id = t.Id,
                             Alias = t.Alias,
                             Description = t.Describtion,
-                            Status = Status.Scheduled
+                            Status = BO.Status.Scheduled
                         });
+                        Dependency nd = new Dependency(0, item.Id, t.Id);
+                        _dal!.Dependency.Create(nd);
                     }
                 }
             }
@@ -254,8 +297,10 @@ internal class TaskImplementation : ITask
                             Id = t.Id,
                             Alias = t.Alias,
                             Description = t.Describtion,
-                            Status = Status.Scheduled
+                            Status = BO.Status.Scheduled
                         });
+                        Dependency nd = new Dependency(0, item.Id, t.Id);
+                        _dal!.Dependency.Create(nd);
                     }
                 }
             }
@@ -270,12 +315,15 @@ internal class TaskImplementation : ITask
                             Id = t.Id,
                             Alias = t.Alias,
                             Description = t.Describtion,
-                            Status = Status.Scheduled
+                            Status = BO.Status.Scheduled
                         });
+                        Dependency nd = new Dependency(0, item.Id, t.Id);
+                        _dal!.Dependency.Create(nd);
                     }
                 }
             }
-        }
+            //
+        }*/
 
         var result = (from t in _dal.Task.ReadAll()
                       join e in _dal.Engineer.ReadAll() on t.EngineerID equals e.Id
@@ -285,11 +333,11 @@ internal class TaskImplementation : ITask
                           Id = t.Id,
                           Alias = t.Alias,
                           Describtion = t.Describtion,
-                          status = Status.Scheduled,
+                          status = (BO.Status)t.status,
                           Dependencies = d,
                           IsMilestone = false,
                           CreatedAtDate = t.CreatedAtDate,
-                          Complexity = (EngineerExperience?)t.Complexity,
+                          Complexity = (BO.EngineerExperience?)t.Complexity,
                           ScheduledDate = t.ScheduledDate,
                           StartedDate = t.StartedDate,
                           RequiredEffortTime = t.RequiredEffortTime,
@@ -311,11 +359,11 @@ internal class TaskImplementation : ITask
                 Id = item.Id,
                 Alias = item.Alias,
                 Describtion = item.Describtion,
-                status = Status.Scheduled,
+                status = (BO.Status)item.status,
                 Dependencies = d,
                 IsMilestone = false,
                 CreatedAtDate = item.CreatedAtDate,
-                Complexity = (EngineerExperience?)item.Complexity,
+                Complexity = (BO.EngineerExperience?)item.Complexity,
                 ScheduledDate = item.ScheduledDate,
                 StartedDate = item.StartedDate,
                 RequiredEffortTime = item.RequiredEffortTime,
@@ -346,7 +394,7 @@ internal class TaskImplementation : ITask
                        Id = item.Id,
                        Description = item.Describtion,
                        Alias = item.Alias,
-                       Status = Status.Scheduled
+                       Status = (BO.Status)item.status
                    };
         }
         return from DO.Task item in _dal.Task.ReadAll()
@@ -355,7 +403,7 @@ internal class TaskImplementation : ITask
                    Id = item.Id,
                    Description = item.Describtion,
                    Alias = item.Alias,
-                   Status = Status.Scheduled
+                   Status = (BO.Status)item.status
                };
     }
 
@@ -372,9 +420,40 @@ internal class TaskImplementation : ITask
         }
         item.Id = id;
 
+        DO.EngineerExperience? c = _dal.Task.Read(item.Id).Complexity;
+
+        if((BO.EngineerExperience?)c != item.Complexity) 
+        {
+            List<Dependency> dependencies = new List<Dependency>();
+            foreach(var d in _dal.Dependency.ReadAll())
+            {
+                if(d.DependentTask == item.Id)
+                {
+                    dependencies.Add(d);
+                }
+            }
+            foreach(var d in dependencies) { _dal.Dependency.Delete(d.Id); }
+
+            foreach (var t in _dal.Task.ReadAll())
+            {
+                if ((BO.EngineerExperience?)t.Complexity == item.Complexity-1 && t.Id != item.Id)
+                {
+                    item.Dependencies.Add(new TaskInList
+                    {
+                        Id = t.Id,
+                        Alias = t.Alias,
+                        Description = t.Describtion,
+                        Status = BO.Status.Scheduled
+                    });
+                    Dependency nd = new Dependency(0, item.Id, t.Id);
+                    _dal!.Dependency.Create(nd);
+                }
+            }
+        }
+
         DO.Task doTask = new DO.Task(item.Id, item.Alias, item.Describtion, item.IsMilestone,
             item.CreatedAtDate, item.RequiredEffortTime, item.DeadLine,
-            (DO.EngineerExperience?)item.Complexity, item.ScheduledDate, item.StartedDate,
+            (DO.EngineerExperience?)item.Complexity,(DO.Status?)item.status ,item.ScheduledDate, item.StartedDate,
             item.CompletedDate, item.Deliverable, item.Remarks, null);
 
         if (doTask.Alias =="")

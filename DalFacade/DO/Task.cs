@@ -26,6 +26,7 @@ public record Task
     TimeSpan? RequiredEffortTime = null,
     DateTime? DeadLine = null,
     DO.EngineerExperience? Complexity = null,
+    DO.Status? status = null,
     DateTime? ScheduledDate = null,
     DateTime? StartedDate = null,
     DateTime? CompletedDate = null,

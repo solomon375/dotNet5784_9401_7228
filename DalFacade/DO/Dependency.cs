@@ -12,5 +12,5 @@ public record Dependency
     int? DependsOnTask = null
 )
 {
-    public Dependency() : this(0) { }      //ctor for lvl 3
+    public Dependency(int Id, int? DependentTask) : this(0) { }      //ctor for lvl 3
 }

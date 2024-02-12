@@ -210,7 +210,7 @@ internal class EngineerImplementation : IEngineer
         try
         {
             
-            Console.WriteLine("do you wont to take a mission?(y/n)");
+            Console.WriteLine("do you want to take a mission?(y/n)");
             string ans = Console.ReadLine();
             if (ans == "y")
             {
@@ -218,7 +218,9 @@ internal class EngineerImplementation : IEngineer
                 {
                     foreach (var t in _dal.Task.ReadAll())
                     {
-                        if (item.Level == t.Complexity && t.EngineerID == null)
+                        if (item.Level == t.Complexity && t.EngineerID == null
+                            &&(/*t.status == DO.Status.Unscheduled||*/t.status == DO.Status.Scheduled)
+                            )
                         { Console.WriteLine(t.Id); Console.WriteLine(t.Describtion); Console.WriteLine(t.Complexity); }
                     }
                 }
@@ -226,7 +228,9 @@ internal class EngineerImplementation : IEngineer
                 {
                     foreach (var t in _dal.Task.ReadAll())
                     {
-                        if (item.Level >= t.Complexity && t.EngineerID == null)
+                        if (item.Level >= t.Complexity && t.EngineerID == null
+                            &&(/*t.status == DO.Status.Unscheduled||*/t.status == DO.Status.Scheduled)
+                            )
                         { Console.WriteLine(t.Id); Console.WriteLine(t.Describtion); Console.WriteLine(t.Complexity); }
                     }
                 }
@@ -234,7 +238,9 @@ internal class EngineerImplementation : IEngineer
                 {
                     foreach (var t in _dal.Task.ReadAll())
                     {
-                        if (item.Level >= t.Complexity && t.EngineerID == null)
+                        if (item.Level >= t.Complexity && t.EngineerID == null
+                            &&(/*t.status == DO.Status.Unscheduled||*/t.status == DO.Status.Scheduled)
+                            )
                         { Console.WriteLine(t.Id); Console.WriteLine(t.Describtion); Console.WriteLine(t.Complexity); }
                     }
                 }
@@ -242,7 +248,9 @@ internal class EngineerImplementation : IEngineer
                 {
                     foreach (var t in _dal.Task.ReadAll())
                     {
-                        if (item.Level >= t.Complexity && t.EngineerID == null)
+                        if (item.Level >= t.Complexity && t.EngineerID == null
+                            &&(/*t.status == DO.Status.Unscheduled ||*/ t.status == DO.Status.Scheduled)
+                            )
                         { Console.WriteLine(t.Id); Console.WriteLine(t.Describtion); Console.WriteLine(t.Complexity); }
                     }
                 }
@@ -250,7 +258,9 @@ internal class EngineerImplementation : IEngineer
                 {
                     foreach (var t in _dal.Task.ReadAll())
                     {
-                        if (item.Level >= t.Complexity && t.EngineerID == null)
+                        if (item.Level >= t.Complexity && t.EngineerID == null
+                            &&(/*t.status == DO.Status.Unscheduled ||*/ t.status == DO.Status.Scheduled)
+                            )
                         { Console.WriteLine(t.Id); Console.WriteLine(t.Describtion); Console.WriteLine(t.Complexity); }
                     }
                 }
@@ -265,14 +275,15 @@ internal class EngineerImplementation : IEngineer
                 int c = id;
                 item.Task = new TaskInEngineer();
                 item.Task.Id = c;
-
-                
                 item.Task.Alias = _dal.Task.Read(c).Alias;
+
+
                 var ta = _dal.Task.Read(c) with
                 {
                     EngineerID = item.Id,
                     StartedDate = DateTime.Now,
-                    DeadLine = DateTime.Now + _dal.Task.Read(c).RequiredEffortTime
+                    DeadLine = DateTime.Now + _dal.Task.Read(c).RequiredEffortTime,
+                    status = DO.Status.OnTrack
                 };
 
                 _dal.Task.Update(ta);
