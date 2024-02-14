@@ -414,6 +414,8 @@ namespace BlTest
 
         private static BO.Task entertaskScheduledDate(BO.Task task)
         {
+            DateTime startProgect = DateTime.Now;
+
             if (!DateTime.TryParse(Console.ReadLine(), out DateTime date))
             {
                 Console.WriteLine("please enter only datetime type\n");
@@ -422,27 +424,27 @@ namespace BlTest
             {
                 if (task.Complexity == EngineerExperience.Beginner)
                 {
-                    task.ScheduledDate = DateTime.Now.AddMonths(1);
+                    task.ScheduledDate = startProgect.AddMonths(1);
                     Console.WriteLine($"(task Scheduled Date {task.ScheduledDate})\n");
                 }
                 else if (task.Complexity == EngineerExperience.AdvancedBeginner)
                 {
-                    task.ScheduledDate = DateTime.Now.AddMonths(2);
+                    task.ScheduledDate = startProgect.AddMonths(2);
                     Console.WriteLine($"(task Scheduled Date {task.ScheduledDate})\n");
                 }
                 else if (task.Complexity == EngineerExperience.Intermidate)
                 {
-                    task.ScheduledDate = DateTime.Now.AddMonths(3);
+                    task.ScheduledDate = startProgect.AddMonths(3);
                     Console.WriteLine($"(task Scheduled Date {task.ScheduledDate})\n");
                 }
                 else if (task.Complexity == EngineerExperience.Advanced)
                 {
-                    task.ScheduledDate = DateTime.Now.AddMonths(4);
+                    task.ScheduledDate = startProgect.AddMonths(4);
                     Console.WriteLine($"(task Scheduled Date {task.ScheduledDate})\n");
                 }
                 else if (task.Complexity == EngineerExperience.Expert)
                 {
-                    task.ScheduledDate = DateTime.Now.AddMonths(5);
+                    task.ScheduledDate = startProgect.AddMonths(5);
                     Console.WriteLine($"(task Scheduled Date {task.ScheduledDate})\n");
                 }
             }

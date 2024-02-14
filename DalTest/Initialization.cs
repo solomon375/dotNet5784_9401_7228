@@ -20,7 +20,7 @@ public static class Initialization
     /// </summary>
     private static void createTask()
     {
-
+        DateTime startProgect = DateTime.Now;
         string[] TaskAlias =
     {//Beginner:
         "A1","A2","A3","A4","A5","A6","A7","A8",
@@ -75,13 +75,13 @@ public static class Initialization
 
             bool _IsMilestone = false;
 
-            DateTime _CreatedAtDate = DateTime.Now;
+            DateTime _CreatedAtDate = startProgect;
 
-            DateTime _ScheduledDate = DateTime.Now;
+            DateTime _ScheduledDate = startProgect;
 
             TimeSpan _RequiredEffortTime = TimeSpan.Zero;
 
-            DateTime _DeadLine = DateTime.Now;
+            DateTime _DeadLine = startProgect;
 
             //DateTime _CreatedAtDate = currentTime.AddDays((-daycounter)*2);//before datetime.now
 
@@ -95,9 +95,9 @@ public static class Initialization
 
                 //_CreatedAtDate = new DateTime(2025, 4, 1);
 
-                _ScheduledDate = DateTime.Now.AddMonths(1);
+                _ScheduledDate = startProgect.AddMonths(1);
 
-                _DeadLine = DateTime.Now.AddMonths(2);
+                _DeadLine = startProgect.AddMonths(2);
 
                 _RequiredEffortTime = new(7, 0, 0, 0);
             }
@@ -107,9 +107,9 @@ public static class Initialization
 
                 //_CreatedAtDate = new DateTime(2025, 4, 1);
 
-                _ScheduledDate = DateTime.Now.AddMonths(2);
+                _ScheduledDate = startProgect.AddMonths(2);
 
-                _DeadLine = DateTime.Now.AddMonths(3);
+                _DeadLine = startProgect.AddMonths(3);
 
                 _RequiredEffortTime = new(7, 0, 0,0);
             }
@@ -119,9 +119,9 @@ public static class Initialization
 
                 //_CreatedAtDate = new DateTime(2025, 4, 1);
 
-                _ScheduledDate = DateTime.Now.AddMonths(3);
+                _ScheduledDate = startProgect.AddMonths(3);
 
-                _DeadLine = DateTime.Now.AddMonths(4);
+                _DeadLine = startProgect.AddMonths(4);
 
                 _RequiredEffortTime = new(10, 0, 0, 0);
             }
@@ -131,9 +131,9 @@ public static class Initialization
 
                 //_CreatedAtDate = new DateTime(2025, 4, 1);
 
-                _ScheduledDate = DateTime.Now.AddMonths(4);
+                _ScheduledDate = startProgect.AddMonths(4);
 
-                _DeadLine = DateTime.Now.AddMonths(5);
+                _DeadLine = startProgect.AddMonths(5);
 
                 _RequiredEffortTime = new(15, 0, 0,0);
             }
@@ -143,9 +143,9 @@ public static class Initialization
 
                 //_CreatedAtDate = new DateTime(2025, 4, 1);
 
-                _ScheduledDate = DateTime.Now.AddMonths(5);
+                _ScheduledDate = startProgect.AddMonths(5);
 
-                _DeadLine = DateTime.Now.AddMonths(6);
+                _DeadLine = startProgect.AddMonths(6);
 
                 _RequiredEffortTime = new(25, 0, 0, 0);
             }
@@ -155,9 +155,9 @@ public static class Initialization
 
                 //_CreatedAtDate = new DateTime(2025, 4, 1);
 
-                _ScheduledDate = DateTime.Now.AddMonths(1);
+                _ScheduledDate = startProgect.AddMonths(1);
 
-                _DeadLine = DateTime.Now.AddMonths(2);
+                _DeadLine = startProgect.AddMonths(2);
 
                 _RequiredEffortTime = new(7, 0, 0,0);
             }
