@@ -12,4 +12,5 @@ internal class Bl : IBl
     public ITask task => new TaskImplementation();
 
     public IEngineer engineer => new EngineerImplementation();
+    public void InitializeDB() => DalTest.Initialization.Do();
 }
