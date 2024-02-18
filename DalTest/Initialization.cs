@@ -300,6 +300,46 @@ public static class Initialization
         createDependency();
 
     }
+    public static void Reset() //stage 4
+    {
+
+        //s_dal = dal ?? throw new NullReferenceException("DAL object can not be null!"); //stage 2
+        s_dal = DalApi.Factory.Get; //stage 4
+
+        List<int> dTaskIds = new List<int>();
+        foreach(var i in s_dal.Task.ReadAll())
+        {
+            dTaskIds.Add(i.Id);
+        }
+        foreach (var i in dTaskIds)
+        {
+            s_dal.Task.Delete(i);
+        }
+
+        List<int> dEngineerIds = new List<int>();
+        foreach (var i in s_dal.Engineer.ReadAll())
+        {
+            dEngineerIds.Add(i.Id);
+        }
+        foreach (var i in dEngineerIds)
+        {
+            s_dal.Engineer.Delete(i);
+        }
+
+        List<int> dDependencyIds = new List<int>();
+        foreach (var i in s_dal.Dependency.ReadAll())
+        {
+            dDependencyIds.Add(i.Id);
+        }
+        foreach (var i in dDependencyIds)
+        {
+            s_dal.Dependency.Delete(i);
+        }
+
+        /*createTask();
+        createEngineer();
+        createDependency();*/
+    }
 }
 
 

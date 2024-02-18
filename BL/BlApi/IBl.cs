@@ -9,4 +9,6 @@ public interface IBl
 {
     public ITask task { get; }
     public IEngineer engineer { get; }
+    public void InitializeDB();
+    public void ResetDB();
 }

@@ -13,5 +13,8 @@
         <!--button for Initialization-->
         <Button Content="Initialization" HorizontalAlignment="Left" Margin="326,171,0,0" VerticalAlignment="Top" Height="85" Width="164"
                 Click="btnInitialization_Click"/>
+        <!--button for Reset-->
+        <Button Content="Reset" HorizontalAlignment="Left" Margin="600,171,0,0" VerticalAlignment="Top" Height="85" Width="164"
+                Click="btnReset_Click"/>
     </Grid>
 </Window>
