@@ -19,9 +19,20 @@ namespace PL.Engineer
     /// </summary>
     public partial class EngineerListWindow : Window
     {
+        static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
         public EngineerListWindow()
         {
             InitializeComponent();
+            engineerList = s_bl?.engineer.ReadAll()!;
         }
+
+        public IEnumerable<BO.Engineer> engineerList
+        {
+            get { return (IEnumerable<BO.Engineer>)GetValue(EngineerListProperty); }
+            set { SetValue(EngineerListProperty, value); }
+        }
+
+        public static readonly DependencyProperty EngineerListProperty =
+            DependencyProperty.Register("engineerList", typeof(IEnumerable<BO.Engineer>), typeof(EngineerListWindow), new PropertyMetadata(null));
     }
 }

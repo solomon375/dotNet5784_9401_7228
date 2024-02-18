@@ -43,11 +43,11 @@ namespace PL
             if (result == MessageBoxResult.Yes)
             {
                 _bl.ResetDB();
-                /*MessageBoxResult result1 = MessageBox.Show("Do you want to Initialize?", "Massege", MessageBoxButton.YesNo, MessageBoxImage.Information);
+                MessageBoxResult result1 = MessageBox.Show("Do you want to Initialize?", "Massege", MessageBoxButton.YesNo, MessageBoxImage.Information);
                 if (result1 == MessageBoxResult.Yes)
                 {
                     _bl.InitializeDB();
-                }*/
+                }
             }
         }
         
