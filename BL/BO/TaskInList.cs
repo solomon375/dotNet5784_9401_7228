@@ -13,5 +13,5 @@ public class TaskInList
     public string? Alias { get; init; }
     public BO.Status? Status { get; init; }
 
-    public override string ToString() => this.ToStringProperty();
+    public override string ToString() => this.StringProperty();
 }

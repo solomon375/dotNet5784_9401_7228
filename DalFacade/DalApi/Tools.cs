@@ -15,7 +15,7 @@ public static class Tools
                                      select property.PropertyType.IsAssignableTo(typeof(IEnumerable<>)) ?
                                     $"{property.Name}:  {string.Join(Environment.NewLine, value)}" : $"{property.Name}: {property.GetValue(item)}");*/
     
-    public static string ToStringProperty<T>(this T obj)
+    public static string StringProperty<T>(this T obj)
     {
 
          Type type = typeof(T);
