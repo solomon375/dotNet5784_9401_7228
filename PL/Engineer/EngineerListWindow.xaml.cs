@@ -1,5 +1,8 @@
-﻿using System;
+﻿using BO;
+using MaterialDesignThemes.Wpf;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,7 +26,35 @@ namespace PL.Engineer
         public EngineerListWindow()
         {
             InitializeComponent();
+
             engineerList = s_bl?.engineer.ReadAll()!;
+        }
+
+        private void btnAdd_Click(object sender, RoutedEventArgs e)
+        {
+            EngineerWindow engineerWindow = new EngineerWindow(0);
+            engineerWindow.ShowDialog();
+
+            if(engineerWindow.DialogResult == true)
+            {
+                InitializeComponent();
+                UpdateEngineerList();
+            }
+        }
+
+        private void lv_MouseButtonEventArgs(object sender, MouseButtonEventArgs e)
+        {
+            BO.Engineer? engineer = (sender as ListView)?.SelectedItem as BO.Engineer;
+            int id = engineer.Id;
+
+            EngineerWindow engineerWindow = new EngineerWindow(id);
+            engineerWindow.ShowDialog();
+
+            if (engineerWindow.DialogResult == true)
+            {
+                InitializeComponent();
+                UpdateEngineerList();
+            }
         }
 
         public IEnumerable<BO.Engineer> engineerList
@@ -34,5 +65,20 @@ namespace PL.Engineer
 
         public static readonly DependencyProperty EngineerListProperty =
             DependencyProperty.Register("engineerList", typeof(IEnumerable<BO.Engineer>), typeof(EngineerListWindow), new PropertyMetadata(null));
+
+
+        public BO.EngineerExperience? experience { get; set; } = BO.EngineerExperience.None;
+
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            UpdateEngineerList();
+        }
+
+        private void UpdateEngineerList()
+        {
+            engineerList = (experience == BO.EngineerExperience.None)?
+                s_bl?.engineer.ReadAll()! : s_bl?.engineer.ReadAll(item => (BO.EngineerExperience?)item.level == experience)!;
+        }
     }
 }

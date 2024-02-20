@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:PL.Engineer"
         mc:Ignorable="d"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
-        Title="EngineerListWindow" Height="640" Width="800">
+        Title="EngineerListWindow" Height="640" Width="500">
     <!--Extrnal Grid-->
     <Grid>
         <Grid.RowDefinitions>
@@ -21,12 +21,16 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <!--select:-->
-            <Label Content="Label" HorizontalAlignment="Left" Margin="40,0,0,0" VerticalAlignment="Center" Grid.Column="0"/>
+            <Label Content="select:" HorizontalAlignment="Left" Margin="40,0,0,0" VerticalAlignment="Center" Grid.Column="0"/>
             <!--select combo box-->
-            <ComboBox ItemsSource="{Binding Source={StaticResource EngineerCollectionKey}}"
+            <ComboBox SelectedValue="{Binding Path=experience, Mode=TwoWay}"
+                ItemsSource="{Binding Source={StaticResource EngineerCollectionKey}}"
+                SelectionChanged="ComboBox_SelectionChanged"
                 HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1"/>
         </Grid>
-        <ListView Margin="5" Grid.Row="1" ItemsSource="{Binding Path=engineerList}">
+        <!--listView-->
+        <ListView Margin="5" Grid.Row="1" ItemsSource="{Binding Path=engineerList}"
+                  MouseDoubleClick="lv_MouseButtonEventArgs" >
             <ListView.View>
                 <GridView>
                     <GridViewColumn/>
@@ -34,7 +38,8 @@
             </ListView.View>
         </ListView>
         <!--add button-->
-        <Button Content="Add" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100"/>
+        <Button Content="Add" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100"
+                Click="btnAdd_Click"/>
     </Grid>
 
 </Window>

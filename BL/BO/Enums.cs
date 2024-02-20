@@ -15,5 +15,6 @@ public enum EngineerExperience
     AdvancedBeginner = 2,
     Intermidate = 3,
     Advanced = 4,
-    Expert = 5
+    Expert = 5,
+    None = 6
 }

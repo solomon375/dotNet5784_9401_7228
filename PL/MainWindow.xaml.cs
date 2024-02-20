@@ -22,23 +22,28 @@ namespace PL
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = this;
         }
+
         private void btnEngineers_Click(object sender, RoutedEventArgs e)
         { 
             new EngineerListWindow().Show(); 
         }
+
         private void btnInitialization_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show("Do you want to Initialize?", "Massege", MessageBoxButton.YesNo, MessageBoxImage.Information);
+            MessageBoxResult result = MessageBox.Show("Do you want to Initialize?", "Massege", MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
             if(result == MessageBoxResult.Yes)
             {
                 _bl.InitializeDB();
+                MessageBox.Show("Database initialized successfully!", "Initialize Database", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
+
         private void btnReset_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show("Do you want to Reset?", "Massege", MessageBoxButton.YesNo, MessageBoxImage.Information);
+            MessageBoxResult result = MessageBox.Show("Do you want to Reset?", "Massege", MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
             if (result == MessageBoxResult.Yes)
             {

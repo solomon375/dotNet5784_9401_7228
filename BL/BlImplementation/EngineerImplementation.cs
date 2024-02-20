@@ -18,6 +18,32 @@ internal class EngineerImplementation : IEngineer
     /// <returns>The ID of the newly created Engineer.</returns>
     public int Create(BO.Engineer item)
     {
+
+        if (item.Cost <= 400)
+        {
+            item.Level = DO.EngineerExperience.Beginner;
+        }
+        else if (item.Cost <= 500 && item.Cost > 400)
+        {
+            item.Level = DO.EngineerExperience.AdvancedBeginner;
+        }
+        else if (item.Cost <= 600 && item.Cost > 500)
+        {
+            item.Level = DO.EngineerExperience.Intermidate;
+        }
+        else if (item.Cost <= 700 && item.Cost > 600)
+        {
+            item.Level = DO.EngineerExperience.Advanced;
+        }
+        else if (item.Cost <= 800 && item.Cost > 700)
+        {
+            item.Level = DO.EngineerExperience.Expert;
+        }
+        else
+        {
+            item.Level = null;
+        }
+
         DO.Engineer doEngineer = new DO.Engineer(item.Id, item.Email, item.Cost, item.Name,
             (DO.EngineerExperience?)item.Level);
 
@@ -184,6 +210,30 @@ internal class EngineerImplementation : IEngineer
     /// <param name="item">The Engineer object with updated information.</param>
     public void Update(BO.Engineer item)
     {
+        if (item.Cost <= 400)
+        {
+            item.Level = DO.EngineerExperience.Beginner;
+        }
+        else if (item.Cost <= 500 && item.Cost > 400)
+        {
+            item.Level = DO.EngineerExperience.AdvancedBeginner;
+        }
+        else if (item.Cost <= 600 && item.Cost > 500)
+        {
+            item.Level = DO.EngineerExperience.Intermidate;
+        }
+        else if (item.Cost <= 700 && item.Cost > 600)
+        {
+            item.Level = DO.EngineerExperience.Advanced;
+        }
+        else if (item.Cost <= 800 && item.Cost > 700)
+        {
+            item.Level = DO.EngineerExperience.Expert;
+        }
+        else
+        {
+            item.Level = null;
+        }
         DO.Engineer doEngineer = new DO.Engineer(item.Id, item.Email, item.Cost, item.Name,
             (DO.EngineerExperience?)item.Level);
 
