@@ -35,11 +35,7 @@ namespace PL.Engineer
             EngineerWindow engineerWindow = new EngineerWindow(0);
             engineerWindow.ShowDialog();
 
-            if(engineerWindow.DialogResult == true)
-            {
-                InitializeComponent();
-                UpdateEngineerList();
-            }
+            Close();
         }
 
         private void lv_MouseButtonEventArgs(object sender, MouseButtonEventArgs e)
@@ -50,11 +46,7 @@ namespace PL.Engineer
             EngineerWindow engineerWindow = new EngineerWindow(id);
             engineerWindow.ShowDialog();
 
-            if (engineerWindow.DialogResult == true)
-            {
-                InitializeComponent();
-                UpdateEngineerList();
-            }
+            Close();
         }
 
         public IEnumerable<BO.Engineer> engineerList

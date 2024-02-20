@@ -72,6 +72,8 @@ namespace PL.Engineer
                 }
 
                 Close();
+
+                new EngineerListWindow().Show();
             }
             catch (Exception ex)
             {

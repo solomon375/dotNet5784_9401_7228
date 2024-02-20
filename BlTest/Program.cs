@@ -494,7 +494,7 @@ namespace BlTest
 
             engineer1.Email = Console.ReadLine();
 
-            if (cost <= 400)
+            /*if (cost <= 400)
             {
                 engineer1.Level = DO.EngineerExperience.Beginner;
             }
@@ -519,7 +519,7 @@ namespace BlTest
                 engineer1.Level = DO.EngineerExperience.Beginner;
             }
 
-            engineer1.Task = null;
+            engineer1.Task = null;*/
 
             //Console.WriteLine(s_bl.engineer.Create(engineer1));
 
