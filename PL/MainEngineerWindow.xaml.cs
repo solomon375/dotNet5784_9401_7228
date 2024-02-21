@@ -1,6 +1,4 @@
-﻿using BlApi;
-using PL.Engineer;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,23 +15,13 @@ using System.Windows.Shapes;
 namespace PL
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for MainEngineerWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainEngineerWindow : Window
     {
-        public MainWindow()
+        public MainEngineerWindow()
         {
             InitializeComponent();
-        }
-
-        private void btnManager_click(object sender, RoutedEventArgs e)
-        {
-            new ManagerWindow().Show();
-        }
-
-        private void bteEngineer_click(object sender, RoutedEventArgs e)
-        {
-            new MainEngineerWindow().Show();
         }
     }
 }

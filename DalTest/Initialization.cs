@@ -59,7 +59,7 @@ public static class Initialization
     //Advanced
         "Add autonomous navigation.",
     //Expert
-        "Create a custom robot with advanced features according to user requirements."
+        "Create a custom robot with advanced features\n according to user requirements."
     };
 
         int daycounter = 20;

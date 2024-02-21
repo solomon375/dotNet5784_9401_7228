@@ -304,6 +304,8 @@ namespace BlTest
 
             task1.CreatedAtDate = DateTime.Now;
 
+            task1.Complexity = BO.EngineerExperience.Beginner;
+
             Console.WriteLine("enter the task level");
             Console.WriteLine("1. Beginner");
             Console.WriteLine("2. AdvancedBeginner");

@@ -20,22 +20,22 @@
 /// <param name="Complexity">Complexity of task and needed minimum expiriense of engineer</param>
 public class Task
 {
-    public int Id { get; set; }
-    public string? Alias { get; set; }
-    public string? Describtion { get; set; }
-    public BO.Status status { get; set; }
-    public List<BO.TaskInList>? Dependencies { get; set; }
-    public bool? IsMilestone { get; set; }
-    public DateTime? CreatedAtDate { get; set; }
-    public BO.EngineerExperience? Complexity { get; set; }
-    public DateTime? ScheduledDate { get; set; }
-    public DateTime? StartedDate { get; set; }
-    public TimeSpan? RequiredEffortTime { get; set; }
-    public DateTime? DeadLine { get; set; }
-    public DateTime? CompletedDate { get; set; }
-    public string? Deliverable { get; set; }
-    public string? Remarks { get; set; }
-    public BO.EngineerInTask? Engineer { get; set; }
+    public int Id { get; set; }//--
+    public string? Alias { get; set; }//הוספה עדכון
+    public string? Describtion { get; set; }//הוספה עדכון
+    public BO.Status status { get; set; }//עדכון
+    public List<BO.TaskInList>? Dependencies { get; set; }//--
+    public bool? IsMilestone { get; set; }//--
+    public DateTime? CreatedAtDate { get; set; }//--
+    public BO.EngineerExperience? Complexity { get; set; }//הוספה ועדכון
+    public DateTime? ScheduledDate { get; set; }//הוספה ועדכון
+    public DateTime? StartedDate { get; set; }//--
+    public TimeSpan? RequiredEffortTime { get; set; }//הוספה עדכון
+    public DateTime? DeadLine { get; set; }//--
+    public DateTime? CompletedDate { get; set; }//
+    public string? Deliverable { get; set; }//הוספה ועדכון
+    public string? Remarks { get; set; }//עדכון והוספה
+    public BO.EngineerInTask? Engineer { get; set; }//
 
     public override string ToString() => this.StringProperty();
 }

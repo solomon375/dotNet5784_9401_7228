@@ -6,15 +6,16 @@ public enum Status
     Scheduled,
     OnTrack,
     InJeopardy,
-    Done
+    Done,
+    None
 }
 
 public enum EngineerExperience
 {
-    Beginner = 1,
-    AdvancedBeginner = 2,
-    Intermidate = 3,
-    Advanced = 4,
-    Expert = 5,
-    None = 6
+    Beginner,
+    AdvancedBeginner,
+    Intermidate,
+    Advanced,
+    Expert,
+    None
 }

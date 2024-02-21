@@ -383,28 +383,62 @@ internal class TaskImplementation : ITask
     /// </summary>
     /// <param name="filter">An optional filter to apply to the list of tasks.</param>
     /// <returns>The list of TaskInList objects representing the tasks.</returns>
-    public IEnumerable<TaskInList?> ReadAll(Func<DO.Task, bool>? filter = null)
+    public IEnumerable</*BO.TaskInList?*/BO.Task> ReadAll(Func<DO.Task, bool>? filter = null)
     {
         if (filter != null)
         {
             return from DO.Task item in _dal.Task.ReadAll()
                    where filter(item)
-                   select new BO.TaskInList
+                   select new BO.Task
+                   {
+                       Id=item.Id,
+                       Alias = item.Alias,
+                       Describtion = item.Describtion,
+                       status = (BO.Status)item.status,
+                       ScheduledDate=item.ScheduledDate,
+                       StartedDate = item?.StartedDate,
+                       RequiredEffortTime=item.RequiredEffortTime,
+                       CompletedDate = item.CompletedDate,
+                       Complexity=(BO.EngineerExperience)item.Complexity,
+                       CreatedAtDate=item.CreatedAtDate,
+                       DeadLine = item.DeadLine,
+                       Deliverable=item.Deliverable,
+                       Remarks=item.Remarks,
+                       Engineer = null
+                   };
+                   /*select new BO.TaskInList
                    {
                        Id = item.Id,
                        Description = item.Describtion,
                        Alias = item.Alias,
                        Status = (BO.Status)item.status
-                   };
+                   };*/
         }
         return from DO.Task item in _dal.Task.ReadAll()
-               select new BO.TaskInList
+               select new BO.Task
                {
-                   Id = item.Id,
-                   Description = item.Describtion,
+                   Id=item.Id,
                    Alias = item.Alias,
-                   Status = (BO.Status)item.status
+                   Describtion = item.Describtion,
+                   status = (BO.Status)item.status,
+                   ScheduledDate=item.ScheduledDate,
+                   StartedDate = item?.StartedDate,
+                   RequiredEffortTime=item.RequiredEffortTime,
+                   CompletedDate = item.CompletedDate,
+                   Complexity=(BO.EngineerExperience)item.Complexity,
+                   CreatedAtDate=item.CreatedAtDate,
+                   DeadLine = item.DeadLine,
+                   Deliverable=item.Deliverable,
+                   Remarks=item.Remarks,
+                   Engineer = null
                };
+        /*select new BO.TaskInList
+        {
+            Id = item.Id,
+            Description = item.Describtion,
+            Alias = item.Alias,
+            Status = (BO.Status)item.status
+        };*/
     }
 
     /// <summary>
@@ -420,7 +454,7 @@ internal class TaskImplementation : ITask
         }
         item.Id = id;
 
-        DO.EngineerExperience? c = _dal.Task.Read(item.Id).Complexity;
+        BO.EngineerExperience? c = (BO.EngineerExperience)_dal.Task.Read(item.Id).Complexity;
 
         if((BO.EngineerExperience?)c != item.Complexity) 
         {
