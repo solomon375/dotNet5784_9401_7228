@@ -21,6 +21,9 @@ internal class TaskImplementation : ITask
     /// <returns>The ID of the newly created Task.</returns>
     public int Create(BO.Task item)
     {
+        if(item.Complexity == null) { item.Complexity = BO.EngineerExperience.Beginner; }
+        if(item.status == null) { item.status = BO.Status.Unscheduled; }
+
         DO.Task doTask = new DO.Task(item.Id, item.Alias, item.Describtion, item.IsMilestone,
             item.CreatedAtDate, item.RequiredEffortTime, item.DeadLine,
             (DO.EngineerExperience?)item.Complexity,(DO.Status?)item.status ,item.ScheduledDate, item.StartedDate,
@@ -163,13 +166,15 @@ internal class TaskImplementation : ITask
                 }
             }*/
         }
-
-        foreach (var i in item.Dependencies)
+        if (item.Dependencies != null)
         {
-            if (item.ScheduledDate < _dal.Task.Read(i.Id).ScheduledDate)
+            foreach (var i in item.Dependencies)
             {
-                throw new BO.BlStartDataOfDependsOnTaskException($"The task with the ID={item.Id} schedule date is after the entered date" +
-                    $" and this task depends on it");
+                if (item.ScheduledDate < _dal.Task.Read(i.Id).ScheduledDate)
+                {
+                    throw new BO.BlStartDataOfDependsOnTaskException($"The task with the ID={item.Id} schedule date is after the entered date" +
+                        $" and this task depends on it");
+                }
             }
         }
 
@@ -452,7 +457,7 @@ internal class TaskImplementation : ITask
         {
             Console.WriteLine("please enter only datetime type\n");
         }
-        item.Id = id;
+        //item.Id = id;
 
         BO.EngineerExperience? c = (BO.EngineerExperience)_dal.Task.Read(item.Id).Complexity;
 

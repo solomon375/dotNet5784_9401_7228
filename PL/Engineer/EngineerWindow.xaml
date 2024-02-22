@@ -67,9 +67,8 @@
             </Grid.ColumnDefinitions>
             <Label Content="Level:" HorizontalAlignment="Right" Margin="10,0,0,0" VerticalAlignment="Center" Grid.Column="0"/>
             <ComboBox Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,0" Width="120"
-                      ItemsSource="{Binding Source={StaticResource EngineerCollectionKey}}"
-                      SelectedValue="{Binding Level, Mode=TwoWay}"
-                      IsEnabled="False"/>
+                      ItemsSource="{Binding Source={StaticResource ComplexityCollectionKey}}"
+                      SelectedValue="{Binding Level, Mode=TwoWay}" IsEnabled="False"/>
         </Grid>
         <!--Internal, sixth line Grid-->
         <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="6" VerticalAlignment="Stretch" Width="auto">

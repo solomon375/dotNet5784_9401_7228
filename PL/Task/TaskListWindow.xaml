@@ -37,11 +37,12 @@
                     <GridViewColumn Header="Task Alias" DisplayMemberBinding="{Binding Alias}"/>
                     <GridViewColumn Header="Task Description" DisplayMemberBinding="{Binding Describtion}"/>
                     <GridViewColumn Header="Task Status" DisplayMemberBinding="{Binding status}"/>
+                    <GridViewColumn Header="Task Complexity" DisplayMemberBinding="{Binding Complexity}"/>
                 </GridView>
             </ListView.View>
         </ListView>
         <!--add button-->
-        <Button Content="Add" Grid.Row="1" HorizontalAlignment="Center" Height="50" Width="100"
-                Click="btnAdd_click" Margin="0,531,0,0" Grid.RowSpan="2" VerticalAlignment="Top"/>
+        <Button Content="Add" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100"
+                Click="btnAdd_click" Margin="0,5,0,0" VerticalAlignment="Bottom"/>
     </Grid>
 </Window>

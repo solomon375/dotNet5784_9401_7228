@@ -19,7 +19,7 @@
                 <RowDefinition Height="10*"/>
                 <RowDefinition Height="10*"/>
                 <RowDefinition Height="10*"/>
-                <RowDefinition Height="30*"/>
+                <RowDefinition Height="10*"/>
                 <RowDefinition Height="10*"/>
                 <RowDefinition Height="10*"/>
                 <RowDefinition Height="10*"/>
@@ -47,7 +47,7 @@
                 </Grid.ColumnDefinitions>
                 <Label Content="Alias:" HorizontalAlignment="Right" Margin="10,0,0,0" VerticalAlignment="Center" Grid.Column="0"/>
                 <TextBox Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,0" TextWrapping="Wrap" VerticalAlignment="Center" Width="120"
-                     Text="{Binding Alias, Mode=TwoWay}"/>
+                     Text="{Binding Alias, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
             <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="3" VerticalAlignment="Stretch" Width="auto">
                 <Grid.ColumnDefinitions>
@@ -56,7 +56,7 @@
                 </Grid.ColumnDefinitions>
                 <Label Content="Describtion:" HorizontalAlignment="Right" Margin="10,0,0,0" VerticalAlignment="Center" Grid.Column="0"/>
                 <TextBox Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,0" TextWrapping="Wrap" VerticalAlignment="Center" Width="120"
-                    Text="{Binding Describtion, Mode=TwoWay}"/>
+                    Text="{Binding Describtion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
             <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="4" VerticalAlignment="Stretch" Width="auto">
                 <Grid.ColumnDefinitions>
@@ -66,8 +66,8 @@
                 <Label Content="Status:" HorizontalAlignment="Right" Margin="10,0,0,0" VerticalAlignment="Center" Grid.Column="0"/>
                 <ComboBox Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,0" Width="120"
                 ItemsSource="{Binding Source={StaticResource TaskCollectionKey}}"
-                SelectedValue="{Binding status, Mode=TwoWay}"
-                IsEnabled="{Binding Id,Mode=OneTime,Converter={StaticResource ConvertIdToContentKey}}"/>
+                SelectedValue="{Binding status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                IsEnabled="{Binding Id,Converter={StaticResource ConvertIdToBoolKey}}"/>
             </Grid>
             <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="5" VerticalAlignment="Stretch" Width="auto">
                 <Grid.ColumnDefinitions>
@@ -76,8 +76,9 @@
                 </Grid.ColumnDefinitions>
                 <Label Content="Complexity:" HorizontalAlignment="Right" Margin="10,0,0,0" VerticalAlignment="Center" Grid.Column="0"/>
                 <ComboBox Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,0" Width="120"
-                ItemsSource="{Binding Source={StaticResource ComplexityCollectionKey}}"
-                SelectedValue="{Binding Complexity, Mode=TwoWay}"/>
+                ItemsSource="{Binding Source={StaticResource EngineerCollectionKey}}"
+                SelectedValue="{Binding Complexity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                SelectedItem="{Binding Complexity,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
             <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="6" VerticalAlignment="Stretch" Width="auto">
                 <Grid.ColumnDefinitions>
@@ -86,7 +87,8 @@
                 </Grid.ColumnDefinitions>
                 <Label Content="CreatedAtDate:" HorizontalAlignment="Right" Margin="10,0,0,0" VerticalAlignment="Center" Grid.Column="0"/>
                 <DatePicker Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,0" IsEnabled="False"/>
-                <TextBlock Grid.Column="1" Text="{Binding ElementName=datePicker, Path=SelectedDate}" Margin="35,5,5,5"/>
+                <TextBox Grid.Column="1" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"
+                     Text="{Binding CreatedAtDate, Mode=TwoWay}" IsEnabled="False"/>
             </Grid>
             <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="7" VerticalAlignment="Stretch" Width="auto">
                 <Grid.ColumnDefinitions>
@@ -94,8 +96,8 @@
                     <ColumnDefinition Width="200"/>
                 </Grid.ColumnDefinitions>
                 <Label Content="ScheduledDate:" HorizontalAlignment="Right" Margin="10,0,0,0" VerticalAlignment="Center" Grid.Column="0"/>
-                <DatePicker Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,0" SelectedDate="{Binding ScheduledDate}"/>
-                <TextBlock Grid.Column="1" Text="{Binding ElementName=datePicker, Path=SelectedDate}" Margin="35,5,5,5"/>
+                <DatePicker Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,0" 
+                            SelectedDate="{Binding ScheduledDate, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
             <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="8" VerticalAlignment="Stretch" Width="auto">
                 <Grid.ColumnDefinitions>
@@ -104,7 +106,8 @@
                 </Grid.ColumnDefinitions>
                 <Label Content="StartedDate:" HorizontalAlignment="Right" Margin="10,0,0,0" VerticalAlignment="Center" Grid.Column="0"/>
                 <DatePicker Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,0" IsEnabled="False"/>
-                <TextBlock Grid.Column="1" Text="{Binding ElementName=datePicker, Path=SelectedDate}" Margin="35,5,5,5"/>
+                <TextBox Grid.Column="1" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"
+                    Text="{Binding StartedDate, Mode=TwoWay}" IsEnabled="False"/>
             </Grid>
             <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="9" VerticalAlignment="Stretch" Width="auto">
                 <Grid.ColumnDefinitions>
@@ -113,7 +116,7 @@
                 </Grid.ColumnDefinitions>
                 <Label Content="RequiredEffortTime:" HorizontalAlignment="Right" Margin="10,0,0,0" VerticalAlignment="Center" Grid.Column="0" FontSize="8"/>
                 <TextBox Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,0" TextWrapping="Wrap" VerticalAlignment="Center" Width="120"
-                Text="{Binding RequiredEffortTime, Mode=TwoWay}"/>
+                Text="{Binding RequiredEffortTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
             <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="10" VerticalAlignment="Stretch" Width="auto">
                 <Grid.ColumnDefinitions>
@@ -122,7 +125,8 @@
                 </Grid.ColumnDefinitions>
                 <Label Content="DeadLine:" HorizontalAlignment="Right" Margin="10,0,0,0" VerticalAlignment="Center" Grid.Column="0"/>
                 <DatePicker Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,0" IsEnabled="False"/>
-                <TextBlock Grid.Column="1" Text="{Binding ElementName=datePicker, Path=SelectedDate}" Margin="35,5,5,5"/>
+                <TextBox Grid.Column="1" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"
+                    Text="{Binding DeadLine, Mode=TwoWay}" IsEnabled="False"/>
             </Grid>
             <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="11" VerticalAlignment="Stretch" Width="auto">
                 <Grid.ColumnDefinitions>
@@ -131,7 +135,8 @@
                 </Grid.ColumnDefinitions>
                 <Label Content="CompletedDate:" HorizontalAlignment="Right" Margin="0,0,0,0" VerticalAlignment="Center" Grid.Column="0"/>
                 <DatePicker Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,0" IsEnabled="False"/>
-                <TextBlock Grid.Column="1" Text="{Binding ElementName=datePicker, Path=SelectedDate}" Margin="35,5,5,5"/>
+                <TextBox Grid.Column="1" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"
+                    Text="{Binding CompletedDate, Mode=TwoWay}" IsEnabled="False"/>
             </Grid>
             <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="12" VerticalAlignment="Stretch" Width="auto">
                 <Grid.ColumnDefinitions>
@@ -140,7 +145,7 @@
                 </Grid.ColumnDefinitions>
                 <Label Content="Deliverable:" HorizontalAlignment="Right" Margin="10,0,0,0" VerticalAlignment="Center" Grid.Column="0"/>
                 <TextBox Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,0" TextWrapping="Wrap" VerticalAlignment="Center" Width="120"
-                Text="{Binding Deliverable, Mode=TwoWay}"/>
+                Text="{Binding Deliverable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
             <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="13" VerticalAlignment="Stretch" Width="auto">
                 <Grid.ColumnDefinitions>
@@ -149,7 +154,7 @@
                 </Grid.ColumnDefinitions>
                 <Label Content="Remarks:" HorizontalAlignment="Right" Margin="10,0,0,0" VerticalAlignment="Center" Grid.Column="0"/>
                 <TextBox Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,0" TextWrapping="Wrap" VerticalAlignment="Center" Width="120"
-                Text="{Binding Deliverable, Mode=TwoWay}"/>
+                Text="{Binding Deliverable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
             <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="14" VerticalAlignment="Stretch" Width="auto">
                 <Grid.ColumnDefinitions>
@@ -158,11 +163,11 @@
                 </Grid.ColumnDefinitions>
                 <Label Content="Engineer:" HorizontalAlignment="Right" Margin="10,0,0,0" VerticalAlignment="Center" Grid.Column="0"/>
                 <Label Grid.Column="1" Content="name:" HorizontalAlignment="Left" Margin="5,5,0,0" VerticalAlignment="Top" Height="20" FontSize="10"/>
-                <TextBox Grid.Column="1" HorizontalAlignment="Right" Margin="0,5,35,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"
-                     Height="20" FontSize="10"/>
+                <TextBox Grid.Column="1" HorizontalAlignment="Right" Margin="0,5,35,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"
+                     Height="20" FontSize="10" IsEnabled="False" Text="{Binding Engineer.Name,Mode=TwoWay}"/>
                 <Label Grid.Column="1" Content="id:" HorizontalAlignment="Left" Margin="5,20,0,0" VerticalAlignment="Top" Height="20" FontSize="10"/>
-                <TextBox Grid.Column="1" HorizontalAlignment="Right" Margin="0,20,35,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"
-                     Height="20" FontSize="10"/>
+                <TextBox Grid.Column="1" HorizontalAlignment="Right" Margin="0,20,35,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"
+                     Height="20" FontSize="10" IsEnabled="False" Text="{Binding Engineer.Id, Mode=TwoWay}"/>
             </Grid>
             <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="15" VerticalAlignment="Stretch" Width="auto">
                 <Button Grid.Column="1" Content="{Binding Id,Mode=OneTime,Converter={StaticResource ConvertIdToContentKey}}"

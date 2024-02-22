@@ -1,4 +1,5 @@
-﻿using PL.Engineer;
+﻿using BO;
+using PL.Engineer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,16 @@ namespace PL.Task
         public static int ID = 0;
 
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+
+        public BO.Task CurrentTask
+        {
+            get { return (BO.Task)GetValue(CurrentTaskProperty); }
+            set { SetValue(CurrentTaskProperty, value); }
+        }
+
+        public static readonly DependencyProperty CurrentTaskProperty =
+            DependencyProperty.Register("CurrentTask", typeof(BO.Task), typeof(TaskWindow), new PropertyMetadata(null));
+
         public TaskWindow(int Id = 0)
         {
             InitializeComponent();
@@ -47,38 +58,32 @@ namespace PL.Task
             }
         }
 
-        public BO.Task CurrentTask
-        {
-            get { return (BO.Task)GetValue(CurrentTaskProperty); }
-            set { SetValue(CurrentTaskProperty, value); }
-        }
-
-        public static readonly DependencyProperty CurrentTaskProperty =
-            DependencyProperty.Register("CurrentTask", typeof(BO.Task), typeof(TaskWindow), new PropertyMetadata(null));
-
         private void btnAddUpdate_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 if (ID == 0)
                 {
+                    CurrentTask.Dependencies = new List<TaskInList>();
                     s_bl.task.Create(CurrentTask);
                     MessageBox.Show("Engineer added successfully!");
                 }
                 else
                 {
+                    CurrentTask.Id = ID;
                     s_bl.task.Update(CurrentTask);
                     MessageBox.Show("Engineer updated successfully!");
                 }
 
                 Close();
 
-                new EngineerListWindow().Show();
+                new TaskListWindow().Show();
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error: {ex.Message}");
             }
         }
+
     }
 }

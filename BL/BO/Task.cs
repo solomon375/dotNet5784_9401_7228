@@ -23,7 +23,7 @@ public class Task
     public int Id { get; set; }//--
     public string? Alias { get; set; }//הוספה עדכון
     public string? Describtion { get; set; }//הוספה עדכון
-    public BO.Status status { get; set; }//עדכון
+    public BO.Status? status { get; set; }//עדכון
     public List<BO.TaskInList>? Dependencies { get; set; }//--
     public bool? IsMilestone { get; set; }//--
     public DateTime? CreatedAtDate { get; set; }//--

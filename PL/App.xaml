@@ -10,6 +10,7 @@
             <local:TaskCollection x:Key="TaskCollectionKey" />
             <local:ConvertIdToContent x:Key="ConvertIdToContentKey" />
             <local:ComplexityCollection x:Key="ComplexityCollectionKey" />
+            <local:ConvertIdToBool x:Key="ConvertIdToBoolKey" />
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />

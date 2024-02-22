@@ -14,6 +14,7 @@ namespace PL
 
         public IEnumerator GetEnumerator() => s_enums.GetEnumerator();
     }
+
     internal class TaskCollection : IEnumerable
     {
         static readonly IEnumerable<BO.Status> s_enums =
