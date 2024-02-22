@@ -21,8 +21,16 @@ internal class TaskImplementation : ITask
     /// <returns>The ID of the newly created Task.</returns>
     public int Create(BO.Task item)
     {
-        if(item.Complexity == null) { item.Complexity = BO.EngineerExperience.Beginner; }
-        if(item.status == null) { item.status = BO.Status.Unscheduled; }
+        item.ScheduledDate = DateTime.Now;
+        item.CreatedAtDate = DateTime.Now;
+        item = entertaskScheduledDate(item);
+        if (item.Complexity == null) { item.Complexity = BO.EngineerExperience.Beginner; }
+        if (item.ScheduledDate <= DateTime.Now) { item.status = BO.Status.Scheduled; }
+        else { item.status = BO.Status.Unscheduled; }
+        if (item.RequiredEffortTime == (TimeSpan)TimeSpan.Zero)
+        {
+            item.RequiredEffortTime = new(7, 0, 0, 0);
+        }
 
         DO.Task doTask = new DO.Task(item.Id, item.Alias, item.Describtion, item.IsMilestone,
             item.CreatedAtDate, item.RequiredEffortTime, item.DeadLine,
@@ -180,7 +188,45 @@ internal class TaskImplementation : ITask
 
         return it;
     }
+    private static BO.Task entertaskScheduledDate(BO.Task task)
+    {
+        DateTime startProgect = DateTime.Now;
 
+        if (!DateTime.TryParse(Console.ReadLine(), out DateTime date))
+        {
+            Console.WriteLine("please enter only datetime type\n");
+        }
+        if (date ==  DateTime.MinValue)
+        {
+            if (task.Complexity == BO.EngineerExperience.Beginner)
+            {
+                task.ScheduledDate = startProgect.AddMonths(1);
+                Console.WriteLine($"(task Scheduled Date {task.ScheduledDate})\n");
+            }
+            else if (task.Complexity == BO.EngineerExperience.AdvancedBeginner)
+            {
+                task.ScheduledDate = startProgect.AddMonths(2);
+                Console.WriteLine($"(task Scheduled Date {task.ScheduledDate})\n");
+            }
+            else if (task.Complexity == BO.EngineerExperience.Intermidate)
+            {
+                task.ScheduledDate = startProgect.AddMonths(3);
+                Console.WriteLine($"(task Scheduled Date {task.ScheduledDate})\n");
+            }
+            else if (task.Complexity == BO.EngineerExperience.Advanced)
+            {
+                task.ScheduledDate = startProgect.AddMonths(4);
+                Console.WriteLine($"(task Scheduled Date {task.ScheduledDate})\n");
+            }
+            else if (task.Complexity == BO.EngineerExperience.Expert)
+            {
+                task.ScheduledDate = startProgect.AddMonths(5);
+                Console.WriteLine($"(task Scheduled Date {task.ScheduledDate})\n");
+            }
+        }
+        else { task.ScheduledDate = date; }
+        return task;
+    }
     /// <summary>
     /// Deletes a Task entity from the system based on its ID.
     /// </summary>
@@ -458,6 +504,8 @@ internal class TaskImplementation : ITask
             Console.WriteLine("please enter only datetime type\n");
         }
         //item.Id = id;
+        if (item.ScheduledDate <= DateTime.Now) { item.status = BO.Status.Scheduled; }
+        else { item.status = BO.Status.Unscheduled; }
 
         BO.EngineerExperience? c = (BO.EngineerExperience)_dal.Task.Read(item.Id).Complexity;
 
