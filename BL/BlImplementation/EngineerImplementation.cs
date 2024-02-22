@@ -269,7 +269,7 @@ internal class EngineerImplementation : IEngineer
                     foreach (var t in _dal.Task.ReadAll())
                     {
                         if (item.Level == t.Complexity && t.EngineerID == null
-                            &&(/*t.status == DO.Status.Unscheduled||*/t.status == DO.Status.Scheduled)
+                            &&(t.status == DO.Status.InJeopardy||t.status == DO.Status.Scheduled)
                             )
                         { Console.WriteLine(t.Id); Console.WriteLine(t.Describtion); Console.WriteLine(t.Complexity); }
                     }
@@ -279,7 +279,7 @@ internal class EngineerImplementation : IEngineer
                     foreach (var t in _dal.Task.ReadAll())
                     {
                         if (item.Level >= t.Complexity && t.EngineerID == null
-                            &&(/*t.status == DO.Status.Unscheduled||*/t.status == DO.Status.Scheduled)
+                            &&(t.status == DO.Status.InJeopardy||t.status == DO.Status.Scheduled)
                             )
                         { Console.WriteLine(t.Id); Console.WriteLine(t.Describtion); Console.WriteLine(t.Complexity); }
                     }
@@ -289,7 +289,7 @@ internal class EngineerImplementation : IEngineer
                     foreach (var t in _dal.Task.ReadAll())
                     {
                         if (item.Level >= t.Complexity && t.EngineerID == null
-                            &&(/*t.status == DO.Status.Unscheduled||*/t.status == DO.Status.Scheduled)
+                            &&(t.status == DO.Status.InJeopardy||t.status == DO.Status.Scheduled)
                             )
                         { Console.WriteLine(t.Id); Console.WriteLine(t.Describtion); Console.WriteLine(t.Complexity); }
                     }
@@ -299,7 +299,7 @@ internal class EngineerImplementation : IEngineer
                     foreach (var t in _dal.Task.ReadAll())
                     {
                         if (item.Level >= t.Complexity && t.EngineerID == null
-                            &&(/*t.status == DO.Status.Unscheduled ||*/ t.status == DO.Status.Scheduled)
+                            &&(t.status == DO.Status.InJeopardy|| t.status == DO.Status.Scheduled)
                             )
                         { Console.WriteLine(t.Id); Console.WriteLine(t.Describtion); Console.WriteLine(t.Complexity); }
                     }
@@ -309,7 +309,7 @@ internal class EngineerImplementation : IEngineer
                     foreach (var t in _dal.Task.ReadAll())
                     {
                         if (item.Level >= t.Complexity && t.EngineerID == null
-                            &&(/*t.status == DO.Status.Unscheduled ||*/ t.status == DO.Status.Scheduled)
+                            &&(t.status == DO.Status.InJeopardy|| t.status == DO.Status.Scheduled)
                             )
                         { Console.WriteLine(t.Id); Console.WriteLine(t.Describtion); Console.WriteLine(t.Complexity); }
                     }

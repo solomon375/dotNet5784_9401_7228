@@ -96,8 +96,9 @@
                     <ColumnDefinition Width="200"/>
                 </Grid.ColumnDefinitions>
                 <Label Content="ScheduledDate:" HorizontalAlignment="Right" Margin="10,0,0,0" VerticalAlignment="Center" Grid.Column="0"/>
-                <DatePicker Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,0" 
-                            SelectedDate="{Binding ScheduledDate, UpdateSourceTrigger=PropertyChanged}"/>
+                <DatePicker Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,0" IsEnabled="False"/>
+                <TextBox Grid.Column="1" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"
+                    Text="{Binding ScheduledDate, Mode=TwoWay}" IsEnabled="False"/>
             </Grid>
             <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="8" VerticalAlignment="Stretch" Width="auto">
                 <Grid.ColumnDefinitions>

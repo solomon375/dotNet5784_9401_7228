@@ -416,41 +416,84 @@ namespace BlTest
 
         private static BO.Task entertaskScheduledDate(BO.Task task)
         {
-            DateTime startProgect = DateTime.Now;
+            DateTime now = DateTime.Now;
 
-            if (!DateTime.TryParse(Console.ReadLine(), out DateTime date))
+            DateTime start = new DateTime(22/2/24);//year month day
+
+            /*if (!DateTime.TryParse(Console.ReadLine(), out DateTime date))
             {
                 Console.WriteLine("please enter only datetime type\n");
             }
             if (date ==  DateTime.MinValue)
+            {*/
+            if (task.Complexity == EngineerExperience.Beginner)
             {
-                if (task.Complexity == EngineerExperience.Beginner)
+                task.ScheduledDate = now;
+                task.DeadLine=now.AddMonths(1);
+                Console.WriteLine($"(task Scheduled Date {task.ScheduledDate})\n");
+            }
+            else if (task.Complexity == EngineerExperience.AdvancedBeginner)
+            {
+                if (now<=start.AddMonths(1))
                 {
-                    task.ScheduledDate = startProgect.AddMonths(1);
+                    task.ScheduledDate = start.AddMonths(1);
+                    task.DeadLine=start.AddMonths(2);
                     Console.WriteLine($"(task Scheduled Date {task.ScheduledDate})\n");
                 }
-                else if (task.Complexity == EngineerExperience.AdvancedBeginner)
+                else
                 {
-                    task.ScheduledDate = startProgect.AddMonths(2);
-                    Console.WriteLine($"(task Scheduled Date {task.ScheduledDate})\n");
-                }
-                else if (task.Complexity == EngineerExperience.Intermidate)
-                {
-                    task.ScheduledDate = startProgect.AddMonths(3);
-                    Console.WriteLine($"(task Scheduled Date {task.ScheduledDate})\n");
-                }
-                else if (task.Complexity == EngineerExperience.Advanced)
-                {
-                    task.ScheduledDate = startProgect.AddMonths(4);
-                    Console.WriteLine($"(task Scheduled Date {task.ScheduledDate})\n");
-                }
-                else if (task.Complexity == EngineerExperience.Expert)
-                {
-                    task.ScheduledDate = startProgect.AddMonths(5);
+                    task.ScheduledDate = now;
+                    task.DeadLine=now.AddMonths(1);
                     Console.WriteLine($"(task Scheduled Date {task.ScheduledDate})\n");
                 }
             }
-            else { task.ScheduledDate = date; }
+            else if (task.Complexity == EngineerExperience.Intermidate)
+            {
+                if (now<=start.AddMonths(2))
+                {
+                    task.ScheduledDate = start.AddMonths(2);
+                    task.DeadLine=start.AddMonths(3);
+                    Console.WriteLine($"(task Scheduled Date {task.ScheduledDate})\n");
+                }
+                else
+                {
+                    task.ScheduledDate = now;
+                    task.DeadLine=now.AddMonths(1);
+                    Console.WriteLine($"(task Scheduled Date {task.ScheduledDate})\n");
+                }
+            }
+            else if (task.Complexity == EngineerExperience.Advanced)
+            {
+                if (now<=start.AddMonths(3))
+                {
+                    task.ScheduledDate = start.AddMonths(3);
+                    task.DeadLine=start.AddMonths(4);
+                    Console.WriteLine($"(task Scheduled Date {task.ScheduledDate})\n");
+                }
+                else
+                {
+                    task.ScheduledDate = now;
+                    task.DeadLine=now.AddMonths(1);
+                    Console.WriteLine($"(task Scheduled Date {task.ScheduledDate})\n");
+                }
+            }
+            else if (task.Complexity == EngineerExperience.Expert)
+            {
+                if (now<=start.AddMonths(4))
+                {
+                    task.ScheduledDate = start.AddMonths(4);
+                    task.DeadLine=start.AddMonths(5);
+                    Console.WriteLine($"(task Scheduled Date {task.ScheduledDate})\n");
+                }
+                else
+                {
+                    task.ScheduledDate = now;
+                    task.DeadLine=now.AddMonths(1);
+                    Console.WriteLine($"(task Scheduled Date {task.ScheduledDate})\n");
+                }
+            }
+            //}
+            //else { task.ScheduledDate = date; }
             return task;
         }
 

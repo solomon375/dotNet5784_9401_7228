@@ -87,17 +87,19 @@ public static class Initialization
 
             DO.EngineerExperience _Complexity;
 
-            DO.Status _status = DO.Status.Scheduled;
+            DO.Status _status = DO.Status.Unscheduled;
 
             if (i < 9 && i >= 1)
             {
+                _status = DO.Status.Scheduled;
+
                 _Complexity = EngineerExperience.Beginner;
 
                 //_CreatedAtDate = new DateTime(2025, 4, 1);
 
-                _ScheduledDate = startProgect.AddMonths(1);
+                _ScheduledDate = startProgect;
 
-                _DeadLine = startProgect.AddMonths(2);
+                _DeadLine = startProgect.AddMonths(1);
 
                 _RequiredEffortTime = new(7, 0, 0, 0);
             }
@@ -107,9 +109,9 @@ public static class Initialization
 
                 //_CreatedAtDate = new DateTime(2025, 4, 1);
 
-                _ScheduledDate = startProgect.AddMonths(2);
+                _ScheduledDate = startProgect.AddMonths(1);
 
-                _DeadLine = startProgect.AddMonths(3);
+                _DeadLine = startProgect.AddMonths(2);
 
                 _RequiredEffortTime = new(7, 0, 0,0);
             }
@@ -119,9 +121,9 @@ public static class Initialization
 
                 //_CreatedAtDate = new DateTime(2025, 4, 1);
 
-                _ScheduledDate = startProgect.AddMonths(3);
+                _ScheduledDate = startProgect.AddMonths(2);
 
-                _DeadLine = startProgect.AddMonths(4);
+                _DeadLine = startProgect.AddMonths(3);
 
                 _RequiredEffortTime = new(10, 0, 0, 0);
             }
@@ -131,9 +133,9 @@ public static class Initialization
 
                 //_CreatedAtDate = new DateTime(2025, 4, 1);
 
-                _ScheduledDate = startProgect.AddMonths(4);
+                _ScheduledDate = startProgect.AddMonths(3);
 
-                _DeadLine = startProgect.AddMonths(5);
+                _DeadLine = startProgect.AddMonths(4);
 
                 _RequiredEffortTime = new(15, 0, 0,0);
             }
@@ -143,21 +145,23 @@ public static class Initialization
 
                 //_CreatedAtDate = new DateTime(2025, 4, 1);
 
-                _ScheduledDate = startProgect.AddMonths(5);
+                _ScheduledDate = startProgect.AddMonths(4);
 
-                _DeadLine = startProgect.AddMonths(6);
+                _DeadLine = startProgect.AddMonths(5);
 
                 _RequiredEffortTime = new(25, 0, 0, 0);
             }
             else
             {
+                _status = DO.Status.Scheduled;
+
                 _Complexity = EngineerExperience.Beginner;
 
                 //_CreatedAtDate = new DateTime(2025, 4, 1);
 
-                _ScheduledDate = startProgect.AddMonths(1);
+                _ScheduledDate = startProgect;
 
-                _DeadLine = startProgect.AddMonths(2);
+                _DeadLine = startProgect.AddMonths(1);
 
                 _RequiredEffortTime = new(7, 0, 0,0);
             }
@@ -165,7 +169,7 @@ public static class Initialization
             daycounter--;
 
             Task newStu = new(_id, _Alias, _Describtion, _IsMilestone, _CreatedAtDate, _RequiredEffortTime,
-                _DeadLine ,_Complexity, _status);
+                _DeadLine ,_Complexity, _status,_ScheduledDate);
 
             s_dal!.Task.Create(newStu);
         }
