@@ -27,6 +27,11 @@ public class BlInvalidException : Exception
     public BlInvalidException(string? message) : base(message) { }
 }
 
+public class BlPrograpStartException : Exception
+{
+    public BlPrograpStartException(string? message) : base(message) { }
+}
+
 public class BlCantBeDeletedException : Exception
 {
     public BlCantBeDeletedException(string? message) : base(message) { }

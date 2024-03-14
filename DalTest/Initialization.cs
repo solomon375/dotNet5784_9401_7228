@@ -1,349 +1,228 @@
 ﻿namespace DalTest;
 
+using Dal;
 using DalApi;
 using DO;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Common;
 using System.Security.Cryptography;
 using System.Xml.Linq;
 
-/// <summary>
-/// Provides methods for initializing the data in the Data Access Layer for testing purposes.
-/// </summary>
 public static class Initialization
 {
-    private static IDal? s_dal; //stage 2
+    private static IDal? s_dal;
 
     private static readonly Random s_rand = new();
 
-    /// <summary>
-    /// Creates and initializes task entities.
-    /// </summary>
+    private static DateTime start = new(2024, 3, 15);
+
     private static void createTask()
     {
-        DateTime startProgect = DateTime.Now;
         string[] TaskAlias =
-    {//Beginner:
-        "A1","A2","A3","A4","A5","A6","A7","A8",
-    //Advanced Beginner:
-        "B1","B2","B3","B4","B5","B6",
-    //Intermediate:
-        "C1","C2","C3","C4",
-    //Advanced:
-        "D1",
-    //Expert
-        "E1"
-    };
+        {//Beginner:
+            "A1","A2","A3","A4","A5","A6","A7","A8",
+        //Advanced Beginner:
+            "B1","B2","B3","B4","B5","B6",
+        //Intermediate:
+            "C1","C2","C3","C4",
+        //Advanced:
+            "D1",
+        //Expert
+            "E1"
+        };
+
         string[] Taskdescription =
-    {
-    //Beginner:
-        "Assemble the robot's frame.",
-        "Install the motors.",
-        "Connect the wheels.",
-        "Add the battery.",
-        "Program basic movements (forward, backward, left, right).",
-        "Add sensors.",
-        "Program sensor-based movements.",
-        "Add a camera.",
-    //Advanced Beginner:
-        "Add a display.",
-        "Add voice recognition.",
-        "Add speech synthesis.",
-        "Add wireless communication.",
-        "Add a gyroscope.",
-        "Program advanced movements.",
-    //Intermediate:
-        "Add machine learning.",
-        "Add object recognition.",
-        "Add facial recognition.",
-        "Add emotion recognition.",
-    //Advanced
-        "Add autonomous navigation.",
-    //Expert
-        "Create a custom robot with advanced features\n according to user requirements."
-    };
-
-        int daycounter = 20;
-
-        for (int i = 1; i <= 20; i++)
         {
+        //Beginner:
+        "Main screen and navigation.",
+        "User authentication via Facebook or Google.",
+        "Daily task list.",
+        "Creating a new task.",
+        "Task completion and marking as done.",
+        "Add sensors.",
+        "Notifications for upcoming tasks.",
+        "Social media sharing.",
+        //Advanced Beginner:
+        "Adding categories to tasks.",
+        "Filter by category.",
+        "Taking and adding photos.",
+        "Progress statistics.",
+        "Sub-tasks for main tasks.",
+        "Exporting and sharing reports and statistics.",
+        //Intermediate:
+        "Sorting and organizing by timeline.",
+        "Daily reminder.",
+        "Setting goals for tasks.",
+        "Personal notes and ideas.",
+        //Advanced
+        "Completing a time management course.",
+        //Expert
+        "Collaboration and shared tasks."
+        };
 
+        for (int i = 1; i<=20; i++)
+        {
             int _id = i;
 
-            string _Alias = TaskAlias[i-1];
+            string _alias = TaskAlias[i-1];
 
-            string _Describtion = Taskdescription[i-1];
+            string _describtion = Taskdescription[i-1];
 
-            bool _IsMilestone = false;
+            EngineerExperience _Complexity;
 
-            DateTime _CreatedAtDate = startProgect;
+            Status _status;
 
-            DateTime _ScheduledDate = startProgect;
+            DateTime _ScheduledDate;
 
-            TimeSpan _RequiredEffortTime = TimeSpan.Zero;
+            TimeSpan _RequiredEffortTime;
 
-            DateTime _DeadLine = startProgect;
+            DateTime _DeadLine;
 
-            //DateTime _CreatedAtDate = currentTime.AddDays((-daycounter)*2);//before datetime.now
-
-            DO.EngineerExperience _Complexity;
-
-            DO.Status _status = DO.Status.Unscheduled;
-
-            if (i < 9 && i >= 1)
+            if (i >= 1 && i < 9)
             {
-                _status = DO.Status.Scheduled;
-
-                _Complexity = EngineerExperience.Beginner;
-
-                //_CreatedAtDate = new DateTime(2025, 4, 1);
-
-                _ScheduledDate = startProgect;
-
-                _DeadLine = startProgect.AddMonths(1);
-
-                _RequiredEffortTime = new(7, 0, 0, 0);
+                _Complexity = EngineerExperience.Beginner; _status=Status.Unscheduled;
+                _ScheduledDate=start; _RequiredEffortTime=new(1, 0, 0, 0); _DeadLine=start.AddDays(7); ;
             }
-            else if (i < 15 && i >= 9)
+            else if (i >= 9 && i < 15)
             {
-                _Complexity = EngineerExperience.AdvancedBeginner;
-
-                //_CreatedAtDate = new DateTime(2025, 4, 1);
-
-                _ScheduledDate = startProgect.AddMonths(1);
-
-                _DeadLine = startProgect.AddMonths(2);
-
-                _RequiredEffortTime = new(7, 0, 0,0);
+                _Complexity = EngineerExperience.AdvancedBeginner; _status=Status.Unscheduled;
+                _ScheduledDate=start.AddDays(8); _RequiredEffortTime=new(1, 0, 0, 0); _DeadLine=start.AddDays(14);
             }
-            else if (i < 19 && i >= 15)
+            else if (i >= 15 && i < 19)
             {
-                _Complexity = EngineerExperience.Intermidate;
-
-                //_CreatedAtDate = new DateTime(2025, 4, 1);
-
-                _ScheduledDate = startProgect.AddMonths(2);
-
-                _DeadLine = startProgect.AddMonths(3);
-
-                _RequiredEffortTime = new(10, 0, 0, 0);
+                _Complexity = EngineerExperience.Intermidate; _status=Status.Unscheduled;
+                _ScheduledDate=start.AddDays(15); _RequiredEffortTime=new(2, 0, 0, 0); _DeadLine=start.AddDays(21);
             }
-            else if (i < 20 && i >= 19)
+            else if (i == 19)
             {
-                _Complexity = EngineerExperience.Advanced;
-
-                //_CreatedAtDate = new DateTime(2025, 4, 1);
-
-                _ScheduledDate = startProgect.AddMonths(3);
-
-                _DeadLine = startProgect.AddMonths(4);
-
-                _RequiredEffortTime = new(15, 0, 0,0);
+                _Complexity = EngineerExperience.Advanced; _status=Status.Unscheduled;
+                _ScheduledDate=start.AddDays(22); _RequiredEffortTime=new(3, 0, 0, 0); _DeadLine=start.AddDays(28);
             }
-            else if (i <= 20)
+            else if (i == 20)
             {
-                _Complexity = EngineerExperience.Expert;
-
-                //_CreatedAtDate = new DateTime(2025, 4, 1);
-
-                _ScheduledDate = startProgect.AddMonths(4);
-
-                _DeadLine = startProgect.AddMonths(5);
-
-                _RequiredEffortTime = new(25, 0, 0, 0);
+                _Complexity = EngineerExperience.Expert; _status=Status.Unscheduled;
+                _ScheduledDate=start.AddDays(29); _RequiredEffortTime=new(5, 0, 0, 0); _DeadLine=start.AddDays(35);
             }
             else
             {
-                _status = DO.Status.Scheduled;
-
-                _Complexity = EngineerExperience.Beginner;
-
-                //_CreatedAtDate = new DateTime(2025, 4, 1);
-
-                _ScheduledDate = startProgect;
-
-                _DeadLine = startProgect.AddMonths(1);
-
-                _RequiredEffortTime = new(7, 0, 0,0);
+                _Complexity = EngineerExperience.Beginner; _status=Status.Unscheduled;
+                _ScheduledDate=start; _RequiredEffortTime=new(1, 0, 0, 0); _DeadLine=start.AddDays(7);
             }
 
-            daycounter--;
+            DateTime _Startdate = _ScheduledDate;
 
-            Task newStu = new(_id, _Alias, _Describtion, _IsMilestone, _CreatedAtDate, _RequiredEffortTime,
-                _DeadLine ,_Complexity, _status,_ScheduledDate);
+            DateTime _CreatedAtDate = DateTime.Now;
 
-            s_dal!.Task.Create(newStu);
+            Task task = new(_id, _alias, _describtion, _Complexity, _status, _ScheduledDate, _RequiredEffortTime, _DeadLine, _CreatedAtDate, _Startdate);
+
+            s_dal?.Task!.Create(task);
         }
     }
 
-    /// <summary>
-    /// Creates and initializes engineer entities.
-    /// </summary>
     private static void createEngineer()
     {
         string[] engineerNames =
-    {
+        {
         "Dani Levi", "Eli Amar", "Yair Cohen",
         "Ariela Levin", "Dina Klein"
-    };
+        };
+
         int counter = 0;
         foreach (var _name in engineerNames)
         {
             int _id;
             do
-                _id = s_rand.Next(100000,1000000 );
-            while (s_dal!.Engineer.Read(_id) != null);
+                _id = s_rand.Next(100000, 1000000);
+            while (s_dal?.Engineer?.Read(_id) != null);
 
             string _email = _name.Substring(0, _name.IndexOf(" "));
             _email = _email+"@jct.com";
 
-            int _cost = 350 + counter * 100;
+            int _cost = 35 + (counter * 20);
 
             EngineerExperience? _level;
 
-            if (_cost <= 400)
-            {
-                _level = EngineerExperience.Beginner;
-            }
-            else if (_cost <= 500 && _cost > 400)
-            {
-                _level = EngineerExperience.AdvancedBeginner;
-            }
-            else if (_cost <= 600 && _cost > 500)
-            {
-                _level = EngineerExperience.Intermidate;
-            }
-            else if (_cost <= 700 && _cost > 600)
-            {
-                _level = EngineerExperience.Advanced;
-            }
-            else if (_cost <= 800 && _cost > 700)
-            {
-                _level = EngineerExperience.Expert;
-            }
+            if (_cost <= 50)
+            { _level = EngineerExperience.Beginner; }
+            else if (_cost <= 70 && _cost > 50)
+            { _level = EngineerExperience.AdvancedBeginner; }
+            else if (_cost <= 90 && _cost > 70)
+            { _level = EngineerExperience.Intermidate; }
+            else if (_cost <= 100 && _cost > 90)
+            { _level = EngineerExperience.Advanced; }
+            else if (_cost <= 150 && _cost > 100)
+            { _level = EngineerExperience.Expert; }
             else
-            {
-                _level = null;
-            }
+            { _level = null; }
 
             counter++;
 
-            Engineer newStu = new(_id, _email, _cost, _name, _level);
+            Engineer engineer = new(_id, _email, _cost, _name, _level);
 
-            s_dal!.Engineer.Create(newStu);
-
+            s_dal?.Engineer!.Create(engineer);
         }
-
     }
-    /// <summary>
-    /// Creates and initializes dependency entities.
-    /// </summary>
+
     private static void createDependency()
     {
-        //create good dependency list
-        int counter = 9;
-        
-        int _id = 0, _dependentTask,_dependsOnTask;
-
-        while (counter>=9&&counter<15) { for (int j = 0; j<4; j++) { 
-            if(j==0){_dependentTask=counter; _dependsOnTask=s_rand.Next(0, 2); }
-            else if(j==1){_dependentTask=counter; _dependsOnTask=s_rand.Next(2, 4); }
-            else if(j==2){_dependentTask=counter; _dependsOnTask=s_rand.Next(4, 6); }
-            else if(j==3){_dependentTask=counter; _dependsOnTask=s_rand.Next(6, 8); }
-            else { _dependentTask=counter; _dependsOnTask=s_rand.Next(6, 8); }
-            Dependency newStu = new(_id, _dependentTask, _dependsOnTask);
-            s_dal!.Dependency.Create(newStu);_id++;} counter++;}
-
-        while (counter>=15&&counter<19) { for (int j = 0; j<3; j++) { 
-            if(j==0){_dependentTask=counter; _dependsOnTask=s_rand.Next(8, 10); }
-            else if(j==1){_dependentTask=counter; _dependsOnTask=s_rand.Next(10, 12); }
-            else if(j==2){_dependentTask=counter; _dependsOnTask=s_rand.Next(12, 14); }
-            else { _dependentTask=counter; _dependsOnTask=s_rand.Next(8, 14); }
-            Dependency newStu = new(_id, _dependentTask, _dependsOnTask);
-            s_dal!.Dependency.Create(newStu);_id++;} counter++;}
-
-        if (counter == 19) { for (int j = 0; j<3; j++) { 
-            _dependentTask=counter; _dependsOnTask=s_rand.Next(14, 19); 
-            if(j==0){_dependentTask=counter; _dependsOnTask=s_rand.Next(14, 16); }
-            else if(j==1){_dependentTask=counter; _dependsOnTask=s_rand.Next(16, 17); }
-            else if(j==2){_dependentTask=counter; _dependsOnTask=s_rand.Next(17, 18); }
-            else { _dependentTask=counter; _dependsOnTask=s_rand.Next(14, 18); }
-            Dependency newStu = new(_id, _dependentTask, _dependsOnTask);
-            s_dal!.Dependency.Create(newStu);_id++;} counter++;}
-
-        if (counter == 20) { _dependentTask=counter; _dependsOnTask=19; 
-        Dependency newStu = new(_id, _dependentTask, _dependsOnTask);
-            s_dal!.Dependency.Create(newStu);_id++;counter++;}
-
-        
-        
-
-        /*for (int i = 0; i < 41; i++)
+        int[] DependentTask =
         {
-            int _id = i;
+            14, 16, 20, 10, 18, 13, 11, 19, 12, 15, 17, 09, 19, 14, 13, 10, 11, 16, 12, 20, 15,
+            13, 14, 18, 11, 17, 15, 19, 13, 16, 18, 10, 18, 09, 20, 12, 17, 15, 13, 16, 10, 15
+        };
 
-            int _dependentTask = s_rand.Next(0, 20);
+        int[] DependsOnTask =
+        {
+            06, 14, 18, 03, 01, 06, 04, 02, 07, 11, 05, 07, 16, 08, 07, 04, 02, 05, 01, 17, 10,
+            08, 02, 08, 03, 13, 08, 17, 01, 04, 13, 05, 02, 01, 02, 02, 07, 05, 03, 08, 02, 08
+        };
 
-            int _dependsOnTask = s_rand.Next(0, _dependentTask);
+        for (int i = 1; i<=40; i++)
+        {
+            int id = i;
+            int dependentTask = DependentTask[i];
+            int dependsOnTask = DependsOnTask[i];
 
-            Dependency newStu = new(_id, _dependentTask, _dependsOnTask);
+            Dependency dependency = new(id, dependentTask, dependsOnTask);
 
-            s_dal!.Dependency.Create(newStu);
-        }*/
+            s_dal?.Dependency!.Create(dependency);
+        }
     }
 
-    /// <summary>
-    /// Initializes the data in the Data Access Layer for testing purposes.
-    /// </summary>
-    public static void Do() //stage 4
+    public static void Do()
     {
+        s_dal = DalApi.Factory.Get;
 
-        //s_dal = dal ?? throw new NullReferenceException("DAL object can not be null!"); //stage 2
-        s_dal = DalApi.Factory.Get; //stage 4
         createTask();
         createEngineer();
         createDependency();
-
     }
-    public static void Reset() //stage 4
+
+    public static void Resat()
     {
+        s_dal = DalApi.Factory.Get;
 
-        //s_dal = dal ?? throw new NullReferenceException("DAL object can not be null!"); //stage 2
-        s_dal = DalApi.Factory.Get; //stage 4
 
-        List<int> dTaskIds = new List<int>();
-        foreach(var i in s_dal.Task.ReadAll())
-        {
-            dTaskIds.Add(i.Id);
-        }
-        foreach (var i in dTaskIds)
-        {
-            s_dal.Task.Delete(i);
-        }
+        //if int the sile dal-config at line 3 is list then
+        //אם עובדים עם המפעל של רשימה
+        //dalList
+        List<int> dIds = new List<int>();
+        foreach (var i in s_dal.Task.ReadAll()) { dIds.Add(i.Id); }
+        foreach (var i in dIds) { s_dal.Task.Delete(i); }
+        dIds.Clear();
+        foreach (var i in s_dal.Engineer.ReadAll()) { dIds.Add(i.Id); }
+        foreach (var i in dIds) { s_dal.Engineer.Delete(i); }
+        dIds.Clear();
+        foreach (var i in s_dal.Dependency.ReadAll()) { dIds.Add(i.Id); }
+        foreach (var i in dIds) { s_dal.Dependency.Delete(i); }
 
-        List<int> dEngineerIds = new List<int>();
-        foreach (var i in s_dal.Engineer.ReadAll())
-        {
-            dEngineerIds.Add(i.Id);
-        }
-        foreach (var i in dEngineerIds)
-        {
-            s_dal.Engineer.Delete(i);
-        }
+        /*
+        //if int the sile dal-config at line 3 is xml then
+        //אם עובדים עם המפעל של קובץ אקס אמ אל
+        //dalXml
+        int num;
+        foreach (var i in s_dal.Task.ReadAll()) { num = i.Id; s_dal.Task.Delete(num); }
+        foreach (var i in s_dal.Engineer.ReadAll()) { num = i.Id; s_dal.Engineer.Delete(num); }
+        foreach (var i in s_dal.Dependency.ReadAll()) { num = i.Id; s_dal.Dependency.Delete(num); }*/
 
-        List<int> dDependencyIds = new List<int>();
-        foreach (var i in s_dal.Dependency.ReadAll())
-        {
-            dDependencyIds.Add(i.Id);
-        }
-        foreach (var i in dDependencyIds)
-        {
-            s_dal.Dependency.Delete(i);
-        }
-
-        /*createTask();
-        createEngineer();
-        createDependency();*/
     }
 }
-
-

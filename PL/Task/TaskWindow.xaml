@@ -6,190 +6,217 @@
         xmlns:local="clr-namespace:PL.Task"
         mc:Ignorable="d"
         DataContext="{Binding CurrentTask, RelativeSource={RelativeSource self}, Mode=TwoWay}"
-        Title="TaskWindow" Height="600" Width="600">
+        Title="TaskWindow" Height="560" Width="800">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="350*"/>
-            <ColumnDefinition Width="250*"/>
-        </Grid.ColumnDefinitions>
         <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="20*"/>
-                <RowDefinition Height="10*"/>
-                <RowDefinition Height="10*"/>
-                <RowDefinition Height="10*"/>
-                <RowDefinition Height="10*"/>
-                <RowDefinition Height="10*"/>
-                <RowDefinition Height="10*"/>
-                <RowDefinition Height="10*"/>
-                <RowDefinition Height="10*"/>
-                <RowDefinition Height="10*"/>
-                <RowDefinition Height="10*"/>
-                <RowDefinition Height="10*"/>
-                <RowDefinition Height="10*"/>
-                <RowDefinition Height="10*"/>
-                <RowDefinition Height="20*"/>
-                <RowDefinition Height="20*"/>
-            </Grid.RowDefinitions>
-            <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="1" VerticalAlignment="Stretch" Width="auto" Grid.Column="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="200"/>
-                </Grid.ColumnDefinitions>
-                <Label Content="Id:" HorizontalAlignment="Right" Margin="10,0,0,0" VerticalAlignment="Center" Grid.Column="0"/>
-                <TextBox Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,0" TextWrapping="Wrap" VerticalAlignment="Center" Width="120"
-                     Text="{Binding Id, Mode=TwoWay}" IsEnabled="False"/>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="400*"/>
+                <ColumnDefinition Width="300*"/>
+            </Grid.ColumnDefinitions>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="20*"/>
+                    <RowDefinition Height="10*"/>
+                    <RowDefinition Height="10*"/>
+                    <RowDefinition Height="25*"/>
+                    <RowDefinition Height="10*"/>
+                    <RowDefinition Height="10*"/>
+                    <RowDefinition Height="10*"/>
+                    <RowDefinition Height="10*"/>
+                    <RowDefinition Height="10*"/>
+                    <RowDefinition Height="10*"/>
+                    <RowDefinition Height="10*"/>
+                    <RowDefinition Height="10*"/>
+                    <RowDefinition Height="10*"/>
+                    <RowDefinition Height="10*"/>
+                    <RowDefinition Height="25*"/>
+                    <RowDefinition Height="20*"/>
+                    <RowDefinition Height="20*"/>
+                </Grid.RowDefinitions>
+                <!--Internal,line 1 Grid - id -->
+                <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="1" VerticalAlignment="Stretch" Width="auto" Grid.Column="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="200"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Id:" HorizontalAlignment="Right" Margin="10,0,0,0" VerticalAlignment="Center" Grid.Column="0"/>
+                    <TextBox Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,0" TextWrapping="Wrap" VerticalAlignment="Center" Width="192"
+         Text="{Binding Id, Mode=TwoWay}" IsEnabled="False"/>
+                </Grid>
+                <!--Internal,line 2 Grid - alias-->
+                <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="2" VerticalAlignment="Stretch" Width="auto">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="200"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Alias:" HorizontalAlignment="Right" Margin="10,0,0,0" VerticalAlignment="Center" Grid.Column="0"/>
+                    <TextBox Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,0" TextWrapping="Wrap" VerticalAlignment="Center" Width="188"
+         Text="{Binding Alias, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                </Grid>
+                <!--Internal,line 3 Grid - Describtion-->
+                <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="3" VerticalAlignment="Stretch" Width="auto">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="200"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Describtion:" HorizontalAlignment="Right" Margin="10,0,0,0" VerticalAlignment="Center" Grid.Column="0"/>
+                    <TextBox Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,0" TextWrapping="Wrap" VerticalAlignment="Center" Width="188"
+        Text="{Binding Describtion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="45"/>
+                </Grid>
+                <!--Internal,line 4 Grid - complecety (IsEnabled) קשור בזמן-->
+                <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="4" VerticalAlignment="Stretch" Width="auto">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="200"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Complexity:" HorizontalAlignment="Right" Margin="10,0,0,0" VerticalAlignment="Center" Grid.Column="0"/>
+                    <ComboBox Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,0" Width="120"
+    ItemsSource="{Binding Source={StaticResource EngineerCollectionKey}}"
+    SelectedValue="{Binding Complexity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+    />
+                </Grid>
+                <!--Internal,line 5 Grid - status-->
+                <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="5" VerticalAlignment="Stretch" Width="auto">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="200"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Status:" HorizontalAlignment="Right" Margin="10,0,0,0" VerticalAlignment="Center" Grid.Column="0"/>
+                    <TextBox Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,0" TextWrapping="Wrap" VerticalAlignment="Center" Width="120"
+    Text="{Binding Status, Mode=TwoWay}" IsEnabled="False"/>
+                </Grid>
+                <!--Internal,line 6 Grid - ScheduledDate-->
+                <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="6" VerticalAlignment="Stretch" Width="auto">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="200"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="ScheduledDate:" HorizontalAlignment="Right" Margin="10,0,0,0" VerticalAlignment="Center" Grid.Column="0"/>
+                    <DatePicker Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,0" IsEnabled="False" Width="35"/>
+                    <TextBox Grid.Column="1" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Width="170"
+        Text="{Binding ScheduledDate, Mode=TwoWay}" IsEnabled="False" Height="30" Margin="45,0,0,0"/>
+                </Grid>
+                <!--Internal,line 7 Grid - RequiredEffortTime-->
+                <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="7" VerticalAlignment="Stretch" Width="auto">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="200"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="RequiredEffortTime:" HorizontalAlignment="Right" Margin="10,0,0,0" VerticalAlignment="Center" Grid.Column="0" FontSize="8"/>
+                    <TextBox Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,0" TextWrapping="Wrap" VerticalAlignment="Center" Width="120"
+    Text="{Binding RequiredEffortTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                </Grid>
+                <!--Internal,line 8 Grid - DeadLine-->
+                <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="8" VerticalAlignment="Stretch" Width="auto">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="200"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="DeadLine:" HorizontalAlignment="Right" Margin="10,0,0,0" VerticalAlignment="Center" Grid.Column="0"/>
+                    <DatePicker Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,0" IsEnabled="False" Width="35"/>
+                    <TextBox Grid.Column="1" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Width="170"
+        Text="{Binding DeadLine, Mode=TwoWay}" IsEnabled="False" Height="30" Margin="45,0,0,0"/>
+                </Grid>
+                <!--Internal,line 9 Grid - CreatedAtDate-->
+                <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="9" VerticalAlignment="Stretch" Width="auto">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="200"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="CreatedAtDate:" HorizontalAlignment="Right" Margin="10,0,0,0" VerticalAlignment="Center" Grid.Column="0"/>
+                    <DatePicker Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,0" IsEnabled="False" Width="35"/>
+                    <TextBox Grid.Column="1" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Width="170"
+         Text="{Binding CreatedAtDate, Mode=TwoWay}" IsEnabled="False" Height="30" Margin="45,0,0,0"/>
+                </Grid>
+                <!--Internal,line 10 Grid - StartedDate-->
+                <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="10" VerticalAlignment="Stretch" Width="auto">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="200"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="StartedDate:" HorizontalAlignment="Right" Margin="10,0,0,0" VerticalAlignment="Center" Grid.Column="0"/>
+                    <DatePicker Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,0" IsEnabled="False" Width="35"/>
+                    <TextBox Grid.Column="1" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Width="170"
+        Text="{Binding StartedDate, Mode=TwoWay}" IsEnabled="False" Height="30" Margin="45,0,0,0"/>
+                </Grid>
+                <!--Internal,line 11 Grid - CompletedDate-->
+                <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="11" VerticalAlignment="Stretch" Width="auto">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="200"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="CompletedDate:" HorizontalAlignment="Right" Margin="0,0,0,0" VerticalAlignment="Center" Grid.Column="0"/>
+                    <DatePicker Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,0" IsEnabled="False" Width="35"/>
+                    <TextBox Grid.Column="1" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Width="170"
+        Text="{Binding CompletedDate, Mode=TwoWay}" IsEnabled="False" Height="30" Margin="45,0,0,0"/>
+                </Grid>
+                <!--Internal,line 12 Grid - Deliverable-->
+                <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="12" VerticalAlignment="Stretch" Width="auto">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="200"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Deliverable:" HorizontalAlignment="Right" Margin="10,0,0,0" VerticalAlignment="Center" Grid.Column="0"/>
+                    <TextBox Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,0" TextWrapping="Wrap" VerticalAlignment="Center" Width="189"
+    Text="{Binding Deliverable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                </Grid>
+                <!--Internal,line 13 Grid - Deliverable-->
+                <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="13" VerticalAlignment="Stretch" Width="auto">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="200"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Remarks:" HorizontalAlignment="Right" Margin="10,0,0,0" VerticalAlignment="Center" Grid.Column="0"/>
+                    <TextBox Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,0" TextWrapping="Wrap" VerticalAlignment="Center" Width="188"
+    Text="{Binding Remarks, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" RenderTransformOrigin="0.5,0.5">
+                        <TextBox.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform/>
+                                <RotateTransform Angle="0.403"/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </TextBox.RenderTransform>
+                    </TextBox>
+                </Grid>
+                <!--Internal,line 14 Grid - Engineer-->
+                <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="14" VerticalAlignment="Stretch" Width="auto">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="200"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Engineer:" HorizontalAlignment="Right" Margin="10,0,0,0" VerticalAlignment="Center" Grid.Column="0"/>
+                    <Label Grid.Column="1" Content="name:" HorizontalAlignment="Left" Margin="5,5,0,0" VerticalAlignment="Top" Height="25" FontSize="10"/>
+                    <TextBox Grid.Column="1" HorizontalAlignment="Right" Margin="0,5,29,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"
+         Height="20" FontSize="10" IsEnabled="False" Text="{Binding EngineerID.Name,Mode=TwoWay}"/>
+                    <Label Grid.Column="1" Content="id:" HorizontalAlignment="Left" Margin="5,30,0,0" VerticalAlignment="Top" Height="21" FontSize="10" RenderTransformOrigin="0.602,1.781"/>
+                    <TextBox Grid.Column="1" HorizontalAlignment="Right" Margin="0,31,29,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"
+         Height="20" FontSize="10" IsEnabled="False" Text="{Binding EngineerID.Id, Mode=TwoWay}"/>
+                </Grid>
+                <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="15" VerticalAlignment="Stretch" Width="auto">
+                    <Button Content="{Binding Id,Mode=OneTime,Converter={StaticResource ConvertIdToContentKey}}"
+            HorizontalAlignment="Center" VerticalAlignment="Center" Width="80"
+            Click="btnAddUpdate_Click" Height="30"/>
+                </Grid>
             </Grid>
-            <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="2" VerticalAlignment="Stretch" Width="auto">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="200"/>
-                </Grid.ColumnDefinitions>
-                <Label Content="Alias:" HorizontalAlignment="Right" Margin="10,0,0,0" VerticalAlignment="Center" Grid.Column="0"/>
-                <TextBox Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,0" TextWrapping="Wrap" VerticalAlignment="Center" Width="120"
-                     Text="{Binding Alias, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            </Grid>
-            <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="3" VerticalAlignment="Stretch" Width="auto">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="200"/>
-                </Grid.ColumnDefinitions>
-                <Label Content="Describtion:" HorizontalAlignment="Right" Margin="10,0,0,0" VerticalAlignment="Center" Grid.Column="0"/>
-                <TextBox Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,0" TextWrapping="Wrap" VerticalAlignment="Center" Width="120"
-                    Text="{Binding Describtion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            </Grid>
-            <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="4" VerticalAlignment="Stretch" Width="auto">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="200"/>
-                </Grid.ColumnDefinitions>
-                <Label Content="Status:" HorizontalAlignment="Right" Margin="10,0,0,0" VerticalAlignment="Center" Grid.Column="0"/>
-                <ComboBox Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,0" Width="120"
-                ItemsSource="{Binding Source={StaticResource TaskCollectionKey}}"
-                SelectedValue="{Binding status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                IsEnabled="{Binding Id,Converter={StaticResource ConvertIdToBoolKey}}"/>
-            </Grid>
-            <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="5" VerticalAlignment="Stretch" Width="auto">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="200"/>
-                </Grid.ColumnDefinitions>
-                <Label Content="Complexity:" HorizontalAlignment="Right" Margin="10,0,0,0" VerticalAlignment="Center" Grid.Column="0"/>
-                <ComboBox Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,0" Width="120"
-                ItemsSource="{Binding Source={StaticResource EngineerCollectionKey}}"
-                SelectedValue="{Binding Complexity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                SelectedItem="{Binding Complexity,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            </Grid>
-            <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="6" VerticalAlignment="Stretch" Width="auto">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="200"/>
-                </Grid.ColumnDefinitions>
-                <Label Content="CreatedAtDate:" HorizontalAlignment="Right" Margin="10,0,0,0" VerticalAlignment="Center" Grid.Column="0"/>
-                <DatePicker Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,0" IsEnabled="False"/>
-                <TextBox Grid.Column="1" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"
-                     Text="{Binding CreatedAtDate, Mode=TwoWay}" IsEnabled="False"/>
-            </Grid>
-            <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="7" VerticalAlignment="Stretch" Width="auto">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="200"/>
-                </Grid.ColumnDefinitions>
-                <Label Content="ScheduledDate:" HorizontalAlignment="Right" Margin="10,0,0,0" VerticalAlignment="Center" Grid.Column="0"/>
-                <DatePicker Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,0" IsEnabled="False"/>
-                <TextBox Grid.Column="1" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"
-                    Text="{Binding ScheduledDate, Mode=TwoWay}" IsEnabled="False"/>
-            </Grid>
-            <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="8" VerticalAlignment="Stretch" Width="auto">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="200"/>
-                </Grid.ColumnDefinitions>
-                <Label Content="StartedDate:" HorizontalAlignment="Right" Margin="10,0,0,0" VerticalAlignment="Center" Grid.Column="0"/>
-                <DatePicker Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,0" IsEnabled="False"/>
-                <TextBox Grid.Column="1" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"
-                    Text="{Binding StartedDate, Mode=TwoWay}" IsEnabled="False"/>
-            </Grid>
-            <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="9" VerticalAlignment="Stretch" Width="auto">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="200"/>
-                </Grid.ColumnDefinitions>
-                <Label Content="RequiredEffortTime:" HorizontalAlignment="Right" Margin="10,0,0,0" VerticalAlignment="Center" Grid.Column="0" FontSize="8"/>
-                <TextBox Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,0" TextWrapping="Wrap" VerticalAlignment="Center" Width="120"
-                Text="{Binding RequiredEffortTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            </Grid>
-            <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="10" VerticalAlignment="Stretch" Width="auto">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="200"/>
-                </Grid.ColumnDefinitions>
-                <Label Content="DeadLine:" HorizontalAlignment="Right" Margin="10,0,0,0" VerticalAlignment="Center" Grid.Column="0"/>
-                <DatePicker Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,0" IsEnabled="False"/>
-                <TextBox Grid.Column="1" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"
-                    Text="{Binding DeadLine, Mode=TwoWay}" IsEnabled="False"/>
-            </Grid>
-            <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="11" VerticalAlignment="Stretch" Width="auto">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="200"/>
-                </Grid.ColumnDefinitions>
-                <Label Content="CompletedDate:" HorizontalAlignment="Right" Margin="0,0,0,0" VerticalAlignment="Center" Grid.Column="0"/>
-                <DatePicker Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,0" IsEnabled="False"/>
-                <TextBox Grid.Column="1" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"
-                    Text="{Binding CompletedDate, Mode=TwoWay}" IsEnabled="False"/>
-            </Grid>
-            <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="12" VerticalAlignment="Stretch" Width="auto">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="200"/>
-                </Grid.ColumnDefinitions>
-                <Label Content="Deliverable:" HorizontalAlignment="Right" Margin="10,0,0,0" VerticalAlignment="Center" Grid.Column="0"/>
-                <TextBox Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,0" TextWrapping="Wrap" VerticalAlignment="Center" Width="120"
-                Text="{Binding Deliverable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            </Grid>
-            <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="13" VerticalAlignment="Stretch" Width="auto">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="200"/>
-                </Grid.ColumnDefinitions>
-                <Label Content="Remarks:" HorizontalAlignment="Right" Margin="10,0,0,0" VerticalAlignment="Center" Grid.Column="0"/>
-                <TextBox Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,0" TextWrapping="Wrap" VerticalAlignment="Center" Width="120"
-                Text="{Binding Deliverable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            </Grid>
-            <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="14" VerticalAlignment="Stretch" Width="auto">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="200"/>
-                </Grid.ColumnDefinitions>
-                <Label Content="Engineer:" HorizontalAlignment="Right" Margin="10,0,0,0" VerticalAlignment="Center" Grid.Column="0"/>
-                <Label Grid.Column="1" Content="name:" HorizontalAlignment="Left" Margin="5,5,0,0" VerticalAlignment="Top" Height="20" FontSize="10"/>
-                <TextBox Grid.Column="1" HorizontalAlignment="Right" Margin="0,5,35,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"
-                     Height="20" FontSize="10" IsEnabled="False" Text="{Binding Engineer.Name,Mode=TwoWay}"/>
-                <Label Grid.Column="1" Content="id:" HorizontalAlignment="Left" Margin="5,20,0,0" VerticalAlignment="Top" Height="20" FontSize="10"/>
-                <TextBox Grid.Column="1" HorizontalAlignment="Right" Margin="0,20,35,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"
-                     Height="20" FontSize="10" IsEnabled="False" Text="{Binding Engineer.Id, Mode=TwoWay}"/>
-            </Grid>
-            <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="15" VerticalAlignment="Stretch" Width="auto">
-                <Button Grid.Column="1" Content="{Binding Id,Mode=OneTime,Converter={StaticResource ConvertIdToContentKey}}"
-                    HorizontalAlignment="Center" VerticalAlignment="Center" Width="80"
-                    Click="btnAddUpdate_Click"/>
-            </Grid>
-        </Grid>
 
-        <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Column="1" VerticalAlignment="Stretch" Width="auto">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="50"/>
-                <RowDefinition Height="550"/>
-            </Grid.RowDefinitions>
-            <Label Grid.Column="1" Content="Dependencies:" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top"/>
-            <ListView Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ItemsSource="{Binding Dependencies}">
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn/>
-                    </GridView>
-                </ListView.View>
-            </ListView>
+            <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Column="1" VerticalAlignment="Stretch" Width="auto">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="300"/>
+                    <RowDefinition Height="150"/>
+                </Grid.RowDefinitions>
+                <Label Grid.Column="1" Content="Dependencies:" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top"/>
+                <ListView Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ItemsSource="{Binding Dependencies}">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+                <Button Content="Add" HorizontalAlignment="Left" Margin="128,42,0,0" Grid.Row="2" VerticalAlignment="Top" Height="33" Width="68" Click="Button_Click"/>
+
+            </Grid>
         </Grid>
     </Grid>
 </Window>

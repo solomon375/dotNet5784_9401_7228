@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
+
         Title="MainWindow" Height="400" Width="400">
     <!--Extrnal Grid-->
     <Grid>
@@ -21,8 +22,23 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <!--Internal, left Grid-->
-            <Button Content="Manager" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,75,0,0" Click="btnManager_click"/>
-            <Button Content="Engineer" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,190,0,0" Click="bteEngineer_click" />
+            <Button Content="Manager" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,60,0,0" Click="btnManager_click"/>
+            <Button Content="Engineer" HorizontalAlignment="Center" VerticalAlignment="Center" Click="bteEngineer_click" />
+
+            <!-- תווית עם Binding לתכונה CurrentTime -->
+            <Label Content="{Binding CurrentTime, StringFormat='Current Time: {0:dd/MM/yyyy HH:mm:ss}'}"
+                   HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Column="1" Margin="0,75,0,0" Width="180" Height="35"/>
+            <!-- כפתורים לקידום השעון -->
+            <Button Content="Hour" HorizontalAlignment="Left" VerticalAlignment="Top"
+                    Margin="26,130,0,0" Click="AdvanceHour_Click" Grid.Column="1"/>
+            <Button Content="Day" HorizontalAlignment="Left" VerticalAlignment="Top"
+                    Margin="86,130,0,0" Click="AdvanceDay_Click" Grid.Column="1"/>
+            <Button Content="Month" HorizontalAlignment="Left" VerticalAlignment="Top"
+                    Margin="131,130,0,0" Click="AdvanceMunth_Click" Grid.Column="1"/>
+            <!-- כפתור לאתחול השעון -->
+            <Button Content="Reset Clock" HorizontalAlignment="Left" VerticalAlignment="Top"
+                    Margin="66,175,0,0" Click="ResetClock_Click" Grid.Column="1"/>
+            <Button Content="Donation" HorizontalAlignment="Center" Margin="0,241,0,0" VerticalAlignment="Top" Width="124" Click="Button_Click"/>
         </Grid>
     </Grid>
 </Window>

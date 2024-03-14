@@ -3,20 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:PL"
              StartupUri="MainWindow.xaml">
-
     <Application.Resources>
-        <ResourceDictionary>
-            <local:EngineerCollection x:Key="EngineerCollectionKey" />
-            <local:TaskCollection x:Key="TaskCollectionKey" />
-            <local:ConvertIdToContent x:Key="ConvertIdToContentKey" />
-            <local:ComplexityCollection x:Key="ComplexityCollectionKey" />
-            <local:ConvertIdToBool x:Key="ConvertIdToBoolKey" />
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.DeepPurple.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
+        <local:EngineerCollection x:Key="EngineerCollectionKey" />
+        <local:TaskCollection x:Key="TaskCollectionKey" />
+        <local:ConvertIdToContent x:Key="ConvertIdToContentKey" />
+        <!--<local:ComplexityCollection x:Key="ComplexityCollectionKey" />-->
+        <local:ConvertIdToBool x:Key="ConvertIdToBoolKey" />
+        <local:ConvertRequiredEffortTimeToInt x:Key="ConvertRequiredEffortTimeToIntKey"/>
+        <local:StartedDateTimeToMargin x:Key="StartedDateTimeToMarginKey"/>
+        <local:ConvertTaskInEngineerToBool x:Key="ConvertTaskInEngineerToBoolKey"/>
+        <local:ConvertTaskInEngineerToBool1 x:Key="ConvertTaskInEngineerToBool1Key"/>
+        <local:StatusTocolor x:Key="StatusTocolorKey"/>
     </Application.Resources>
 </Application>

@@ -1,71 +1,47 @@
-﻿/// <summary>
-/// Implementation of the IEngineer interface in the BL (Business Logic) layer.
-/// </summary>
+﻿namespace BlImplementation;
+
 using BlApi;
 using BO;
+using DalApi;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Runtime.InteropServices.Marshalling;
 
-namespace BlImplementation;
-internal class EngineerImplementation : IEngineer
+internal class EngineerImplementation : BlApi.IEngineer
 {
-    private DalApi.IDal _dal = DalApi.Factory.Get;
+    private readonly IBl _bl;
 
-    /// <summary>
-    /// Creates a new Engineer entity in the system.
-    /// </summary>
-    /// <param name="item">The Engineer object to create.</param>
-    /// <returns>The ID of the newly created Engineer.</returns>
+    internal EngineerImplementation(IBl bl)
+    {
+        _bl = bl ?? throw new ArgumentNullException(nameof(bl));
+    }
+
+    private DalApi.IDal _dal = DalApi.Factory.Get;
     public int Create(BO.Engineer item)
     {
+        int temp = GetIntegerInput("enter engineer id");
+        if (temp != 0) { item.Id = temp; }
 
-        if (item.Cost <= 400)
-        {
-            item.Level = DO.EngineerExperience.Beginner;
-        }
-        else if (item.Cost <= 500 && item.Cost > 400)
-        {
-            item.Level = DO.EngineerExperience.AdvancedBeginner;
-        }
-        else if (item.Cost <= 600 && item.Cost > 500)
-        {
-            item.Level = DO.EngineerExperience.Intermidate;
-        }
-        else if (item.Cost <= 700 && item.Cost > 600)
-        {
-            item.Level = DO.EngineerExperience.Advanced;
-        }
-        else if (item.Cost <= 800 && item.Cost > 700)
-        {
-            item.Level = DO.EngineerExperience.Expert;
-        }
-        else
-        {
-            item.Level = null;
-        }
+        string tmp = GetStringInput("enter engineer name");
+        if (tmp != null) { item.Name = tmp; }
 
-        DO.Engineer doEngineer = new DO.Engineer(item.Id, item.Email, item.Cost, item.Name,
-            (DO.EngineerExperience?)item.Level);
+        Console.WriteLine("\n enter engineer cost between 0-150");
+        Console.WriteLine("Beginner cost between 0-50");
+        Console.WriteLine("AdvancedBeginner cost between 50-70");
+        Console.WriteLine("Intermidate cost between 70-90");
+        Console.WriteLine("Advanced cost between 90-100");
+        Console.WriteLine("Expert cost between 100-150");
+        temp = GetRangedIntegerInput(0, 150, "please enter only int type\n", "the cost is set to 35");
+        if (temp != 0) { item.Cost = temp; }
 
-        if (doEngineer.Id <= 0)
-        {
-            throw new BO.BlInvalidException("INVALID ID");
-        }
+        item.Level = GetExperienceLevel(item.Cost);
 
-        if (doEngineer.Name == "")
-        {
-            throw new BO.BlInvalidException("INVALID NAME");
-        }
+        tmp = GetStringInput("enter engineer email");
+        if (tmp != null) { item.Email = tmp; }
 
-        if (doEngineer.Cost <= 0)
-        {
-            throw new BO.BlInvalidException("INVALID COST");
-        }
+        DO.Engineer doEngineer = new DO.Engineer(item.Id, item.Email, item.Cost, item.Name, (DO.EngineerExperience?)item.Level);
 
-        if (!new EmailAddressAttribute().IsValid(doEngineer.Email))
-        {
-            throw new BO.BlInvalidException("INVALID EMAIL");
-        }
+        ValidateDOEngineer(doEngineer);
 
         try
         {
@@ -77,10 +53,6 @@ internal class EngineerImplementation : IEngineer
         }
     }
 
-    /// <summary>
-    /// Deletes an Engineer entity from the system based on its ID.
-    /// </summary>
-    /// <param name="id">The ID of the Engineer to delete.</param>
     public void Delete(int id)
     {
         BO.Engineer? item = Read(id);
@@ -88,258 +60,124 @@ internal class EngineerImplementation : IEngineer
         {
             throw new BO.BlCantBeDeletedException("this item cant be deleted due to task active");
         }
-        try
+        else
         {
-            _dal.Engineer.Delete(id);
-        }
-        catch (DO.DalNotExistException)
-        {
-            throw new BlDoesNotExistException($"engineer with ID={id} does Not exist");
+            try
+            {
+                _dal.Engineer.Delete(id);
+            }
+            catch (DO.DalNotExistException)
+            {
+                throw new BlDoesNotExistException($"engineer with ID={id} does Not exist");
+            }
         }
     }
 
-    /// <summary>
-    /// Retrieves an Engineer entity from the system based on its ID.
-    /// </summary>
-    /// <param name="id">The ID of the Engineer to retrieve.</param>
-    /// <returns>The retrieved Engineer object.</returns>
     public BO.Engineer? Read(int id)
     {
-        BO.Engineer? result = null;
         DO.Engineer? item = _dal.Engineer.Read(id);
         if (item == null)
         {
-            throw new BlDoesNotExistException($"Student with ID={id} does Not exist");
+            throw new BlDoesNotExistException($"Engineer with ID={id} does Not exist");
         }
 
-        foreach (var e in _dal.Engineer.ReadAll())
-        {
-            foreach (var t in _dal.Task.ReadAll())
+        var taskInEngineer = _dal.Task.ReadAll()
+            .Where(t => t.EngineerID == id)
+            .Select(t => new TaskInEngineer
             {
-                if (e.Id == t.EngineerID)
-                {
-                    result = new BO.Engineer()
-                    {
-                        Id = item.Id,
-                        Name = item.Name,
-                        Cost = item.Cost,
-                        Email = item.Email,
-                        Level = item.level,
-                        Task = new TaskInEngineer
-                        {
-                            Id=t.Id,
-                            Alias = t.Alias,
-                        }
-                    };
-                    return result;
-                }
-            }
-        }
-        result = new BO.Engineer()
+                Id = t.Id,
+                Alias = t.Alias
+            })
+            .FirstOrDefault();
+
+        return new BO.Engineer
         {
             Id = item.Id,
             Name = item.Name,
             Cost = item.Cost,
             Email = item.Email,
-            Level = item.level,
-            Task = null
+            Level = (BO.EngineerExperience?)item.Level,
+            Task = taskInEngineer
         };
-        return result;
-        
     }
 
-    /// <summary>
-    /// Retrieves a list of Engineer entities from the system.
-    /// </summary>
-    /// <param name="filter">An optional filter to apply to the list of engineers.</param>
-    /// <returns>The list of Engineer objects.</returns>
     public IEnumerable<BO.Engineer?> ReadAll(Func<DO.Engineer, bool>? filter = null)
     {
-        List<DO.Engineer?> doresult = new List<DO.Engineer?> ();
-        List<BO.Engineer?> boresult = new List<BO.Engineer?> ();
+        var doresult = _dal.Engineer.ReadAll().Where(filter ?? (i => true));
 
-        foreach (var i in  _dal.Engineer.ReadAll())
+        var boresult = doresult.Select(i => new BO.Engineer
         {
-            if(filter != null)
-            {
-                if (filter(i))
-                {
-                    doresult.Add(i);
-                }
-            }
-            if(filter == null)
-            {
-                doresult.Add(i);
-            }
-        }
+            Id = i.Id,
+            Name = i.Name,
+            Cost = i.Cost,
+            Email = i.Email,
+            Level = (BO.EngineerExperience?)i.Level,
+            Task = null
+        }).ToList();
 
-        foreach(var i in doresult)
+        foreach (var x in boresult)
         {
-            boresult.Add(new BO.Engineer()
-            {
-                Id = i.Id,
-                Name = i.Name,
-                Cost = i.Cost,
-                Email = i.Email,
-                Level = i.level,
-                Task = null
-            });
-        }
+            var matchingTasks = _dal.Task.ReadAll().Where(y => x.Id == y.EngineerID);
 
-        foreach(var x in boresult)
-        {
-            foreach(var y in _dal.Task.ReadAll())
+            x.Task = matchingTasks.Select(y => new TaskInEngineer
             {
-                if (x.Id == y.EngineerID)
-                {
-                    x.Task = new TaskInEngineer
-                    {
-                        Id = y.Id,
-                        Alias = y.Alias
-                    };
-                }
-            }
+                Id = y.Id,
+                Alias = y.Alias
+            }).SingleOrDefault();
         }
 
         return boresult;
     }
 
-    /// <summary>
-    /// Updates an Engineer entity in the system.
-    /// </summary>
-    /// <param name="item">The Engineer object with updated information.</param>
     public void Update(BO.Engineer item)
     {
-        if (item.Cost <= 400)
+        string tmp = GetStringInput("enter engineer name");
+        if (tmp != null) { item.Name = tmp; }
+
+        Console.WriteLine("\n enter engineer cost between 0-150");
+        Console.WriteLine("Beginner cost between 0-50");
+        Console.WriteLine("AdvancedBeginner cost between 50-70");
+        Console.WriteLine("Intermidate cost between 70-90");
+        Console.WriteLine("Advanced cost between 90-100");
+        Console.WriteLine("Expert cost between 100-150");
+        int temp = GetRangedIntegerInput(0, 150, "please enter only int type\n", "the cost is set to 35");
+        if (temp != 0) { item.Cost = temp; }
+
+        item.Level = GetExperienceLevel(item.Cost);
+
+        tmp = GetStringInput("enter engineer email");
+        if (tmp != null) { item.Email = tmp; }
+
+        /*if (_bl.Now > new BO.Clock().start)
         {
-            item.Level = DO.EngineerExperience.Beginner;
-        }
-        else if (item.Cost <= 500 && item.Cost > 400)
-        {
-            item.Level = DO.EngineerExperience.AdvancedBeginner;
-        }
-        else if (item.Cost <= 600 && item.Cost > 500)
-        {
-            item.Level = DO.EngineerExperience.Intermidate;
-        }
-        else if (item.Cost <= 700 && item.Cost > 600)
-        {
-            item.Level = DO.EngineerExperience.Advanced;
-        }
-        else if (item.Cost <= 800 && item.Cost > 700)
-        {
-            item.Level = DO.EngineerExperience.Expert;
-        }
-        else
-        {
-            item.Level = null;
-        }
+            if (_bl.engineer.Read(item.Id).Task != null)
+            {
+                Console.WriteLine("do you finish the task? (y/n)");
+                if (GetYesNoInput())
+                {
+                    finishTask(item);
+                }
+            }
+
+            if (_bl.engineer.Read(item.Id).Task == null)
+            {
+                Console.WriteLine("do you want to take a task?(y/n)");
+                if (GetYesNoInput())
+                {
+                    List<DO.Task> d = ListTaskCanTake(item);
+                    int id = chooseTask();
+                    takeTask(item,id);
+                }
+            }
+        }*/
+
         DO.Engineer doEngineer = new DO.Engineer(item.Id, item.Email, item.Cost, item.Name,
-            (DO.EngineerExperience?)item.Level);
+           (DO.EngineerExperience?)item.Level, item.Task?.Id);
 
-        if (doEngineer.Id <= 0)
-        {
-            throw new BO.BlInvalidException("INVALID ID");
-        }
-
-        if (doEngineer.Name == "")
-        {
-            throw new BO.BlInvalidException("INVALID NAME");
-        }
-
-        if (doEngineer.Cost <= 0)
-        {
-            throw new BO.BlInvalidException("INVALID COST");
-        }
-
-        if (!new EmailAddressAttribute().IsValid(doEngineer.Email))
-        {
-            throw new BO.BlInvalidException("INVALID EMAIL");
-        }
+        ValidateDOEngineer(doEngineer);
 
         try
         {
-            
-            Console.WriteLine("do you want to take a mission?(y/n)");
-            string ans = Console.ReadLine();
-            if (ans == "y")
-            {
-                if (item.Level == DO.EngineerExperience.Beginner)
-                {
-                    foreach (var t in _dal.Task.ReadAll())
-                    {
-                        if (item.Level == t.Complexity && t.EngineerID == null
-                            &&(t.status == DO.Status.InJeopardy||t.status == DO.Status.Scheduled)
-                            )
-                        { Console.WriteLine(t.Id); Console.WriteLine(t.Describtion); Console.WriteLine(t.Complexity); }
-                    }
-                }
-                else if (item.Level == DO.EngineerExperience.AdvancedBeginner)
-                {
-                    foreach (var t in _dal.Task.ReadAll())
-                    {
-                        if (item.Level >= t.Complexity && t.EngineerID == null
-                            &&(t.status == DO.Status.InJeopardy||t.status == DO.Status.Scheduled)
-                            )
-                        { Console.WriteLine(t.Id); Console.WriteLine(t.Describtion); Console.WriteLine(t.Complexity); }
-                    }
-                }
-                else if (item.Level == DO.EngineerExperience.Intermidate)
-                {
-                    foreach (var t in _dal.Task.ReadAll())
-                    {
-                        if (item.Level >= t.Complexity && t.EngineerID == null
-                            &&(t.status == DO.Status.InJeopardy||t.status == DO.Status.Scheduled)
-                            )
-                        { Console.WriteLine(t.Id); Console.WriteLine(t.Describtion); Console.WriteLine(t.Complexity); }
-                    }
-                }
-                else if (item.Level == DO.EngineerExperience.Advanced)
-                {
-                    foreach (var t in _dal.Task.ReadAll())
-                    {
-                        if (item.Level >= t.Complexity && t.EngineerID == null
-                            &&(t.status == DO.Status.InJeopardy|| t.status == DO.Status.Scheduled)
-                            )
-                        { Console.WriteLine(t.Id); Console.WriteLine(t.Describtion); Console.WriteLine(t.Complexity); }
-                    }
-                }
-                else if (item.Level == DO.EngineerExperience.Expert)
-                {
-                    foreach (var t in _dal.Task.ReadAll())
-                    {
-                        if (item.Level >= t.Complexity && t.EngineerID == null
-                            &&(t.status == DO.Status.InJeopardy|| t.status == DO.Status.Scheduled)
-                            )
-                        { Console.WriteLine(t.Id); Console.WriteLine(t.Describtion); Console.WriteLine(t.Complexity); }
-                    }
-                }
-                int id;
-                Console.WriteLine("enter the task id you want to take");
-                while (!int.TryParse(Console.ReadLine(), out id))
-                {
-                    Console.WriteLine("please enter only int type\n");
-                }
-
-
-                int c = id;
-                item.Task = new TaskInEngineer();
-                item.Task.Id = c;
-                item.Task.Alias = _dal.Task.Read(c).Alias;
-
-
-                var ta = _dal.Task.Read(c) with
-                {
-                    EngineerID = item.Id,
-                    StartedDate = DateTime.Now,
-                    DeadLine = DateTime.Now + _dal.Task.Read(c).RequiredEffortTime,
-                    status = DO.Status.OnTrack
-                };
-
-                _dal.Task.Update(ta);
-
-
-            }
             _dal.Engineer.Update(doEngineer);
         }
         catch (DO.DalAlreadyExistException ex)
@@ -347,238 +185,162 @@ internal class EngineerImplementation : IEngineer
             throw new BO.BlAlreadyExistException($"engineer with ID={doEngineer.Id} already exists", ex);
         }
     }
-}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*{
-    private DalApi.IDal _dal = DalApi.Factory.Get;
-    public int Create(Engineer item)
+    public void finishTask(BO.Engineer item)
     {
-        DO.Engineer doEngineer = new DO.Engineer(item.Id, item.Email,item.Cost,item.Name,
-            (DO.EngineerExperience?)item.Level);
-
-        if (doEngineer.Id <= 0)
+        if (_bl.Now > new BO.Clock().start)
         {
-            throw new BO.BlInvalidException("INVALID ID");
-        }
-
-        if (doEngineer.Name == "")
-        {
-            throw new BO.BlInvalidException("INVALID NAME");
-        }
-
-        if (doEngineer.Cost <= 0)
-        {
-            throw new BO.BlInvalidException("INVALID COST");
-        }
-
-        if (!new EmailAddressAttribute().IsValid(doEngineer.Email))
-        {
-            throw new BO.BlInvalidException("INVALID EMAIL");
-        }
-
-        try
-        {
-            return _dal.Engineer.Create(doEngineer);
-        }
-        catch (DO.DalAlreadyExistException ex)
-        {
-            throw new BO.BlAlreadyExistException($"Student with ID={doEngineer.Id} already exists", ex);
-        }
-    }
-
-    public void Delete(int id)
-    {
-        BO.Engineer? item = Read(id);
-        if(item?.Task != null)
-        {
-            throw new BO.BlCantBeDeletedException("this item cant be deleted due to task active");
-        }
-        try
-        {
-            _dal.Task.Delete(id);
-        }
-        catch (DO.DalNotExistException)
-        {
-            throw new BlDoesNotExistException($"Student with ID={id} does Not exist");
-        }
-    }
-
-    public Engineer? Read(int id)
-    {
-        DO.Engineer? item = _dal.Engineer.Read(id);
-        if (item == null)
-        {
-            throw new BlDoesNotExistException($"Student with ID={id} does Not exist");
-        }
-        return new BO.Engineer()
-        {
-            Id = item.Id,
-            Name = item.Name,
-            Cost = item.Cost,
-            Email = item.Email,
-            Level = item.level,
-            //Task =
-        };
-
-        DO.Engineer? item = _dal.Engineer.Read(id);
-        if (item == null)
-        {
-            throw new BlDoesNotExistException($"engineer with ID={id} does not exist");
-        }
-
-        var relevantTasks = _dal.Task.ReadAll().Where(t => t.EngineerID == id);
-        
-        var result = new BO.Engineer()
-        {
-            Id = item.Id,
-            Name = item.Name,
-            Cost = item.Cost,
-            Email = item.Email,
-            Level = item.level,
-            Task = relevantTasks.Any()
-                ? new TaskInEngineer
-                {
-                    Id = relevantTasks.First().Id,
-                    Alias = relevantTasks.First().Alias,
-                }
-                : null
-        };
-
-        return result;
-
-        
-    }
-
-    public IEnumerable<Engineer?> ReadAll(Func<DO.Engineer, bool>? filter = null)
-    {
-        /*List<DO.Engineer> DoEngineers = new List<DO.Engineer>();
-        List<BO.Engineer> BoEngineers = new List<BO.Engineer>();
-        List<BO.Engineer> returnList = new List<BO.Engineer>();
-
-        foreach (var e in _dal.Engineer.ReadAll()) 
-        {
-            foreach(var t in _dal.Task.ReadAll())
-            {
-                if(e.Id == t.EngineerID)
-                {
-                    BoEngineers.Add(new BO.Engineer()
-                    {
-                        Id = e.Id,
-                        Name = e.Name,
-                        Cost = e.Cost,
-                        Email = e.Email,
-                        Level = e.level,
-                        Task = new TaskInEngineer
-                        {
-                            Id=t.Id,
-                            Alias = t.Alias,
-                        }
-                    });
-                    DoEngineers.Add(new DO.Engineer()
-                    {
-                        Id = e.Id,
-                        Name = e.Name,
-                        Cost = e.Cost,
-                        Email = e.Email,
-                    });
-                }
-                else
-                {
-                    BoEngineers.Add(new BO.Engineer()
-                    {
-                        Id = e.Id,
-                        Name = e.Name,
-                        Cost = e.Cost,
-                        Email = e.Email,
-                        Level = e.level,
-                        Task = null
-                    });
-                    DoEngineers.Add(new DO.Engineer()
-                    {
-                        Id = e.Id,
-                        Name = e.Name,
-                        Cost = e.Cost,
-                        Email = e.Email,
-                    });
-                }
-            }
-        }
-
-        if(filter != null)
-        {
-            for(int i = 0; i < DoEngineers.Count; i++)
-            {
-                if (filter(DoEngineers[i])) { returnList.Add(BoEngineers[i]); }
-            }
+            var t = _dal.Task.Read(item.Task.Id) with { CompletedDate = _bl.Now, Status = DO.Status.Done, EngineerID=null };
+            item.Task = new TaskInEngineer();
+            item.Task = null;
+            _dal.Task.Update(t);
         }
         else
         {
-            for (int i = 0; i < DoEngineers.Count; i++)
-            {
-               returnList.Add(BoEngineers[i]);
-            }
+            throw new BO.BlPrograpStartException("you cant take a task the progect dont started yet");
         }
-        return returnList;
     }
 
-    public void Update(Engineer item)
+    public List<DO.Task> ListTaskCanTake(BO.Engineer item)
     {
-        DO.Engineer doEngineer = new DO.Engineer(item.Id, item.Email, item.Cost, item.Name,
-            (DO.EngineerExperience?)item.Level);
+        if (_bl.Now > new BO.Clock().start)
+        {
+            bool hasInjaprtyTask = _dal.Task.ReadAll().Any(task => task.Status == DO.Status.InJeopardy);
 
-        if (doEngineer.Id <= 0)
-        {
-            throw new BO.BlInvalidException("INVALID ID");
-        }
+            List<int?> taskIdOfThetask = new List<int?>();
 
-        if (doEngineer.Name == "")
-        {
-            throw new BO.BlInvalidException("INVALID NAME");
-        }
+            List<DO.Task> tasks = new List<DO.Task>();
 
-        if (doEngineer.Cost <= 0)
-        {
-            throw new BO.BlInvalidException("INVALID COST");
-        }
+            foreach (var task in _dal.Task.ReadAll())
+            {
+                foreach (var dep in _dal.Dependency.ReadAll()) { if (dep.DependentTask == task.Id) { taskIdOfThetask.Add(dep.DependsOnTask); } }
 
-        if (!new EmailAddressAttribute().IsValid(doEngineer.Email))
-        {
-            throw new BO.BlInvalidException("INVALID EMAIL");
-        }
+                bool allTasksFinished = taskIdOfThetask.All(id => _dal.Task.ReadAll().Any(task => task.Id == id && task.Status == DO.Status.Done));
 
-        try
-        {
-            _dal.Engineer.Update(doEngineer);
+                if (hasInjaprtyTask)
+                {
+                    if (item.Level >= (BO.EngineerExperience?)task.Complexity && task.EngineerID == null
+                        &&(task.Status == DO.Status.InJeopardy)&& _bl.Now < task.DeadLine - task.RequiredEffortTime
+                        && allTasksFinished)
+                    {
+                        Console.WriteLine(task.Id); Console.WriteLine(task.Describtion); Console.WriteLine(task.Complexity);
+                        tasks.Add(task);
+                    }
+                }
+                else
+                {
+                    if (item.Level >= (BO.EngineerExperience?)task.Complexity && task.EngineerID == null
+                        &&(task.Status == DO.Status.Scheduled)&& _bl.Now < task.DeadLine - task.RequiredEffortTime
+                        && allTasksFinished)
+                    {
+                        Console.WriteLine(task.Id); Console.WriteLine(task.Describtion); Console.WriteLine(task.Complexity);
+                        tasks.Add(task);
+                    }
+                }
+
+                taskIdOfThetask.Clear();
+            }
+
+            return tasks;
         }
-        catch (DO.DalAlreadyExistException ex)
+        else
         {
-            throw new BO.BlAlreadyExistException($"Student with ID={doEngineer.Id} already exists", ex);
+            throw new BO.BlPrograpStartException("you cant take a task the progect dont started yet");
         }
     }
-}*/
+    public int chooseTask()
+    {
+        int id;
+        Console.WriteLine("enter the task id you want to take");
+        while (!int.TryParse(Console.ReadLine(), out id))
+        {
+            Console.WriteLine("please enter only int type\n");
+        }
+        return id;
+    }
+
+    public void takeTask(BO.Engineer item, int id)
+    {
+        if (_bl.Now > new BO.Clock().start)
+        {
+            item.Task = new TaskInEngineer();
+            item.Task.Id = id;
+            item.Task.Alias = _dal.Task.Read(id)?.Alias;
+
+
+            var ta = _dal.Task.Read(id) with
+            {
+                EngineerID = item.Id,
+                StartedDate = _bl.Now,
+                DeadLine = _bl.Now + _dal.Task.Read(id).RequiredEffortTime,
+                Status = DO.Status.OnTrack
+            };
+
+            _dal.Task.Update(ta);
+        }
+        else
+        {
+            throw new BO.BlPrograpStartException("you cant take a task the progect dont started yet");
+        }
+    }
+
+    private int GetIntegerInput(string message)
+    {
+        int result;
+        Console.WriteLine(message);
+        if (!int.TryParse(Console.ReadLine(), out result))
+        {
+            Console.WriteLine("please enter only int type\n");
+        }
+        return result;
+    }
+
+    private string GetStringInput(string message)
+    {
+        Console.WriteLine(message);
+        return Console.ReadLine();
+    }
+
+    private int GetRangedIntegerInput(int min, int max, string errorMessage, string successMessage)
+    {
+        int result = GetIntegerInput("");
+        if (result <= 0 || result > max)
+        {
+            Console.WriteLine(errorMessage);
+            result = min;
+            Console.WriteLine(successMessage);
+        }
+        return result;
+    }
+
+    private BO.EngineerExperience? GetExperienceLevel(double? cost)
+    {
+        return cost switch
+        {
+            <= 50 => BO.EngineerExperience.Beginner,
+            <= 70 => BO.EngineerExperience.AdvancedBeginner,
+            <= 90 => BO.EngineerExperience.Intermidate,
+            <= 100 => BO.EngineerExperience.Advanced,
+            <= 150 => BO.EngineerExperience.Expert,
+            _ => null,
+        };
+    }
+
+    private void ValidateDOEngineer(DO.Engineer doEngineer)
+    {
+        if (doEngineer.Id <= 0) throw new BO.BlInvalidException("INVALID ID");
+        if (doEngineer.Name == "") throw new BO.BlInvalidException("INVALID NAME");
+        if (doEngineer.Cost <= 0) throw new BO.BlInvalidException("INVALID COST");
+        if (!new EmailAddressAttribute().IsValid(doEngineer.Email)) throw new BO.BlInvalidException("INVALID EMAIL");
+    }
+
+    private bool GetYesNoInput()
+    {
+        string? ans;
+        Console.WriteLine("please enter 'y' or 'n'");
+        ans = Console.ReadLine();
+        if (ans != "y" && ans != "n") { return false; }
+
+        return ans == "y";
+    }
+}

@@ -27,7 +27,8 @@ namespace PL.Task
 
             taskList = s_bl?.task.ReadAll()!;
         }
-        private void btnAdd_click(object sender, RoutedEventArgs e)
+
+        private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
             TaskWindow taskWindow = new TaskWindow(0);
             taskWindow.ShowDialog();
@@ -37,10 +38,8 @@ namespace PL.Task
 
         private void lv_MouseButtonEventArgs(object sender, MouseButtonEventArgs e)
         {
-            BO.Task? task1 = (sender as ListView)?.SelectedItem as BO.Task;
-
-            BO.Task? task = s_bl?.task.Read(task1.Id)!;
-            int id = task1.Id;
+            BO.Task? task = (sender as ListView)?.SelectedItem as BO.Task;
+            int id = task.Id;
 
             TaskWindow taskWindow = new TaskWindow(id);
             taskWindow.ShowDialog();
@@ -50,13 +49,12 @@ namespace PL.Task
 
         public IEnumerable<BO.Task> taskList
         {
-            get { return (IEnumerable<BO.Task>)GetValue(TaskListProperty); }
-            set { SetValue(TaskListProperty, value); }
+            get { return (IEnumerable<BO.Task>)GetValue(taskListProperty); }
+            set { SetValue(taskListProperty, value); }
         }
 
-        public static readonly DependencyProperty TaskListProperty =
+        public static readonly DependencyProperty taskListProperty =
             DependencyProperty.Register("taskList", typeof(IEnumerable<BO.Task>), typeof(TaskListWindow), new PropertyMetadata(null));
-
 
         public BO.Status? status { get; set; } = BO.Status.None;
 
@@ -68,7 +66,7 @@ namespace PL.Task
         private void UpdateTaskList()
         {
             taskList = (status == BO.Status.None) ?
-                s_bl?.task.ReadAll()! : s_bl?.task.ReadAll(item => (BO.Status?)item.status == status)!;
+                s_bl?.task.ReadAll()! : s_bl?.task.ReadAll(item => (BO.Status?)item.Status == status)!;
         }
     }
 }

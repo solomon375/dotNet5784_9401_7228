@@ -1,0 +1,28 @@
+﻿<Window x:Class="PL.Task.TakeTaskWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PL.Task"
+        mc:Ignorable="d"
+        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
+        Title="TakeTaskWindow" Height="640" Width="750">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="140*"/>
+            <RowDefinition Height="500*"/>
+        </Grid.RowDefinitions>
+        <Label Content="List of thak you can take" FontSize="25" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+        <ListView Margin="5" Grid.Row="1" ItemsSource="{Binding Path=taskList}"
+          MouseDoubleClick="lv_MouseButtonEventArgs">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Task Id" DisplayMemberBinding="{Binding Id}"/>
+                    <GridViewColumn Header="Task Description" DisplayMemberBinding="{Binding Describtion}"/>
+                    <GridViewColumn Header="Task Complexity" DisplayMemberBinding="{Binding Complexity}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </Grid>
+</Window>

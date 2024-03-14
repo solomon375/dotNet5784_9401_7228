@@ -1,5 +1,5 @@
 ﻿using BO;
-using MaterialDesignThemes.Wpf;
+//using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -69,8 +69,8 @@ namespace PL.Engineer
 
         private void UpdateEngineerList()
         {
-            engineerList = (experience == BO.EngineerExperience.None)?
-                s_bl?.engineer.ReadAll()! : s_bl?.engineer.ReadAll(item => (BO.EngineerExperience?)item.level == experience)!;
+            engineerList = (experience == BO.EngineerExperience.None) ?
+                s_bl?.engineer.ReadAll()! : s_bl?.engineer.ReadAll(item => (BO.EngineerExperience?)item.Level == experience)!;
         }
     }
 }

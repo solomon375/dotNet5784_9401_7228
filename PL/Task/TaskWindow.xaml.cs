@@ -1,5 +1,4 @@
-﻿using BO;
-using PL.Engineer;
+﻿using PL.Engineer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,16 +23,6 @@ namespace PL.Task
         public static int ID = 0;
 
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
-
-        public BO.Task CurrentTask
-        {
-            get { return (BO.Task)GetValue(CurrentTaskProperty); }
-            set { SetValue(CurrentTaskProperty, value); }
-        }
-
-        public static readonly DependencyProperty CurrentTaskProperty =
-            DependencyProperty.Register("CurrentTask", typeof(BO.Task), typeof(TaskWindow), new PropertyMetadata(null));
-
         public TaskWindow(int Id = 0)
         {
             InitializeComponent();
@@ -58,21 +47,28 @@ namespace PL.Task
             }
         }
 
+        public BO.Task CurrentTask
+        {
+            get { return (BO.Task)GetValue(CurrentTaskProperty); }
+            set { SetValue(CurrentTaskProperty, value); }
+        }
+
+        public static readonly DependencyProperty CurrentTaskProperty =
+            DependencyProperty.Register("CurrentTask", typeof(BO.Task), typeof(TaskWindow), new PropertyMetadata(null));
+
         private void btnAddUpdate_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 if (ID == 0)
                 {
-                    CurrentTask.Dependencies = new List<TaskInList>();
                     s_bl.task.Create(CurrentTask);
-                    MessageBox.Show("Engineer added successfully!");
+                    MessageBox.Show("Task added successfully!");
                 }
                 else
                 {
-                    CurrentTask.Id = ID;
                     s_bl.task.Update(CurrentTask);
-                    MessageBox.Show("Engineer updated successfully!");
+                    MessageBox.Show("Task updated successfully!");
                 }
 
                 Close();
@@ -85,5 +81,18 @@ namespace PL.Task
             }
         }
 
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            List<int> dep = s_bl.task.choiceDependecy(CurrentTask);
+            string concatenatedString = string.Join(",", dep);
+            string userInput = Microsoft.VisualBasic.Interaction.InputBox("enter a dependent from this list", concatenatedString, "0");
+            int number;
+            if (int.TryParse(userInput, out number)) { }
+            s_bl.task.addDependecy(CurrentTask, number);
+
+            Close();
+
+            new TaskWindow(CurrentTask.Id).Show();
+        }
     }
 }

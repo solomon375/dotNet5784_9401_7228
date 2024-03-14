@@ -1,13 +1,15 @@
-﻿namespace BO;
-/// <summary>
-///  help method for Task
-/// </summary>
-/// <param name="Id">unique id of the engineer</param>
-/// <param name="name">name of the engineer</param>
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BO;
+
 public class EngineerInTask
 {
     public int Id { get; set; }
     public string? Name { get; set; }
 
-    public override string ToString() => this.StringProperty();
+    public override string ToString() => this.ToStringProperty();
 }

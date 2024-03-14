@@ -1,20 +1,21 @@
 ﻿namespace DO;
-/// <summary>
-/// personal details of the engineer
-/// </summary>
-/// <param name="Id">engineer's ID</param>
-/// <param name="Email">engineer's email</param>
-/// <param name="Cost">engineer's salary per day</param>
-/// <param name="Name">engineer's name</param>
-/// <param name="level">engineer's level</param>
+
 public record Engineer
 (
-    int Id,
-    string? Email = null,
-    double? Cost = null,
-    string? Name = null,
-    DO.EngineerExperience? level = null
+    //(הוספה עדכון)
+
+    int Id,//מספר מזהה של המהנדס (-+)
+
+    string? Email = null,//אמייל של המהנדס (++)
+
+    double? Cost = null,//שכר של המהנדס (++)
+
+    string? Name = null,//של המהנדס (++)
+
+    DO.EngineerExperience? Level = null,//(רמת המהנדס (מתעדכן לפי השכר (--)
+
+    int? Task = null//המשימה שהמהנדס עובל עליה(+-)
 )
 {
-    public Engineer() : this(0) { }      //ctor for lvl 3
+    public Engineer() : this(0) { }
 }

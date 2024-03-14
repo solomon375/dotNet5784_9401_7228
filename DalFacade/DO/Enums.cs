@@ -1,15 +1,5 @@
 ﻿namespace DO;
 
-public enum Status
-{ 
-    Unscheduled,
-    Scheduled,
-    OnTrack,
-    InJeopardy,
-    Done,
-    None
-}
-
 public enum EngineerExperience
 {
     Beginner,
@@ -19,3 +9,14 @@ public enum EngineerExperience
     Expert,
     None
 }
+
+public enum Status
+{
+    Unscheduled,
+    Scheduled,
+    OnTrack,
+    InJeopardy,
+    Done,
+    None
+}
+

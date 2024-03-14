@@ -6,8 +6,7 @@
         xmlns:local="clr-namespace:PL.Task"
         mc:Ignorable="d"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
-        Title="TaskListWindow" Height="640" Width="750">
-    <!--Extrnal Grid-->
+        Title="TaskListWindow" Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40*"/>
@@ -24,25 +23,24 @@
             <Label Content="select:" HorizontalAlignment="Left" Margin="40,0,0,0" VerticalAlignment="Center" Grid.Column="0"/>
             <!--select combo box-->
             <ComboBox SelectedValue="{Binding Path=status, Mode=TwoWay}"
-                ItemsSource="{Binding Source={StaticResource TaskCollectionKey}}"
-                SelectionChanged="ComboBox_SelectionChanged"
-                HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1"/>
+        ItemsSource="{Binding Source={StaticResource TaskCollectionKey}}"
+        SelectionChanged="ComboBox_SelectionChanged"
+        HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1"/>
         </Grid>
         <!--listView-->
         <ListView Margin="5" Grid.Row="1" ItemsSource="{Binding Path=taskList}"
-                  MouseDoubleClick="lv_MouseButtonEventArgs">
+          MouseDoubleClick="lv_MouseButtonEventArgs" >
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Task Id" DisplayMemberBinding="{Binding Id}"/>
                     <GridViewColumn Header="Task Alias" DisplayMemberBinding="{Binding Alias}"/>
-                    <GridViewColumn Header="Task Description" DisplayMemberBinding="{Binding Describtion}"/>
-                    <GridViewColumn Header="Task Status" DisplayMemberBinding="{Binding status}"/>
-                    <GridViewColumn Header="Task Complexity" DisplayMemberBinding="{Binding Complexity}"/>
+                    <GridViewColumn Header="Task Describtion" DisplayMemberBinding="{Binding Describtion}"/>
+                    <GridViewColumn Header="Task Status" DisplayMemberBinding="{Binding Status}"/>
                 </GridView>
             </ListView.View>
         </ListView>
         <!--add button-->
         <Button Content="Add" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100"
-                Click="btnAdd_click" Margin="0,5,0,0" VerticalAlignment="Bottom"/>
+        Click="btnAdd_Click"/>
     </Grid>
 </Window>

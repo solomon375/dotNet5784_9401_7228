@@ -1,286 +1,101 @@
-﻿/// <summary>
-/// Implementation of the ITask interface in the BL (Business Logic) layer.
-/// </summary>
-/// <remarks>
-/// This class provides the functionality for managing Task entities, including creating, reading, updating, and deleting tasks.
-/// </remarks>
+﻿namespace BlImplementation;
+
 using BlApi;
 using BO;
 using DO;
-using System.ComponentModel.DataAnnotations;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 
-namespace BlImplementation;
 internal class TaskImplementation : ITask
 {
+    private readonly IBl _bl;
+
+    internal TaskImplementation(IBl bl)
+    {
+        _bl = bl ?? throw new ArgumentNullException(nameof(bl));
+    }
+
+    private static DateTime start = new BO.Clock().start;
+
     private DalApi.IDal _dal = DalApi.Factory.Get;
-    /// <summary>
-    /// Creates a new Task entity in the system.
-    /// </summary>
-    /// <param name="item">The Task object to create.</param>
-    /// <returns>The ID of the newly created Task.</returns>
+
     public int Create(BO.Task item)
     {
-        item.ScheduledDate = DateTime.Now;
-        item.CreatedAtDate = DateTime.Now;
-        item = entertaskScheduledDate(item);
-        if (item.Complexity == null) { item.Complexity = BO.EngineerExperience.Beginner; }
-        if (item.Complexity == 0) { item.status = BO.Status.Scheduled; }
-        else { item.status = BO.Status.Unscheduled; }
-        if (item.RequiredEffortTime == (TimeSpan)TimeSpan.Zero)
+        if (start > _bl.Now)
         {
-            item.RequiredEffortTime = new(7, 0, 0, 0);
+            Console.WriteLine("enter Task Alias");
+            string temp = GetStringInput();
+            if (temp != null) { item.Alias = temp; }
+
+            Console.WriteLine("enter Task Describtion");
+            temp = GetStringInput();
+            if (temp != null) { item.Describtion = temp; }
+
+            Console.WriteLine("enter Task Deliverable");
+            temp = GetStringInput();
+            if (temp != null) { item.Deliverable = temp; }
+
+            Console.WriteLine("enter Task Remarks");
+            temp = GetStringInput();
+            if (temp != null) { item.Remarks = temp; }
+
+            item.CreatedAtDate = _bl.Now;
+
+            item.CompletedDate = null;
+
+            item.Status = BO.Status.Unscheduled;
+
+            if (item.RequiredEffortTime == null)
+            {
+                int tmp = GetRequiredEffortTime();
+                if (tmp != 1) { item.RequiredEffortTime = new(tmp, 0, 0, 0); } else { item.RequiredEffortTime = new(1, 0, 0, 0); }
+            }
+
+            item.StartedDate = item.ScheduledDate;
+
+            if (item.Complexity == null)
+            {
+                item.Complexity = GetTaskComplexity();
+            }
+
+            (item.ScheduledDate, item.DeadLine) = CalculateDates(item.Complexity);
+
+            DO.Task doTask = new DO.Task(item.Id, item.Alias, item.Describtion, (DO.EngineerExperience?)item.Complexity,
+                (DO.Status?)item.Status, item.ScheduledDate, item.RequiredEffortTime, item.DeadLine,
+                 item.CreatedAtDate, item.StartedDate, item.CompletedDate, item.Deliverable, item.Remarks, null);
+
+            ValidateDOTask(doTask);
+
+            int it;
+            try
+            {
+                it = _dal.Task.Create(doTask);
+            }
+            catch (DO.DalAlreadyExistException ex)
+            {
+                throw new BO.BlAlreadyExistException($"task with ID={item.Id} already exists", ex);
+            }
+
+            CreateDependencies(item, it);
+
+            ValidateDependencies(item);
+
+            return it;
         }
-
-        DO.Task doTask = new DO.Task(item.Id, item.Alias, item.Describtion, item.IsMilestone,
-            item.CreatedAtDate, item.RequiredEffortTime, item.DeadLine,
-            (DO.EngineerExperience?)item.Complexity,(DO.Status?)item.status ,item.ScheduledDate, item.StartedDate,
-            item.CompletedDate, item.Deliverable, item.Remarks, null);
-
-        if (doTask.Alias =="")
+        else
         {
-            throw new BO.BlInvalidException("INVALID ALIAS");
+            throw new BO.BlPrograpStartException("you cant create a task now the progect alraedy started");
         }
-
-        
-        int it;
-        try
-        {
-            it = _dal.Task.Create(doTask);
-        }
-        catch (DO.DalAlreadyExistException ex)
-        {
-            throw new BO.BlAlreadyExistException($"task with ID={item.Id} already exists", ex);
-        }
-
-        /*if (item.Id <=20 || item.Id == 0)
-        {
-            foreach (var d in _dal.Dependency.ReadAll())
-            {
-                if (item.Id == d.DependentTask && d.DependsOnTask != null)
-                {
-                    var t = _dal.Task.Read((int)d.DependsOnTask);
-                    if (t != null)
-                    {
-                        item.Dependencies.Add(new TaskInList
-                        {
-                            Id = t.Id,
-                            Alias = t.Alias,
-                            Description = t.Describtion,
-                            Status = BO.Status.Scheduled
-                        });
-
-                    }
-                    else
-                    {
-                        item.Dependencies = null;
-                    }
-
-                }
-            }
-        }*/
-        //else
-        {
-            foreach (var t in _dal.Task.ReadAll())
-            {
-                if ((BO.EngineerExperience?)t.Complexity == item.Complexity-1 && t.Id != it)
-                {
-                    item.Dependencies.Add(new TaskInList
-                    {
-                        Id = t.Id,
-                        Alias = t.Alias,
-                        Description = t.Describtion,
-                        Status = BO.Status.Scheduled
-                    });
-                    Dependency nd = new Dependency(0, it, t.Id);
-                    _dal!.Dependency.Create(nd);
-                }
-            }
-            /*if (item.Complexity == BO.EngineerExperience.Beginner)
-            {
-                item.Dependencies = null;
-            }
-
-            else if (item.Complexity == BO.EngineerExperience.AdvancedBeginner && item.Dependencies.Count == 0)
-            {
-                foreach (var t in _dal.Task.ReadAll())
-                {
-                    if (t.Complexity == DO.EngineerExperience.Beginner && t.Id != it)
-                    {
-                        item.Dependencies.Add(new TaskInList
-                        {
-                            Id = t.Id,
-                            Alias = t.Alias,
-                            Description = t.Describtion,
-                            Status = BO.Status.Scheduled
-                        });
-                        Dependency nd = new Dependency(0,it, t.Id);
-                        _dal!.Dependency.Create(nd);
-                    }
-                }
-            }
-            else if (item.Complexity == BO.EngineerExperience.Intermidate && item.Dependencies.Count == 0)
-            {
-                foreach (var t in _dal.Task.ReadAll())
-                {
-                    if (t.Complexity == DO.EngineerExperience.AdvancedBeginner && t.Id != it)
-                    {
-                        item.Dependencies.Add(new TaskInList
-                        {
-                            Id = t.Id,
-                            Alias = t.Alias,
-                            Description = t.Describtion,
-                            Status = BO.Status.Scheduled
-                        });
-                        Dependency nd = new Dependency(0,it, t.Id);
-                        _dal!.Dependency.Create(nd);
-                    }
-                }
-            }
-            else if (item.Complexity == BO.EngineerExperience.Advanced && item.Dependencies.Count == 0)
-            {
-                foreach (var t in _dal.Task.ReadAll())
-                {
-                    if (t.Complexity == DO.EngineerExperience.Intermidate && t.Id != it)
-                    {
-                        item.Dependencies.Add(new TaskInList
-                        {
-                            Id = t.Id,
-                            Alias = t.Alias,
-                            Description = t.Describtion,
-                            Status = BO.Status.Scheduled
-                        });
-                        Dependency nd = new Dependency(0,it, t.Id);
-                        _dal!.Dependency.Create(nd);
-                    }
-                }
-            }
-            else if (item.Complexity == BO.EngineerExperience.Expert && item.Dependencies.Count == 0)
-            {
-                foreach (var t in _dal.Task.ReadAll())
-                {
-                    if (t.Complexity == DO.EngineerExperience.Advanced && t.Id != it)
-                    {
-                        item.Dependencies.Add(new TaskInList
-                        {
-                            Id = t.Id,
-                            Alias = t.Alias,
-                            Description = t.Describtion,
-                            Status = BO.Status.Scheduled
-                        });
-                        Dependency nd = new Dependency(0,it, t.Id);
-                        _dal!.Dependency.Create(nd);
-                    }
-                }
-            }*/
-        }
-        if (item.Dependencies != null)
-        {
-            foreach (var i in item.Dependencies)
-            {
-                if (item.ScheduledDate < _dal.Task.Read(i.Id).ScheduledDate)
-                {
-                    throw new BO.BlStartDataOfDependsOnTaskException($"The task with the ID={item.Id} schedule date is after the entered date" +
-                        $" and this task depends on it");
-                }
-            }
-        }
-
-        return it;
     }
-    private static BO.Task entertaskScheduledDate(BO.Task task)
-    {
-        DateTime now = DateTime.Now;
-
-        DateTime start = new DateTime(22/2/24);//year month day
-
-        /*if (!DateTime.TryParse(Console.ReadLine(), out DateTime date))
-        {
-            Console.WriteLine("please enter only datetime type\n");
-        }
-        if (date ==  DateTime.MinValue)
-        {*/
-        if (task.Complexity == BO.EngineerExperience.Beginner)
-        {
-            task.ScheduledDate = now;
-            task.DeadLine=now.AddMonths(1);
-            Console.WriteLine($"(task Scheduled Date {task.ScheduledDate})\n");
-        }
-        else if (task.Complexity == BO.EngineerExperience.AdvancedBeginner)
-        {
-            if (now<=start.AddMonths(1))
-            {
-                task.ScheduledDate = start.AddMonths(1);
-                task.DeadLine=start.AddMonths(2);
-                Console.WriteLine($"(task Scheduled Date {task.ScheduledDate})\n");
-            }
-            else
-            {
-                task.ScheduledDate = now;
-                task.DeadLine=now.AddMonths(1);
-                Console.WriteLine($"(task Scheduled Date {task.ScheduledDate})\n");
-            }
-        }
-        else if (task.Complexity == BO.EngineerExperience.Intermidate)
-        {
-            if (now<=start.AddMonths(2))
-            {
-                task.ScheduledDate = start.AddMonths(2);
-                task.DeadLine=start.AddMonths(3);
-                Console.WriteLine($"(task Scheduled Date {task.ScheduledDate})\n");
-            }
-            else
-            {
-                task.ScheduledDate = now;
-                task.DeadLine=now.AddMonths(1);
-                Console.WriteLine($"(task Scheduled Date {task.ScheduledDate})\n");
-            }
-        }
-        else if (task.Complexity == BO.EngineerExperience.Advanced)
-        {
-            if (now<=start.AddMonths(3))
-            {
-                task.ScheduledDate = start.AddMonths(3);
-                task.DeadLine=start.AddMonths(4);
-                Console.WriteLine($"(task Scheduled Date {task.ScheduledDate})\n");
-            }
-            else
-            {
-                task.ScheduledDate = now;
-                task.DeadLine=now.AddMonths(1);
-                Console.WriteLine($"(task Scheduled Date {task.ScheduledDate})\n");
-            }
-        }
-        else if (task.Complexity == BO.EngineerExperience.Expert)
-        {
-            if (now<=start.AddMonths(4))
-            {
-                task.ScheduledDate = start.AddMonths(4);
-                task.DeadLine=start.AddMonths(5);
-                Console.WriteLine($"(task Scheduled Date {task.ScheduledDate})\n");
-            }
-            else
-            {
-                task.ScheduledDate = now;
-                task.DeadLine=now.AddMonths(1);
-                Console.WriteLine($"(task Scheduled Date {task.ScheduledDate})\n");
-            }
-        }
-        //}
-        //else { task.ScheduledDate = date; }
-        return task;
-    }
-    /// <summary>
-    /// Deletes a Task entity from the system based on its ID.
-    /// </summary>
-    /// <param name="id">The ID of the Task to delete.</param>
+    
     public void Delete(int id)
     {
         BO.Task? item = Read(id);
 
-        foreach(var d in _dal.Dependency.ReadAll())
+        foreach (var d in _dal.Dependency.ReadAll())
         {
-            if(id == d.DependsOnTask)
+            if (id == d.DependsOnTask)
             {
                 throw new BO.BlCantBeDeletedException("this item cant be deleted due to Dependencies");
             }
@@ -289,6 +104,21 @@ internal class TaskImplementation : ITask
         try
         {
             _dal.Task.Delete(id);
+
+            List<int> dependenciesToDelete = new List<int>();
+
+            foreach(var d in _dal.Dependency.ReadAll())
+            {
+                if(d.DependentTask == id||d.DependsOnTask == id)
+                {
+                    dependenciesToDelete.Add(d.Id);
+                }
+            }
+
+            foreach (var d in dependenciesToDelete)
+            {
+                _dal.Dependency.Delete(d);
+            }
         }
         catch (DO.DalNotExistException)
         {
@@ -296,327 +126,121 @@ internal class TaskImplementation : ITask
         }
     }
 
-    /// <summary>
-    /// Retrieves a Task entity from the system based on its ID.
-    /// </summary>
-    /// <param name="id">The ID of the Task to retrieve.</param>
-    /// <returns>The retrieved Task object.</returns>
     public BO.Task? Read(int id)
     {
-        var item = _dal.Task.Read(id);
+        DO.Task item = _dal.Task.Read(id);
         if (item == null)
         {
             throw new BlDoesNotExistException($"Task with ID={id} does not exist");
         }
 
-        List<TaskInList> d = new List<TaskInList>();
-
-        //if (item.Id <=20 || item.Id == 0)
+        List<TaskInList> dependencies = new List<TaskInList>();
+        foreach (var dependency in _dal.Dependency.ReadAll())
         {
-            foreach (var de in _dal.Dependency.ReadAll())
+            if (item.Id == dependency.DependentTask)
             {
-                if (item.Id == de.DependentTask && de.DependsOnTask != null)
+                var t = _dal.Task.Read((int)dependency.DependsOnTask);
+                if (t != null)
                 {
-                    var t = _dal.Task.Read((int)de.DependsOnTask);
-                    if (t != null)
-                    {
-                        d.Add(new TaskInList
-                        {
-                            Id = t.Id,
-                            Alias = t.Alias,
-                            Description = t.Describtion,
-                            Status = BO.Status.Scheduled
-                        });
-                    }
-                    /*else
-                    {
-                        d = null;
-                    }*/
-
-                }
-            }
-        }
-        //
-        /*else
-        {
-            if (item.Complexity == DO.EngineerExperience.Beginner)
-            {
-                d = null;
-            }
-
-            else if (item.Complexity == DO.EngineerExperience.AdvancedBeginner)
-            {
-                foreach (var t in _dal.Task.ReadAll())
-                {
-                    if (t.Complexity == DO.EngineerExperience.Beginner && t.Id != item.Id)
-                    {
-                        d.Add(new TaskInList
-                        {
-                            Id = t.Id,
-                            Alias = t.Alias,
-                            Description = t.Describtion,
-                            Status = BO.Status.Scheduled
-                        });
-                        Dependency nd = new Dependency(0, item.Id, t.Id);
-                        _dal!.Dependency.Create(nd);
-                    }
-                }
-            }
-            else if (item.Complexity == DO.EngineerExperience.Intermidate)
-            {
-                foreach (var t in _dal.Task.ReadAll())
-                {
-                    if (t.Complexity == DO.EngineerExperience.AdvancedBeginner)
-                    {
-                        d.Add(new TaskInList
-                        {
-                            Id = t.Id,
-                            Alias = t.Alias,
-                            Description = t.Describtion,
-                            Status = BO.Status.Scheduled
-                        });
-                        Dependency nd = new Dependency(0, item.Id, t.Id);
-                        _dal!.Dependency.Create(nd);
-                    }
-                }
-            }
-            else if (item.Complexity == DO.EngineerExperience.Advanced)
-            {
-                foreach (var t in _dal.Task.ReadAll())
-                {
-                    if (t.Complexity == DO.EngineerExperience.Intermidate)
-                    {
-                        d.Add(new TaskInList
-                        {
-                            Id = t.Id,
-                            Alias = t.Alias,
-                            Description = t.Describtion,
-                            Status = BO.Status.Scheduled
-                        });
-                        Dependency nd = new Dependency(0, item.Id, t.Id);
-                        _dal!.Dependency.Create(nd);
-                    }
-                }
-            }
-            else if (item.Complexity == DO.EngineerExperience.Expert)
-            {
-                foreach (var t in _dal.Task.ReadAll())
-                {
-                    if (t.Complexity == DO.EngineerExperience.Advanced)
-                    {
-                        d.Add(new TaskInList
-                        {
-                            Id = t.Id,
-                            Alias = t.Alias,
-                            Description = t.Describtion,
-                            Status = BO.Status.Scheduled
-                        });
-                        Dependency nd = new Dependency(0, item.Id, t.Id);
-                        _dal!.Dependency.Create(nd);
-                    }
-                }
-            }
-            //
-        }*/
-
-        var result = (from t in _dal.Task.ReadAll()
-                      join e in _dal.Engineer.ReadAll() on t.EngineerID equals e.Id
-                      where t.Id == id
-                      select new BO.Task
-                      {
-                          Id = t.Id,
-                          Alias = t.Alias,
-                          Describtion = t.Describtion,
-                          status = (BO.Status)t.status,
-                          Dependencies = d,
-                          IsMilestone = false,
-                          CreatedAtDate = t.CreatedAtDate,
-                          Complexity = (BO.EngineerExperience?)t.Complexity,
-                          ScheduledDate = t.ScheduledDate,
-                          StartedDate = t.StartedDate,
-                          RequiredEffortTime = t.RequiredEffortTime,
-                          DeadLine = t.DeadLine,
-                          CompletedDate = t.CompletedDate,
-                          Deliverable = t.Deliverable,
-                          Remarks = t.Remarks,
-                          Engineer = new EngineerInTask
-                          {
-                              Id = e.Id,
-                              Name = e.Name,
-                          }
-                      }).FirstOrDefault();
-
-        if (result == null)
-        {
-            result = new BO.Task
-            {
-                Id = item.Id,
-                Alias = item.Alias,
-                Describtion = item.Describtion,
-                status = (BO.Status)item.status,
-                Dependencies = d,
-                IsMilestone = false,
-                CreatedAtDate = item.CreatedAtDate,
-                Complexity = (BO.EngineerExperience?)item.Complexity,
-                ScheduledDate = item.ScheduledDate,
-                StartedDate = item.StartedDate,
-                RequiredEffortTime = item.RequiredEffortTime,
-                DeadLine = item.DeadLine,
-                CompletedDate = item.CompletedDate,
-                Deliverable = item.Deliverable,
-                Remarks = item.Remarks,
-                Engineer = null
-            };
-        }
-
-        return result;
-    }
-
-    /// <summary>
-    /// Retrieves a list of Task entities from the system.
-    /// </summary>
-    /// <param name="filter">An optional filter to apply to the list of tasks.</param>
-    /// <returns>The list of TaskInList objects representing the tasks.</returns>
-    public IEnumerable</*BO.TaskInList?*/BO.Task> ReadAll(Func<DO.Task, bool>? filter = null)
-    {
-        if (filter != null)
-        {
-            return from DO.Task item in _dal.Task.ReadAll()
-                   where filter(item)
-                   select new BO.Task
-                   {
-                       Id=item.Id,
-                       Alias = item.Alias,
-                       Describtion = item.Describtion,
-                       status = (BO.Status)item.status,
-                       ScheduledDate=item.ScheduledDate,
-                       StartedDate = item?.StartedDate,
-                       RequiredEffortTime=item.RequiredEffortTime,
-                       CompletedDate = item.CompletedDate,
-                       Complexity=(BO.EngineerExperience)item.Complexity,
-                       CreatedAtDate=item.CreatedAtDate,
-                       DeadLine = item.DeadLine,
-                       Deliverable=item.Deliverable,
-                       Remarks=item.Remarks,
-                       Engineer = null
-                   };
-                   /*select new BO.TaskInList
-                   {
-                       Id = item.Id,
-                       Description = item.Describtion,
-                       Alias = item.Alias,
-                       Status = (BO.Status)item.status
-                   };*/
-        }
-        return from DO.Task item in _dal.Task.ReadAll()
-               select new BO.Task
-               {
-                   Id=item.Id,
-                   Alias = item.Alias,
-                   Describtion = item.Describtion,
-                   status = (BO.Status)item.status,
-                   ScheduledDate=item.ScheduledDate,
-                   StartedDate = item?.StartedDate,
-                   RequiredEffortTime=item.RequiredEffortTime,
-                   CompletedDate = item.CompletedDate,
-                   Complexity=(BO.EngineerExperience)item.Complexity,
-                   CreatedAtDate=item.CreatedAtDate,
-                   DeadLine = item.DeadLine,
-                   Deliverable=item.Deliverable,
-                   Remarks=item.Remarks,
-                   Engineer = null
-               };
-        /*select new BO.TaskInList
-        {
-            Id = item.Id,
-            Description = item.Describtion,
-            Alias = item.Alias,
-            Status = (BO.Status)item.status
-        };*/
-    }
-
-    /// <summary>
-    /// Updates a Task entity in the system.
-    /// </summary>
-    /// <param name="item">The Task object with updated information.</param>
-    public void Update(BO.Task item)
-    {
-        Console.WriteLine("enter the task id");
-        if (!int.TryParse(Console.ReadLine(), out int id))
-        {
-            Console.WriteLine("please enter only datetime type\n");
-        }
-        //item.Id = id;
-        if (item.ScheduledDate <= DateTime.Now) { item.status = BO.Status.Scheduled; }
-        else { item.status = BO.Status.Unscheduled; }
-
-        BO.EngineerExperience? c = (BO.EngineerExperience)_dal.Task.Read(item.Id).Complexity;
-
-        if((BO.EngineerExperience?)c != item.Complexity) 
-        {
-            List<Dependency> dependencies = new List<Dependency>();
-            foreach(var d in _dal.Dependency.ReadAll())
-            {
-                if(d.DependentTask == item.Id)
-                {
-                    dependencies.Add(d);
-                }
-            }
-            foreach(var d in dependencies) { _dal.Dependency.Delete(d.Id); }
-
-            foreach (var t in _dal.Task.ReadAll())
-            {
-                if ((BO.EngineerExperience?)t.Complexity == item.Complexity-1 && t.Id != item.Id)
-                {
-                    item.Dependencies.Add(new TaskInList
+                    dependencies.Add(new TaskInList
                     {
                         Id = t.Id,
                         Alias = t.Alias,
                         Description = t.Describtion,
                         Status = BO.Status.Scheduled
                     });
-                    Dependency nd = new Dependency(0, item.Id, t.Id);
-                    _dal!.Dependency.Create(nd);
+                }
+            }
+        }
+        var result = (from task in _dal.Task.ReadAll() join engineer in _dal.Engineer.ReadAll() on task.EngineerID equals engineer.Id
+                     where task.Id == id
+                     select new BO.Task
+                     {
+                         Id = task.Id, Alias = task.Alias, Describtion = task.Describtion,
+                         Complexity = (BO.EngineerExperience?)task.Complexity,
+                         Status = (BO.Status?)task.Status, ScheduledDate = task.ScheduledDate,
+                         RequiredEffortTime = task.RequiredEffortTime, DeadLine = task.DeadLine,
+                         CreatedAtDate = task.CreatedAtDate, StartedDate = task.StartedDate,
+                         CompletedDate = task.CompletedDate, Deliverable = task.Deliverable, Remarks = task.Remarks,
+                         EngineerID = new EngineerInTask
+                         {
+                             Id = engineer.Id, Name = engineer.Name,
+                         },
+                         Dependencies = dependencies
+                     }).FirstOrDefault();
+
+        if(result == null)
+        {
+            result = new BO.Task
+            {
+                Id = item.Id, Alias = item.Alias, Describtion = item.Describtion,
+                Complexity = (BO.EngineerExperience?)item.Complexity,
+                Status = (BO.Status?)item.Status, ScheduledDate = item.ScheduledDate,
+                RequiredEffortTime = item.RequiredEffortTime, DeadLine = item.DeadLine,
+                CreatedAtDate = item.CreatedAtDate, StartedDate = item.StartedDate,
+                CompletedDate = item.CompletedDate, Deliverable = item.Deliverable, Remarks = item.Remarks,
+                EngineerID = null, Dependencies = dependencies
+            };
+        }
+        return result;
+    }
+    
+    public IEnumerable<BO.Task?> ReadAll(Func<DO.Task, bool>? filter = null)
+    {
+        List<DO.Task?> doresult = new List<DO.Task?>();
+        List<BO.Task?> boresult = new List<BO.Task?>();
+
+        foreach (var i in _dal.Task.ReadAll())
+        {
+            if (filter != null)
+            {
+                if (filter(i))
+                {
+                    doresult.Add(i);
+                }
+            }
+            if (filter == null)
+            {
+                doresult.Add(i);
+            }
+        }
+
+        foreach (var i in doresult)
+        {
+            boresult.Add(new BO.Task()
+            {
+                Id = i.Id, Alias = i.Alias, Describtion = i.Describtion,
+                Complexity = (BO.EngineerExperience?)i.Complexity,
+                Status = (BO.Status?)i.Status, ScheduledDate = i.ScheduledDate,
+                RequiredEffortTime = i.RequiredEffortTime, DeadLine = i.DeadLine,
+                CreatedAtDate = i.CreatedAtDate, StartedDate = i.StartedDate,
+                CompletedDate = i.CompletedDate, Deliverable = i.Deliverable, Remarks = i.Remarks,
+                EngineerID = null
+            });
+        }
+
+        foreach (var x in boresult)
+        {
+            foreach (var y in _dal.Engineer.ReadAll())
+            {
+                if (x.Id == y.Task)
+                {
+                    x.EngineerID = new EngineerInTask
+                    {
+                        Id = y.Id, Name = y.Name,
+                    };
                 }
             }
         }
 
-        DO.Task doTask = new DO.Task(item.Id, item.Alias, item.Describtion, item.IsMilestone,
-            item.CreatedAtDate, item.RequiredEffortTime, item.DeadLine,
-            (DO.EngineerExperience?)item.Complexity,(DO.Status?)item.status ,item.ScheduledDate, item.StartedDate,
-            item.CompletedDate, item.Deliverable, item.Remarks, null);
-
-        if (doTask.Alias =="")
-        {
-            throw new BO.BlInvalidException("INVALID ALIAS");
-        }
-
-        TimeSpan time1 = new(0, 0, 0);
-        if (doTask.RequiredEffortTime <= time1)
-        {
-            throw new BO.BlInvalidException("INVALID Required Effort Time");
-        }
-        
-        try
-        {
-            _dal.Task.Update(doTask);
-        }
-        catch (DO.DalNotExistException ex)
-        {
-            throw new BO.BlDoesNotExistException($"task with ID={item.Id} not exists", ex);
-        }
+        return boresult;
     }
 
-    /// <summary>
-    /// Updates or adds the start date for a Task entity in the system.
-    /// </summary>
-    /// <param name="id">The ID of the Task to update.</param>
-    /// <param name="date">The new start date to set for the Task.</param>
     public void UpdataOrAddDate(int id, DateTime date)
     {
         BO.Task? item = Read(id);
 
-        if (item.Dependencies == null)
+        if (item?.Dependencies == null)
         {
             item.StartedDate = date;
             Update(item);
@@ -626,7 +250,7 @@ internal class TaskImplementation : ITask
             foreach (var i in item.Dependencies)
             {
                 var item1 = Read(i.Id);
-                if (item1.ScheduledDate == null)
+                if (item1?.ScheduledDate == null)
                 {
                     throw new BO.BlStartDataOfDependsOnTaskException($"The task with the ID={item1.Id} has no start date and this task depends on it");
                 }
@@ -646,220 +270,257 @@ internal class TaskImplementation : ITask
             Update(item);
         }
     }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*{
-    private DalApi.IDal _dal = DalApi.Factory.Get;
-
-    public int Create(BO.Task item)
+    
+    public void Update(BO.Task item)
     {
-        DO.Task doTask = new DO.Task(item.Id, item.Alias, item.Describtion, item.IsMilestone,
-            item.CreatedAtDate, item.RequiredEffortTime, item.DeadLine,
-            (DO.EngineerExperience?)item.Complexity,item.ScheduledDate,item.StartedDate,
-            item.CompletedDate, item.Deliverable, item.Remarks, null );
+        Console.WriteLine("enter Task Alias");
+        string temp = GetStringInput();
+        if (temp != null) { item.Alias = temp; }
 
-        if (doTask.Alias =="")
+        Console.WriteLine("enter Task Describtion");
+        temp = GetStringInput();
+        if (temp != null) { item.Describtion = temp; }
+
+        Console.WriteLine("enter Task Deliverable");
+        temp = GetStringInput();
+        if (temp != null) { item.Deliverable = temp; }
+
+        Console.WriteLine("enter Task Remarks");
+        temp = GetStringInput();
+        if (temp != null) { item.Remarks = temp; }
+
+        if (item.RequiredEffortTime == null)
         {
-            throw new BO.BlInvalidException("INVALID ALIAS");
+            int tmp = GetRequiredEffortTime();
+            if (tmp != 1) { item.RequiredEffortTime = new(tmp, 0, 0, 0); } else { item.RequiredEffortTime = new(1, 0, 0, 0); }
         }
-        
-        // תוסיף תלויות עבור משימות קודמות מתוך רשימת המשימות הקיימת
-        // אם הנתונים תקינים - תבצע ניסיון בקשות הוספה לשכבת הנתונים 
-        
+
         try
         {
-            return _dal.Task.Create(doTask);
-        }
-        catch (DO.DalAlreadyExistException ex)
-        {
-            throw new BO.BlAlreadyExistException($"Student with ID={item.Id} already exists", ex);
-        }
-    }
-
-    public void Delete(int id)
-    {
-        BO.Task? item = Read(id);
-        if (item?.Dependencies == null)
-        {
-            try
+            if (_bl.Now < start)
             {
-                _dal.Task.Delete(id);
-            }
-            catch (DO.DalNotExistException)
-            {
-                throw new BlDoesNotExistException($"Student with ID={id} does Not exist");
-            }
-        }
-        else
-        {
-            throw new BO.BlCantBeDeletedException("this item cant be deleted due to Dependencies");
-        }
-
-        if (item?.Dependencies == null)
-        {
-            try
-            {
-                _dal.Task.Delete(id);
-            }
-            catch (DO.DalNotExistException)
-            {
-                throw new BlDoesNotExistException($"task with ID={id} does Not exist");
-            }
-        }
-        else
-        {
-            throw new BO.BlCantBeDeletedException("this item cant be deleted due to Dependencies");
-        }
-    }
-
-    public BO.Task? Read(int id)
-    {
-        DO.Task? item = _dal.Task.Read(id);
-        if (item == null)
-        {
-            throw new BlDoesNotExistException($"Student with ID={id} does Not exist");
-        }
-        if(item.EngineerID == null)
-        {
-            return new BO.Task()
-            {
-                Id =  item.Id,
-                Alias = item.Alias,
-                Describtion = item.Describtion,
-                status = Status.Scheduled,
-                Dependencies = null,
-                IsMilestone = false,
-                CreatedAtDate = item.CreatedAtDate,
-                Complexity = (EngineerExperience?)item.Complexity,
-                ScheduledDate = item.ScheduledDate,
-                StartedDate = item.StartedDate,
-                RequiredEffortTime = item.RequiredEffortTime,
-                DeadLine = item.DeadLine,
-                CompletedDate = item.CompletedDate,
-                Deliverable = item.Deliverable,
-                Remarks = item.Remarks,
-                Engineer = null
-            };
-        }
-        return new BO.Task()
-        {
-            Id =  item.Id,
-            Alias = item.Alias,
-            Describtion = item.Describtion,
-            status = Status.Scheduled,
-            Dependencies = null,
-            IsMilestone = false,
-            CreatedAtDate = item.CreatedAtDate,
-            Complexity = (EngineerExperience?)item.Complexity,
-            ScheduledDate = item.ScheduledDate,
-            StartedDate = item.StartedDate,
-            RequiredEffortTime = item.RequiredEffortTime,
-            DeadLine = item.DeadLine,
-            CompletedDate = item.CompletedDate,
-            Deliverable = item.Deliverable,
-            Remarks = item.Remarks,
-            //Engineer
-        };
-        else if (item.Complexity == EngineerExperience.AdvancedBeginner)
-        {
-            foreach(var t in _dal.Task.ReadAll())
-            {
-                if(t.Complexity == DO.EngineerExperience.Beginner)
+                Console.WriteLine("enter task complexity\n 1=Beginner\n 2=AdvancedBeginner\n 3=Intermidate\n 4=Advanced\n 5=Expert");
+                if (item.Complexity == null)
                 {
-                    item.Dependencies.Add(new TaskInList
-                    {
-                        Id = t.Id,
-                        Alias = t.Alias,
-                        Description = t.Describtion,
-                        Status = Status.Scheduled
-                    });
+                    item.Complexity = GetTaskComplexity();
+                }
+
+                (item.ScheduledDate, item.DeadLine) = CalculateDates(item.Complexity);
+
+                Console.WriteLine("\nWould you like to enter a depended task? (Y/N)");
+                string ans = Console.ReadLine();
+                if (ans?.ToUpper() == "Y")
+                {
+                    List<int> d = choiceDependecy(item);
                 }
             }
         }
-    }
-
-    public IEnumerable<TaskInList?> ReadAll(Func<DO.Task, bool>? filter = null)
-    {
-
-        if (filter != null)
+        catch 
         {
-            return from DO.Task item in _dal.Task.ReadAll()
-                   where filter(item)
-                   select new BO.TaskInList
-                   {
-                       Id = item.Id,
-                       Description = item.Describtion,
-                       Alias = item.Alias,
-                       Status = Status.Scheduled
-                   };
-        }
-        return from DO.Task item in _dal.Task.ReadAll()
-               select new BO.TaskInList
-               {
-                   Id = item.Id,
-                   Description = item.Describtion,
-                   Alias = item.Alias,
-                   Status = Status.Scheduled
-               }; 
-    }
-
-    public void UpdataOrAddDate(int id, DateTime date)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Update(BO.Task item)
-    {
-        DO.Task doTask = new DO.Task(item.Id, item.Alias, item.Describtion, item.IsMilestone,
-            item.CreatedAtDate, item.RequiredEffortTime, item.DeadLine,
-            (DO.EngineerExperience?)item.Complexity,item.ScheduledDate,item.StartedDate,
-            item.CompletedDate, item.Deliverable, item.Remarks, null);
-
-        if (doTask.Alias =="")
-        {
-            throw new BO.BlInvalidException("INVALID ALIAS");
+            item.Complexity = Read(item.Id).Complexity;
+            throw new BO.BlPrograpStartException("you cant create a task now the progect alraedy started"); 
         }
 
-        TimeSpan time1 = new(0, 0, 0);
-        if(doTask.RequiredEffortTime <= time1)
-        {
-            throw new BO.BlInvalidException("INVALID Required Effort Time");
-        }
-        //צריך להסיף תלות
+        DO.Task doTask = new DO.Task(item.Id, item.Alias, item.Describtion, (DO.EngineerExperience?)item.Complexity,
+            (DO.Status?)item.Status, item.ScheduledDate, item.RequiredEffortTime, item.DeadLine,
+             item.CreatedAtDate, item.StartedDate, item.CompletedDate, item.Deliverable, item.Remarks, null);
+
+        ValidateDOTask(doTask);
+
+        TimeSpan time1 = new(0, 0, 0, 0);
+        if (doTask.RequiredEffortTime <= time1) { throw new BO.BlInvalidException("INVALID Required Effort Time"); }
+
         try
         {
             _dal.Task.Update(doTask);
         }
         catch (DO.DalNotExistException ex)
         {
-            throw new BO.BlDoesNotExistException($"Student with ID={item.Id} not exists", ex);
+            throw new BO.BlDoesNotExistException($"task with ID={item.Id} not exists", ex);
         }
     }
-}*/
 
+    public List<int> choiceDependecy(BO.Task item)
+    {
+        List<int> d = _dal.Task.ReadAll().Where(t => t.Complexity < (DO.EngineerExperience?)item.Complexity).Select(t => t.Id).ToList();
+        Console.WriteLine("\nyou choose from this task id's");
+        foreach (int id in d) { Console.Write($"{id}, "); }
+        Console.WriteLine("\nenter the number of the depended task");
+        int task;
+        if (!int.TryParse(Console.ReadLine(), out task))
+        {
+            Console.WriteLine("please enter only int type\n");
+        }
+         addDependecy(item,task);
+        return d;
+    }
+
+    public void addDependecy(BO.Task item,int task)
+    {
+        if (_bl.Now < start)
+        {
+            if (task != 0)
+            {
+                if (_dal.Task.Read(task).Complexity < (DO.EngineerExperience)item.Complexity)
+                {
+                    _dal.Dependency.Create(new Dependency(0, item.Id, task));
+                    item.Dependencies.Add(new TaskInList
+                    {
+                        Id = task,
+                        Alias = _dal.Task.Read(task).Alias,
+                        Description = _dal.Task.Read(task).Describtion,
+                        Status = (BO.Status)_dal.Task.Read(task).Status
+                    });
+                }
+                else
+                {
+                    throw new BO.BlInvalidException("you can't add Dependency at a comlexety that highr then your comlexety" +
+                        "or at your comlexety");
+                }
+            }
+
+            UpdateDependencies(item);
+        }
+        else { throw new BO.BlPrograpStartException("you cant create a task now the progect alraedy started"); }
+    }
+
+    private void UpdateDependencies(BO.Task item)
+    {
+        BO.EngineerExperience? c = (BO.EngineerExperience?)_dal.Task.Read(item.Id).Complexity;
+        if (c != item.Complexity)
+        {
+            List<Dependency> dependencies = new List<Dependency>();
+            foreach (var d in _dal.Dependency.ReadAll())
+            {
+                if (d.DependentTask == item.Id)
+                {
+                    dependencies.Add(d);
+                }
+            }
+            foreach (var d in dependencies) { _dal.Dependency.Delete(d.Id); }
+
+            foreach (var t in _dal.Task.ReadAll())
+            {
+                if ((BO.EngineerExperience?)t.Complexity == item.Complexity - 1 && t.Id != item.Id)
+                {
+                    item.Dependencies.Add(new TaskInList
+                    {
+                        Id = t.Id,
+                        Alias = t.Alias,
+                        Description = t.Describtion,
+                        Status = BO.Status.Scheduled
+                    });
+                    Dependency nd = new Dependency(0, item.Id, t.Id);
+                    _dal!.Dependency.Create(nd);
+                }
+            }
+        }
+    }
+
+    private string GetStringInput()
+    {
+        Console.WriteLine("Please enter a value:");
+        return Console.ReadLine();
+    }
+
+    private int GetRequiredEffortTime()
+    {
+        Console.WriteLine("enter the Required Effort Time (in days)");
+        if (!int.TryParse(Console.ReadLine(), out int days) || days < 1 || days > 6)
+        {
+            Console.WriteLine("the Required Effort Time is set to 1 day");
+            return 1;
+        }
+        return days;
+    }
+
+    private BO.EngineerExperience GetTaskComplexity()
+    {
+        Console.WriteLine("enter task complexity\n 1=Beginner\n 2=AdvancedBeginner\n 3=Intermidate\n 4=Advanced\n 5=Expert");
+        if (!int.TryParse(Console.ReadLine(), out int num) || num < 1 || num > 5)
+        {
+            Console.WriteLine("task complexity is set to Beginner");
+            return BO.EngineerExperience.Beginner;
+        }
+        return (BO.EngineerExperience)(num-1);
+    }
+
+    private (DateTime ScheduledDate, DateTime DeadLine) CalculateDates(BO.EngineerExperience? complexity)
+    {
+        DateTime scheduledDate;
+        DateTime deadLine;
+
+        
+        scheduledDate = start.AddDays(complexity switch
+        {
+            BO.EngineerExperience.Beginner => 0,
+            BO.EngineerExperience.AdvancedBeginner => 8,
+            BO.EngineerExperience.Intermidate => 15,
+            BO.EngineerExperience.Advanced => 22,
+            BO.EngineerExperience.Expert => 29,
+            _ => 0  ,
+        });
+        deadLine = start.AddMonths(complexity switch
+        {
+            BO.EngineerExperience.Beginner => 7,
+            BO.EngineerExperience.AdvancedBeginner => 14,
+            BO.EngineerExperience.Intermidate => 21,
+            BO.EngineerExperience.Advanced => 28,
+            BO.EngineerExperience.Expert => 35,
+            _ => 1,
+        });
+
+        return (scheduledDate, deadLine);
+    }
+
+    private void ValidateDOTask(DO.Task doTask)
+    {
+        if (doTask.Alias == "")
+        {
+            throw new BO.BlInvalidException("INVALID ALIAS");
+        }
+    }
+
+    private void CreateDependencies(BO.Task item, int taskId)
+    {
+        foreach (var t in _dal.Task.ReadAll())
+        {
+            if ((BO.EngineerExperience?)t.Complexity == item.Complexity - 1 && t.Id != taskId)
+            {
+                item.Dependencies?.Add(new TaskInList
+                {
+                    Id = t.Id,
+                    Alias = t.Alias,
+                    Description = t.Describtion,
+                    Status = BO.Status.Scheduled
+                });
+                Dependency nd = new Dependency(0, taskId, t.Id);
+                _dal!.Dependency.Create(nd);
+            }
+        }
+    }
+
+    private void ValidateDependencies(BO.Task item)
+    {
+        if (item.Dependencies != null)
+        {
+            foreach (var i in item.Dependencies)
+            {
+                if (item.ScheduledDate < _dal.Task?.Read(i.Id)?.DeadLine)
+                {
+                    throw new BO.BlStartDataOfDependsOnTaskException($"The task with the id {i.Id} deadline is before the " +
+                        $"the ScheduledDate of this task and this task Depends on the task with the id {i.Id}");
+                }
+            }
+        }
+    }
+
+    public void updateTasksEngineer(int taskId,int engineerId)
+    {
+        BO.Task? t = Read(taskId);
+        t.EngineerID = new EngineerInTask();
+        t.EngineerID.Id = _bl.engineer.Read(engineerId).Id;
+        t.EngineerID.Name = _bl.engineer.Read(engineerId).Name;
+        Update(t);
+    }
+}

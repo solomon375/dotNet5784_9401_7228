@@ -3,60 +3,24 @@ using DalApi;
 using DO;
 using System.Collections.Generic;
 
-/// <summary>
-/// Represents the implementation of the Task-related operations in the Data Access Layer.
-/// </summary>
 internal class TaskImplementation : ITask
 {
-    /// <summary>
-    /// Creates a new task.
-    /// </summary>
-    /// <param name="item">The Task object to be created.</param>
-    /// <returns>The identifier of the newly created task.</returns>
     public int Create(Task item)
     {
-        int next = DataSource.Config.NextTaskId;
-
-        Task item1 = item with { Id = next };
-
-        DataSource.Tasks.Add(item1);
-        
-        return item1.Id;
-    }
-
-    /// <summary>
-    /// Deletes a task based on its identifier.
-    /// </summary>
-    /// <param name="id">The identifier of the task to be deleted.</param>
-    public void Delete(int id)
-    {
-        foreach (Task index in DataSource.Tasks)
+        bool exist = DataSource.Tasks.Any(t => t.Alias == item.Alias && t.Describtion == item.Describtion &&
+        t.Complexity == item.Complexity && t.Status == item.Status && t.RequiredEffortTime == item.RequiredEffortTime &&
+        t.Deliverable == item.Deliverable && t.Remarks == item.Remarks);
+        if (exist == false)
         {
-            if (index.Id == id)
-            {
-                DataSource.Tasks.Remove(index);
-                return;
-            }
+            int next = DataSource.Config.NextTaskId;
+            Task item1 = item with { Id = next };
+            DataSource.Tasks.Add(item1);
+            return item1.Id;
         }
-        throw new DalNotExistException($"Dependencys with ID={id} does Not exist");
+        return -1;
     }
 
-    /// <summary>
-    /// Reads a task based on its identifier.
-    /// </summary>
-    /// <param name="id">The identifier of the task to be read.</param>
-    /// <returns>The Task object if found; otherwise, null.</returns>
-    public Task? Read(int id)
-    {
-        return DataSource.Tasks.FirstOrDefault(item => item.Id == id);
-    }
-
-    /// <summary>
-    /// Reads all tasks, optionally filtered by a specified condition.
-    /// </summary>
-    /// <param name="filter">The filter condition to apply (optional).</param>
-    /// <returns>An IEnumerable of Task objects.</returns>
-    public IEnumerable<Task> ReadAll(Func<Task, bool>? filter = null) //stage 2
+    public IEnumerable<Task> ReadAll(Func<Task, bool>? filter = null)
     {
         if (filter != null)
         {
@@ -68,11 +32,16 @@ internal class TaskImplementation : ITask
                select item;
     }
 
+    public Task? Read(Func<Task, bool> filter)
+    {
+        return DataSource.Tasks.FirstOrDefault(filter);
+    }
 
-    /// <summary>
-    /// Updates an existing task.
-    /// </summary>
-    /// <param name="item">The Task object with updated values.</param>
+    public Task? Read(int id)
+    {
+        return DataSource.Tasks.FirstOrDefault(item => item.Id == id);
+    }
+
     public void Update(Task item)
     {
         foreach (Task Index in DataSource.Tasks)
@@ -80,23 +49,18 @@ internal class TaskImplementation : ITask
             if (Index.Id == item.Id)
             {
                 DataSource.Tasks.Remove(Index);
-
                 DataSource.Tasks.Insert(0, item);
-
                 return;
             }
         }
-
         throw new DalNotExistException($"Task with ID={item.Id} does Not exist");
     }
 
-    /// <summary>
-    /// Reads a task based on a specified filter condition.
-    /// </summary>
-    /// <param name="filter">The filter condition to apply.</param>
-    /// <returns>The Task object if found; otherwise, null.</returns>
-    public Task? Read(Func<Task, bool> filter) //stage 2
+    public void Delete(int id)
     {
-        return DataSource.Tasks.FirstOrDefault(filter);
+        Task foundEngineer = DataSource.Tasks.FirstOrDefault(task => task.Id == id)
+                ?? throw new DalNotExistException($"Dependencys with ID={id} does Not exist");
+
+        DataSource.Tasks.Remove(foundEngineer);
     }
 }

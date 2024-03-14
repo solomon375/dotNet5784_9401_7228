@@ -1,93 +1,60 @@
-﻿namespace Dal;
-using DalApi;
+﻿using DalApi;
 using DO;
-using System;
-using System.Collections.Generic;
+using System.Linq;
 
-/// <summary>
-/// Implementation of the Data Access Layer for managing tasks using XML storage.
-/// </summary>
-internal class TaskImplementation:ITask
+namespace Dal;
+
+internal class TaskImplementation : ITask
 {
-    // XML file name for task storage
     readonly string s_tasks_xml = "tasks";
 
-    /// <summary>
-    /// Creates a new task.
-    /// </summary>
-    /// <param name="item">The task to create.</param>
-    /// <returns>The ID of the newly created task.</returns>
-    public int Create(Task item)
+    public int Create(DO.Task item)
     {
-        List<Task> tasks = XMLTools.LoadListFromXMLSerializer<Task>(s_tasks_xml) ?? new List<Task>();
-
-        int next = Config.NextTaskId;
-
-        Task item1 = item with { Id = next };
-
-        tasks.Add(item1);
-
-        XMLTools.SaveListToXMLSerializer(tasks, s_tasks_xml);
-
-        return item1.Id;
+        List<DO.Task> tasks = XMLTools.LoadListFromXMLSerializer<DO.Task>(s_tasks_xml) ?? new List<DO.Task>();
+        bool exist = tasks.Any(t => t.Alias == item.Alias && t.Describtion == item.Describtion &&
+        t.Complexity == item.Complexity && t.Status == item.Status && t.RequiredEffortTime == item.RequiredEffortTime &&
+        t.Deliverable == item.Deliverable && t.Remarks == item.Remarks);
+        if (exist == false)
+        {
+            int next = Config.NextTaskId;
+            DO.Task item1 = item with { Id = next };
+            tasks.Add(item1);
+            XMLTools.SaveListToXMLSerializer(tasks, s_tasks_xml);
+            return item1.Id;
+        }
+        return -1;
     }
 
-    /// <summary>
-    /// Deletes a task by its ID.
-    /// </summary>
-    /// <param name="id">The ID of the task to delete.</param>
     public void Delete(int id)
     {
-        List<Task> tasks = XMLTools.LoadListFromXMLSerializer<Task>(s_tasks_xml) ?? new List<Task>();
-
-        foreach (Task index in tasks)
+        List<DO.Task> tasks = XMLTools.LoadListFromXMLSerializer<DO.Task>(s_tasks_xml) ?? new List<DO.Task>();
+        foreach (DO.Task index in tasks)
         {
             if (index.Id == id)
             {
                 tasks.Remove(index);
-
                 XMLTools.SaveListToXMLSerializer(tasks, s_tasks_xml);
-
                 return;
             }
         }
-
         throw new DalNotExistException($"Dependencys with ID={id} does Not exist");
     }
 
-    /// <summary>
-    /// Reads a task by its ID.
-    /// </summary>
-    /// <param name="id">The ID of the task to read.</param>
-    /// <returns>The task with the specified ID, or null if not found.</returns>
-    public Task? Read(int id)
+    public DO.Task? Read(int id)
     {
-        List<Task> tasks = XMLTools.LoadListFromXMLSerializer<Task>(s_tasks_xml) ?? new List<Task>();
-
+        List<DO.Task> tasks = XMLTools.LoadListFromXMLSerializer<DO.Task>(s_tasks_xml) ?? new List<DO.Task>();
         return tasks.FirstOrDefault(item => item.Id == id);
     }
 
-    /// <summary>
-    /// Reads a task based on a filter condition.
-    /// </summary>
-    /// <param name="filter">The filter condition.</param>
-    /// <returns>The first task matching the filter condition, or null if not found.</returns>
-    public Task? Read(Func<Task, bool> filter)
+    public DO.Task? Read(Func<DO.Task, bool> filter)
     {
-        List<Task> tasks = XMLTools.LoadListFromXMLSerializer<Task>(s_tasks_xml) ?? new List<Task>();
-
+        List<DO.Task> tasks = XMLTools.LoadListFromXMLSerializer<DO.Task>(s_tasks_xml) ?? new List<DO.Task>();
         return tasks.FirstOrDefault(filter);
     }
 
-    /// <summary>
-    /// Reads all tasks, optionally applying a filter condition.
-    /// </summary>
-    /// <param name="filter">The optional filter condition.</param>
-    /// <returns>A collection of tasks that match the filter condition.</returns>
-    public IEnumerable<Task?> ReadAll(Func<Task, bool>? filter = null)
+    public IEnumerable<DO.Task> ReadAll(Func<DO.Task, bool>? filter = null)
     {
-        List<Task> tasks = XMLTools.LoadListFromXMLSerializer<Task>(s_tasks_xml) ?? new List<Task>();
-
+        List<DO.Task> tasks = XMLTools.LoadListFromXMLSerializer<DO.Task>(s_tasks_xml) ?? new List<DO.Task>();
         if (filter != null)
         {
             return from item in tasks
@@ -97,28 +64,20 @@ internal class TaskImplementation:ITask
         return tasks;
     }
 
-    /// <summary>
-    /// Updates an existing task.
-    /// </summary>
-    /// <param name="item">The updated task.</param>
-    public void Update(Task item)
+    public void Update(DO.Task item)
     {
-        List<Task> tasks = XMLTools.LoadListFromXMLSerializer<Task>(s_tasks_xml) ?? new List<Task>();
+        List<DO.Task> tasks = XMLTools.LoadListFromXMLSerializer<DO.Task>(s_tasks_xml) ?? new List<DO.Task>();
 
-        foreach (Task Index in tasks)
+        foreach (DO.Task Index in tasks)
         {
             if (Index.Id == item.Id)
             {
                 tasks.Remove(Index);
-
                 tasks.Insert(0, item);
-
                 XMLTools.SaveListToXMLSerializer(tasks, s_tasks_xml);
-
                 return;
             }
         }
-
         throw new DalNotExistException($"Task with ID={item.Id} does Not exist");
     }
 }

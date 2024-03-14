@@ -5,8 +5,29 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
+        DataContext="{Binding CurrentEngineer, RelativeSource={RelativeSource self}, Mode=TwoWay}"
         Title="MainEngineerWindow" Height="450" Width="800">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100*"/>
+            <RowDefinition Height="350*"/>
+        </Grid.RowDefinitions>
+        <Label Content="welcome" FontSize="30" HorizontalAlignment="Left" Margin="182,0,0,0" VerticalAlignment="Center"
+               Height="56" Width="150"/>
+        <Label Content="{Binding Name}" FontSize="30" HorizontalAlignment="Left" Margin="337,0,0,0" VerticalAlignment="Center"
+               Height="56" Width="303"/>
+        <Label Content="Task ID" HorizontalAlignment="Left" Margin="68,34,0,0" Grid.Row="1" VerticalAlignment="Top" Width="66" Height="36"/>
+        <Label Content="Task Alias" HorizontalAlignment="Left" Margin="68,86,0,0" Grid.Row="1" VerticalAlignment="Top" Height="35" Width="78"/>
+        <TextBox HorizontalAlignment="Left" Margin="152,34,0,0" Grid.Row="1" TextWrapping="Wrap" 
+                 Text="{Binding Task.Id}" VerticalAlignment="Top" Width="154" Height="36" IsEnabled="False"/>
+        <TextBox HorizontalAlignment="Left" Margin="152,86,0,0" Grid.Row="1" TextWrapping="Wrap" 
+                 Text="{Binding Task.Alias}" VerticalAlignment="Top" Width="154" Height="35" IsEnabled="False"/>
+        <Button Content="current Task info" HorizontalAlignment="Left" Margin="101,186,0,0" Grid.Row="1"
+                VerticalAlignment="Top" Height="52" Width="136" IsEnabled="{Binding Task,Converter={StaticResource ConvertTaskInEngineerToBoolKey}}" Click="Button_Click"/>
+        <Button Content="finish task" HorizontalAlignment="Left" Margin="566,194,0,0" Grid.Row="1"
+                VerticalAlignment="Top" Height="44" Width="131" IsEnabled="{Binding Task,Converter={StaticResource ConvertTaskInEngineerToBoolKey}}" Click="Button_Click_1"/>
+        <Button Content="Take task" HorizontalAlignment="Left" Margin="566,52,0,0" Grid.Row="1"
+                VerticalAlignment="Top" Height="44" Width="131" IsEnabled="{Binding Task,Converter={StaticResource ConvertTaskInEngineerToBool1Key}}" Click="Button_Click_2"/>
+
     </Grid>
 </Window>

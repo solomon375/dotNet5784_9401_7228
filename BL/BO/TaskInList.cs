@@ -1,17 +1,11 @@
 ﻿namespace BO;
-/// <summary>
-///  help method for Task
-/// </summary>
-/// <param name="Id">unique id of the mission</param>
-/// <param name="Description">Description of the mission</param>
-/// <param name="Alias">nickname</param>
-/// <param name="Status">Status of the mission</param>
+
 public class TaskInList
 {
-    public int Id { get; init; }
-    public string? Description { get; init; }
-    public string? Alias { get; init; }
-    public BO.Status? Status { get; init; }
+    public int Id { get; set; }
+    public string? Description { get; set; }
+    public string? Alias { get; set; }
+    public BO.Status? Status { get; set; }
 
-    public override string ToString() => this.StringProperty();
+    public override string ToString() => this.ToStringProperty();
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PL.Task;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,7 +27,7 @@ namespace PL.Engineer
         {
             InitializeComponent();
 
-            if(Id == 0)
+            if (Id == 0)
             {
                 CurrentEngineer = new BO.Engineer();
                 ID = CurrentEngineer.Id;
@@ -38,7 +39,7 @@ namespace PL.Engineer
                     CurrentEngineer = s_bl.engineer.Read(Id);
                     ID = CurrentEngineer.Id;
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     MessageBox.Show($"Error: {ex.Message}");
                     Close();
@@ -79,6 +80,19 @@ namespace PL.Engineer
             {
                 MessageBox.Show($"Error: {ex.Message}");
             }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            new TakeTaskFromManigeerWindow(CurrentEngineer.Id).Show();
+            Close();
+        }
+
+        private void TextBox_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            MessageBox.Show("enter engineer cost between 0-150\n\nBeginner cost between 0-50\nAdvancedBeginner cost between 50-70\n" +
+                "Intermidate cost between 70-90\n" +
+                "Advanced cost between 90-100\nExpert cost between 100-150");
         }
     }
 }
