@@ -9,3 +9,4 @@ BL->BO->Tools
 tryparse - בפונקציות CRUD בEngineerImplementation ובTaskImplementation יש שימוש בtryparse
 שלב 5-אין בונוסים
 שלב 6 - כל השלב הוא בונוס
+הוספנו כפתור תרומה במסך הראשי וחלון תרומה 
