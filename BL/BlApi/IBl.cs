@@ -12,7 +12,7 @@ public interface IBl
     public IEngineer engineer { get; }
     public Clock clock { get; }
     public void InitializeDB() => DalTest.Initialization.Do();
-    public void ResetDB() => DalTest.Initialization.Reset();
+    public void ResetDB() => DalTest.Initialization.Resat();
     void UpdateTasksStatus();
 
     #region Now
