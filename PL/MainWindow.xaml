@@ -40,7 +40,7 @@
                     Margin="66,175,0,0" Click="ResetClock_Click" Grid.Column="1"/>
             <Button Content="Donation" HorizontalAlignment="Center" Margin="0,241,0,0" VerticalAlignment="Top" Width="124" Click="Button_Click"/>
             <Label Grid.Column="1" Content="progect start time" HorizontalAlignment="Left" Margin="41,10,0,0" VerticalAlignment="Top" />
-            <Label Grid.Column="1" Content="5/4/2024" HorizontalAlignment="Left" Margin="41,36,0,0" VerticalAlignment="Top" Width="105"/>
+            <Label Grid.Column="1" Content="4/5/2024" HorizontalAlignment="Left" Margin="41,36,0,0" VerticalAlignment="Top" Width="105"/>
         </Grid>
     </Grid>
 </Window>
