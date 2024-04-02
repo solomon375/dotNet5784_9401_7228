@@ -3,8 +3,14 @@ using DalApi;
 using DO;
 using System.Collections.Generic;
 
+/// <summary>
+/// Implementation of the task data access layer.
+/// </summary>
 internal class TaskImplementation : ITask
 {
+    /// <summary>
+    /// Creates a new task.
+    /// </summary>
     public int Create(Task item)
     {
         bool exist = DataSource.Tasks.Any(t => t.Alias == item.Alias && t.Describtion == item.Describtion &&
@@ -20,6 +26,9 @@ internal class TaskImplementation : ITask
         return -1;
     }
 
+    /// <summary>
+    /// Reads all tasks optionally filtered by a condition.
+    /// </summary>
     public IEnumerable<Task> ReadAll(Func<Task, bool>? filter = null)
     {
         if (filter != null)
@@ -32,16 +41,25 @@ internal class TaskImplementation : ITask
                select item;
     }
 
+    /// <summary>
+    /// Reads a single task based on a filter condition.
+    /// </summary>
     public Task? Read(Func<Task, bool> filter)
     {
         return DataSource.Tasks.FirstOrDefault(filter);
     }
 
+    /// <summary>
+    /// Reads a task by ID.
+    /// </summary>
     public Task? Read(int id)
     {
         return DataSource.Tasks.FirstOrDefault(item => item.Id == id);
     }
 
+    /// <summary>
+    /// Updates an existing task.
+    /// </summary>
     public void Update(Task item)
     {
         foreach (Task Index in DataSource.Tasks)
@@ -56,6 +74,9 @@ internal class TaskImplementation : ITask
         throw new DalNotExistException($"Task with ID={item.Id} does Not exist");
     }
 
+    /// <summary>
+    /// Deletes a task by ID.
+    /// </summary>
     public void Delete(int id)
     {
         Task foundEngineer = DataSource.Tasks.FirstOrDefault(task => task.Id == id)

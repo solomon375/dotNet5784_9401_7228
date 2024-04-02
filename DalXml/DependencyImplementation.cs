@@ -3,10 +3,16 @@ using DO;
 
 namespace Dal;
 
+/// <summary>
+/// Implementation of the dependency interface.
+/// </summary>
 internal class DependencyImplementation : IDependency
 {
     readonly string s_dependencys_xml = "dependencys";
 
+    /// <summary>
+    /// Creates a new dependency.
+    /// </summary>
     public int Create(Dependency item)
     {
         List<Dependency> dependencys = XMLTools.LoadListFromXMLSerializer<Dependency>(s_dependencys_xml) ?? new List<Dependency>();
@@ -23,6 +29,9 @@ internal class DependencyImplementation : IDependency
         return -1;
     }
 
+    /// <summary>
+    /// Deletes a dependency by ID.
+    /// </summary>
     public void Delete(int id)
     {
         List<Dependency> dependencys = XMLTools.LoadListFromXMLSerializer<Dependency>(s_dependencys_xml) ?? new List<Dependency>();
@@ -38,18 +47,28 @@ internal class DependencyImplementation : IDependency
         throw new DalNotExistException($"Dependencys with ID={id} does Not exist");
     }
 
+    /// <summary>
+    /// Reads a dependency by ID.
+    /// </summary>
     public Dependency? Read(int id)
     {
         List<Dependency> dependencys = XMLTools.LoadListFromXMLSerializer<Dependency>(s_dependencys_xml) ?? new List<Dependency>();
         return dependencys.FirstOrDefault(item => item.Id == id);
     }
 
+    /// <summary>
+    /// Reads a single dependency based on a filter condition.
+    /// </summary>
     public Dependency? Read(Func<Dependency, bool> filter)
     {
         List<Dependency> dependencys = XMLTools.LoadListFromXMLSerializer<Dependency>(s_dependencys_xml) ?? new List<Dependency>();
         return dependencys.FirstOrDefault(filter);
     }
 
+
+    /// <summary>
+    /// Reads all dependencies optionally filtered by a condition.
+    /// </summary>
     public IEnumerable<Dependency> ReadAll(Func<Dependency, bool>? filter = null)
     {
         List<Dependency> dependencys = XMLTools.LoadListFromXMLSerializer<Dependency>(s_dependencys_xml) ?? new List<Dependency>();
@@ -62,6 +81,9 @@ internal class DependencyImplementation : IDependency
         return dependencys;
     }
 
+    /// <summary>
+    /// Updates an existing dependency.
+    /// </summary>
     public void Update(Dependency item)
     {
         List<Dependency> dependencys = XMLTools.LoadListFromXMLSerializer<Dependency>(s_dependencys_xml) ?? new List<Dependency>();

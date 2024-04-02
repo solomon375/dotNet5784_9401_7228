@@ -4,10 +4,16 @@ using System.Linq;
 
 namespace Dal;
 
+/// <summary>
+/// Implementation of the task data access layer.
+/// </summary>
 internal class TaskImplementation : ITask
 {
     readonly string s_tasks_xml = "tasks";
 
+    /// <summary>
+    /// Creates a new task.
+    /// </summary>
     public int Create(DO.Task item)
     {
         List<DO.Task> tasks = XMLTools.LoadListFromXMLSerializer<DO.Task>(s_tasks_xml) ?? new List<DO.Task>();
@@ -25,6 +31,9 @@ internal class TaskImplementation : ITask
         return -1;
     }
 
+    /// <summary>
+    /// Deletes a task by ID.
+    /// </summary>
     public void Delete(int id)
     {
         List<DO.Task> tasks = XMLTools.LoadListFromXMLSerializer<DO.Task>(s_tasks_xml) ?? new List<DO.Task>();
@@ -40,18 +49,27 @@ internal class TaskImplementation : ITask
         throw new DalNotExistException($"Dependencys with ID={id} does Not exist");
     }
 
+    /// <summary>
+    /// Reads a task by ID.
+    /// </summary>
     public DO.Task? Read(int id)
     {
         List<DO.Task> tasks = XMLTools.LoadListFromXMLSerializer<DO.Task>(s_tasks_xml) ?? new List<DO.Task>();
         return tasks.FirstOrDefault(item => item.Id == id);
     }
 
+    /// <summary>
+    /// Reads a single task based on a filter condition.
+    /// </summary>
     public DO.Task? Read(Func<DO.Task, bool> filter)
     {
         List<DO.Task> tasks = XMLTools.LoadListFromXMLSerializer<DO.Task>(s_tasks_xml) ?? new List<DO.Task>();
         return tasks.FirstOrDefault(filter);
     }
 
+    /// <summary>
+    /// Reads all tasks optionally filtered by a condition.
+    /// </summary>
     public IEnumerable<DO.Task> ReadAll(Func<DO.Task, bool>? filter = null)
     {
         List<DO.Task> tasks = XMLTools.LoadListFromXMLSerializer<DO.Task>(s_tasks_xml) ?? new List<DO.Task>();
@@ -64,6 +82,9 @@ internal class TaskImplementation : ITask
         return tasks;
     }
 
+    /// <summary>
+    /// Updates an existing task.
+    /// </summary>
     public void Update(DO.Task item)
     {
         List<DO.Task> tasks = XMLTools.LoadListFromXMLSerializer<DO.Task>(s_tasks_xml) ?? new List<DO.Task>();

@@ -3,10 +3,16 @@ using DO;
 
 namespace Dal;
 
+/// <summary>
+/// Implementation of the engineer data access layer.
+/// </summary>
 internal class EngineerImplementation : IEngineer
 {
     readonly string s_engineers_xml = "engineers";
 
+    /// <summary>
+    /// Creates a new engineer.
+    /// </summary>
     public int Create(Engineer item)
     {
         List<Engineer> engineers = XMLTools.LoadListFromXMLSerializer<Engineer>(s_engineers_xml) ?? new List<Engineer>();
@@ -19,6 +25,9 @@ internal class EngineerImplementation : IEngineer
         return item.Id;
     }
 
+    /// <summary>
+    /// Deletes an engineer by ID.
+    /// </summary>
     public void Delete(int id)
     {
         List<Engineer> engineers = XMLTools.LoadListFromXMLSerializer<Engineer>(s_engineers_xml) ?? new List<Engineer>();
@@ -34,18 +43,27 @@ internal class EngineerImplementation : IEngineer
         throw new DalNotExistException($"Dependencys with ID={id} does Not exist");
     }
 
+    /// <summary>
+    /// Reads an engineer by ID.
+    /// </summary>
     public Engineer? Read(int id)
     {
         List<Engineer> engineers = XMLTools.LoadListFromXMLSerializer<Engineer>(s_engineers_xml) ?? new List<Engineer>();
         return engineers.FirstOrDefault(item => item.Id == id);
     }
 
+    /// <summary>
+    /// Reads a single engineer based on a filter condition.
+    /// </summary>
     public Engineer? Read(Func<Engineer, bool> filter)
     {
         List<Engineer> engineers = XMLTools.LoadListFromXMLSerializer<Engineer>(s_engineers_xml) ?? new List<Engineer>();
         return engineers.FirstOrDefault(filter);
     }
 
+    /// <summary>
+    /// Reads all engineers optionally filtered by a condition.
+    /// </summary>
     public IEnumerable<Engineer> ReadAll(Func<Engineer, bool>? filter = null)
     {
         List<Engineer> engineers = XMLTools.LoadListFromXMLSerializer<Engineer>(s_engineers_xml) ?? new List<Engineer>();
@@ -59,6 +77,9 @@ internal class EngineerImplementation : IEngineer
         return engineers;
     }
 
+    /// <summary>
+    /// Updates an existing engineer.
+    /// </summary>
     public void Update(Engineer item)
     {
         List<Engineer> engineers = XMLTools.LoadListFromXMLSerializer<Engineer>(s_engineers_xml) ?? new List<Engineer>();

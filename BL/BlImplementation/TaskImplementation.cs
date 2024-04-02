@@ -1,5 +1,11 @@
-﻿namespace BlImplementation;
+﻿/// <summary>
+/// Namespace containing the implementation of business logic for tasks.
+/// </summary>
+namespace BlImplementation;
 
+/// <summary>
+/// Imports necessary namespaces.
+/// </summary>
 using BlApi;
 using BO;
 using DO;
@@ -7,6 +13,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
+/// <summary>
+/// Implementation of the task interface.
+/// </summary>
 internal class TaskImplementation : ITask
 {
     private readonly IBl _bl;
@@ -20,6 +29,9 @@ internal class TaskImplementation : ITask
 
     private DalApi.IDal _dal = DalApi.Factory.Get;
 
+    /// <summary>
+    /// Creates a new task.
+    /// </summary>
     public int Create(BO.Task item)
     {
         if (start > _bl.Now)
@@ -88,7 +100,10 @@ internal class TaskImplementation : ITask
             throw new BO.BlPrograpStartException("you cant create a task now the progect alraedy started");
         }
     }
-    
+
+    /// <summary>
+    /// Deletes a task by ID.
+    /// </summary>
     public void Delete(int id)
     {
         BO.Task? item = Read(id);
@@ -126,6 +141,9 @@ internal class TaskImplementation : ITask
         }
     }
 
+    /// <summary>
+    /// Reads a task by ID.
+    /// </summary>
     public BO.Task? Read(int id)
     {
         DO.Task item = _dal.Task.Read(id);
@@ -184,7 +202,10 @@ internal class TaskImplementation : ITask
         }
         return result;
     }
-    
+
+    /// <summary>
+    /// Reads all tasks optionally filtered by a condition.
+    /// </summary>
     public IEnumerable<BO.Task?> ReadAll(Func<DO.Task, bool>? filter = null)
     {
         List<DO.Task?> doresult = new List<DO.Task?>();
@@ -236,6 +257,9 @@ internal class TaskImplementation : ITask
         return boresult;
     }
 
+    /// <summary>
+    /// Updates or adds the start date for a task.
+    /// </summary>
     public void UpdataOrAddDate(int id, DateTime date)
     {
         BO.Task? item = Read(id);
@@ -270,7 +294,10 @@ internal class TaskImplementation : ITask
             Update(item);
         }
     }
-    
+
+    /// <summary>
+    /// Updates an existing task.
+    /// </summary>
     public void Update(BO.Task item)
     {
         Console.WriteLine("enter Task Alias");
@@ -340,6 +367,9 @@ internal class TaskImplementation : ITask
         }
     }
 
+    /// <summary>
+    /// Allows to add dependencies to task.
+    /// </summary>
     public List<int> choiceDependecy(BO.Task item)
     {
         List<int> d = _dal.Task.ReadAll().Where(t => t.Complexity < (DO.EngineerExperience?)item.Complexity).Select(t => t.Id).ToList();
@@ -355,6 +385,9 @@ internal class TaskImplementation : ITask
         return d;
     }
 
+    /// <summary>
+    /// Adds a dependency to the task.
+    /// </summary>
     public void addDependecy(BO.Task item,int task)
     {
         if (_bl.Now < start)
@@ -384,6 +417,9 @@ internal class TaskImplementation : ITask
         else { throw new BO.BlPrograpStartException("you cant create a task now the progect alraedy started"); }
     }
 
+    /// <summary>
+    /// Updates dependencies of the task based on complexity.
+    /// </summary>
     private void UpdateDependencies(BO.Task item)
     {
         BO.EngineerExperience? c = (BO.EngineerExperience?)_dal.Task.Read(item.Id).Complexity;
@@ -416,6 +452,8 @@ internal class TaskImplementation : ITask
             }
         }
     }
+
+    // Helper methods...
 
     private string GetStringInput()
     {

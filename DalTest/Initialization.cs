@@ -7,6 +7,9 @@ using System.Data.Common;
 using System.Security.Cryptography;
 using System.Xml.Linq;
 
+/// <summary>
+/// Provides methods for initializing and resetting test data.
+/// </summary>
 public static class Initialization
 {
     private static IDal? s_dal;
@@ -15,6 +18,9 @@ public static class Initialization
 
     private static DateTime start = new(2024, 4, 5);
 
+    /// <summary>
+    /// Creates tasks with predefined data.
+    /// </summary>
     private static void createTask()
     {
         string[] TaskAlias =
@@ -118,6 +124,9 @@ public static class Initialization
         }
     }
 
+    /// <summary>
+    /// Creates engineers with predefined data.
+    /// </summary>
     private static void createEngineer()
     {
         string[] engineerNames =
@@ -162,6 +171,10 @@ public static class Initialization
         }
     }
 
+    /// <summary>
+    /// Creates dependencies with predefined data.
+    /// </summary>
+
     private static void createDependency()
     {
         int[] DependentTask =
@@ -188,6 +201,9 @@ public static class Initialization
         }
     }
 
+    /// <summary>
+    /// Initializes the test data.
+    /// </summary>
     public static void Do()
     {
         s_dal = DalApi.Factory.Get;
@@ -197,6 +213,9 @@ public static class Initialization
         createDependency();
     }
 
+    /// <summary>
+    /// Resets the test data.
+    /// </summary>
     public static void Resat()
     {
         s_dal = DalApi.Factory.Get;

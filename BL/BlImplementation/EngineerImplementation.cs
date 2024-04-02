@@ -1,5 +1,11 @@
-﻿namespace BlImplementation;
+﻿/// <summary>
+/// Namespace containing the implementation of business logic for engineers.
+/// </summary>
+namespace BlImplementation;
 
+/// <summary>
+/// Imports necessary namespaces.
+/// </summary>
 using BlApi;
 using BO;
 using DalApi;
@@ -7,6 +13,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
+/// <summary>
+/// Implementation of the engineer interface.
+/// </summary>
 internal class EngineerImplementation : BlApi.IEngineer
 {
     private readonly IBl _bl;
@@ -17,6 +26,10 @@ internal class EngineerImplementation : BlApi.IEngineer
     }
 
     private DalApi.IDal _dal = DalApi.Factory.Get;
+
+    /// <summary>
+    /// Creates a new engineer.
+    /// </summary>
     public int Create(BO.Engineer item)
     {
         int temp = GetIntegerInput("enter engineer id");
@@ -53,6 +66,9 @@ internal class EngineerImplementation : BlApi.IEngineer
         }
     }
 
+    /// <summary>
+    /// Deletes an engineer by ID.
+    /// </summary>
     public void Delete(int id)
     {
         BO.Engineer? item = Read(id);
@@ -73,6 +89,9 @@ internal class EngineerImplementation : BlApi.IEngineer
         }
     }
 
+    /// <summary>
+    /// Reads an engineer by ID.
+    /// </summary>
     public BO.Engineer? Read(int id)
     {
         DO.Engineer? item = _dal.Engineer.Read(id);
@@ -101,6 +120,9 @@ internal class EngineerImplementation : BlApi.IEngineer
         };
     }
 
+    /// <summary>
+    /// Reads all engineers optionally filtered by a condition.
+    /// </summary>
     public IEnumerable<BO.Engineer?> ReadAll(Func<DO.Engineer, bool>? filter = null)
     {
         var doresult = _dal.Engineer.ReadAll().Where(filter ?? (i => true));
@@ -129,6 +151,9 @@ internal class EngineerImplementation : BlApi.IEngineer
         return boresult;
     }
 
+    /// <summary>
+    /// Updates an existing engineer.
+    /// </summary>
     public void Update(BO.Engineer item)
     {
         string tmp = GetStringInput("enter engineer name");
@@ -186,6 +211,9 @@ internal class EngineerImplementation : BlApi.IEngineer
         }
     }
 
+    /// <summary>
+    /// Marks a task as finished for a given engineer.
+    /// </summary>
     public void finishTask(BO.Engineer item)
     {
         if (_bl.Now > new BO.Clock().start)
@@ -201,6 +229,9 @@ internal class EngineerImplementation : BlApi.IEngineer
         }
     }
 
+    /// <summary>
+    /// Lists tasks that can be assigned to the engineer.
+    /// </summary>
     public List<DO.Task> ListTaskCanTake(BO.Engineer item)
     {
         if (_bl.Now > new BO.Clock().start)
@@ -248,6 +279,10 @@ internal class EngineerImplementation : BlApi.IEngineer
             throw new BO.BlPrograpStartException("you cant take a task the progect dont started yet");
         }
     }
+
+    /// <summary>
+    /// Allows the engineer to choose a task.
+    /// </summary>
     public int chooseTask()
     {
         int id;
@@ -259,6 +294,9 @@ internal class EngineerImplementation : BlApi.IEngineer
         return id;
     }
 
+    /// <summary>
+    /// Assigns a task to the engineer.
+    /// </summary>
     public void takeTask(BO.Engineer item, int id)
     {
         if (_bl.Now > new BO.Clock().start)
@@ -283,6 +321,8 @@ internal class EngineerImplementation : BlApi.IEngineer
             throw new BO.BlPrograpStartException("you cant take a task the progect dont started yet");
         }
     }
+
+    // Helper methods...
 
     private int GetIntegerInput(string message)
     {

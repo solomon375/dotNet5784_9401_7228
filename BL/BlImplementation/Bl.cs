@@ -1,40 +1,79 @@
-﻿namespace BlImplementation;
+﻿/// <summary>
+/// Namespace containing the business logic implementation.
+/// </summary>
+namespace BlImplementation;
 
+/// <summary>
+/// Imports interfaces and classes from other namespaces.
+/// </summary>
 using BlApi;
 using BO;
 
+/// <summary>
+/// Implements the business logic interface.
+/// </summary>
 internal class Bl : IBl
 {
+    /// <summary>
+    /// Property to access task functionality.
+    /// </summary>
     public ITask task => new TaskImplementation(this);
 
+    /// <summary>
+    /// Property to access engineer functionality.
+    /// </summary>
     public IEngineer engineer => new EngineerImplementation(this);
 
+    /// <summary>
+    /// Property representing the system clock.
+    /// </summary>
     public Clock clock => new Clock();
 
+    /// <summary>
+    /// Static field to store the current date and time.
+    /// </summary>
     private static DateTime s_Now = DateTime.Now.Date;
 
+    /// <summary>
+    /// Property to get and set the current date and time.
+    /// </summary>
     public DateTime Now { get { return s_Now; } private set { s_Now = value; } }
 
+    /// <summary>
+    /// Advances the current time by one month.
+    /// </summary>
     public void AdvanceTimeByMonth()
     {
         Now = Now.AddMonths(1);
     }
 
+    /// <summary>
+    /// Advances the current time by one day.
+    /// </summary>
     public void AdvanceTimeByDay()
     {
         Now = Now.AddDays(1);
     }
 
+    /// <summary>
+    /// Advances the current time by one hour.
+    /// </summary>
     public void AdvanceTimeByHour()
     {
         Now = Now.AddHours(1);
     }
 
+    /// <summary>
+    /// Initializes the system clock with the current time.
+    /// </summary>
     public void InitializeClock()
     {
         Now = DateTime.Now;
     }
 
+    /// <summary>
+    /// Updates the status of tasks based on the current time.
+    /// </summary>
     public void UpdateTasksStatus()
     {
         DateTime currentTime = Now;

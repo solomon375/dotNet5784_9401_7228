@@ -7,9 +7,12 @@ using System.Threading.Channels;
 
 namespace DalTest
 {
+    /// <summary>
+    /// Test program for interacting with the DAL.
+    /// </summary>
     internal class Program
     {
-        private static DateTime start = new(15/3/24);//משתנה גלובלי שמקבל את הזמן של תחילת התוכנית
+        private static DateTime start = new(2024,4,5);//משתנה גלובלי שמקבל את הזמן של תחילת התוכנית
 
         static readonly IDal s_dal = DalApi.Factory.Get;
 
@@ -19,7 +22,7 @@ namespace DalTest
             {
                 string? ans;
 
-                //if in the sile dal-config at line 3 is list then do:
+                // Initialize test data if specified in dal-config file
                 Initialization.Do();
 
                 //if in the sile dal-config at line 3 is xml then do:
@@ -75,6 +78,7 @@ namespace DalTest
                 Console.WriteLine(ex);
             }
         }
+        // Function to display the menu for CRUD operations
         static void display()
         {
             Console.WriteLine($"\nChoose an operation:");
@@ -85,6 +89,7 @@ namespace DalTest
             Console.WriteLine("5. Delete");
             Console.WriteLine("0. Exit");
         }
+        // Function to handle choices for CRUD operations on tasks
         static void checkTask()
         {
             bool exit = false;
@@ -105,6 +110,7 @@ namespace DalTest
                 }
             } while (!exit);
         }
+        // Function to handle choices for CRUD operations on engineers
         static void checkEngineer()
         {
             bool exit = false;
@@ -125,6 +131,7 @@ namespace DalTest
                 }
             } while (!exit);
         }
+        // Function to handle choices for CRUD operations on dependencies
         static void checkDependency()
         {
             bool exit = false;
@@ -145,6 +152,7 @@ namespace DalTest
                 }
             } while (!exit);
         }
+        // Function to handle different choices for CRUD operations
         static void Choice(char c, string s)
         {
             switch (c)
@@ -169,6 +177,7 @@ namespace DalTest
                     break;
             }
         }
+        // Function to create a new item
         static void Create(string s)
         {
             switch (s)
@@ -194,6 +203,7 @@ namespace DalTest
                     break;
             }
         }
+        // Function to read an item
         static void Read(string s)
         {
             switch (s)
@@ -224,6 +234,7 @@ namespace DalTest
                     break;
             }
         }
+        // Function to read all items
         static void ReadAll(string s)
         {
             switch (s)
@@ -249,6 +260,7 @@ namespace DalTest
                     break;
             }
         }
+        // Function to update an item
         static void Update(string s)
         {
             switch (s)
@@ -285,6 +297,7 @@ namespace DalTest
                     break;
             }
         }
+        // Function to delete an item
         static void Delete(string s)
         {
             switch (s)
@@ -315,6 +328,7 @@ namespace DalTest
                     break;
             }
         }
+        // Function to get a task item
         static DO.Task GetTaskItem()
         {
             //כל פעם כאשר אנו נגשים ליצירת משימה חדשה השתנה עכשיו מקבל את הזמן הנוכחי 
@@ -404,6 +418,7 @@ namespace DalTest
 
             return task;
         }
+        // Function to get an updated task item
         static DO.Task GetTaskItemForUpdate(DO.Task item)
         {
             Console.Write("\nenter task alias\n");
@@ -430,6 +445,7 @@ namespace DalTest
             return item with { Alias = alias, Describtion = description,
                 RequiredEffortTime=requiredEffortTime, Deliverable=deliverable, Remarks=remarks };
         }
+        // Function to get an engineer item
         static DO.Engineer GetEngineerItem()
         {
             Console.Write("\nEnter engineer id\n");
@@ -468,6 +484,7 @@ namespace DalTest
             DO.Engineer item = new DO.Engineer(id, email, cost, name, level);
             return item;
         }
+        // Function to get an updated engineer item
         static DO.Engineer GetEngineerItemForUpdate(DO.Engineer item)
         {
             Console.Write("\nenter engineer email\n");
@@ -498,6 +515,7 @@ namespace DalTest
 
             return item with { Cost = cost, Email=email, Name=name,Level=level };
         }
+        // Function to get a dependency item
         static DO.Dependency GetDependencyItem()
         {
             Console.Write("\nenter Dependency DependentTask\n");
@@ -515,6 +533,7 @@ namespace DalTest
             DO.Dependency item = new DO.Dependency(0, DependentTask, DependsOnTask);
             return item;
         }
+        // Function to get an updated dependency item
         static DO.Dependency GetDependencyItemForUpdate(DO.Dependency item)
         {
             Console.Write("\nenter Dependency DependentTask\n");
