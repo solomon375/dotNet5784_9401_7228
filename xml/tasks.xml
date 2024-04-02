@@ -1,4 +1,283 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ArrayOfTask xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-
+  <Task>
+    <Id>1</Id>
+    <Alias>A1</Alias>
+    <Describtion>Main screen and navigation.</Describtion>
+    <Complexity>Beginner</Complexity>
+    <Status>Unscheduled</Status>
+    <ScheduledDate>2024-04-05T00:00:00</ScheduledDate>
+    <RequiredEffortTime>P1D</RequiredEffortTime>
+    <DeadLine>2024-04-12T00:00:00</DeadLine>
+    <CreatedAtDate>2024-04-02T19:36:56.7948457+03:00</CreatedAtDate>
+    <StartedDate>2024-04-05T00:00:00</StartedDate>
+    <CompletedDate xsi:nil="true" />
+    <EngineerID xsi:nil="true" />
+  </Task>
+  <Task>
+    <Id>2</Id>
+    <Alias>A2</Alias>
+    <Describtion>User authentication via Facebook or Google.</Describtion>
+    <Complexity>Beginner</Complexity>
+    <Status>Unscheduled</Status>
+    <ScheduledDate>2024-04-05T00:00:00</ScheduledDate>
+    <RequiredEffortTime>P1D</RequiredEffortTime>
+    <DeadLine>2024-04-12T00:00:00</DeadLine>
+    <CreatedAtDate>2024-04-02T19:36:56.9781499+03:00</CreatedAtDate>
+    <StartedDate>2024-04-05T00:00:00</StartedDate>
+    <CompletedDate xsi:nil="true" />
+    <EngineerID xsi:nil="true" />
+  </Task>
+  <Task>
+    <Id>3</Id>
+    <Alias>A3</Alias>
+    <Describtion>Daily task list.</Describtion>
+    <Complexity>Beginner</Complexity>
+    <Status>Unscheduled</Status>
+    <ScheduledDate>2024-04-05T00:00:00</ScheduledDate>
+    <RequiredEffortTime>P1D</RequiredEffortTime>
+    <DeadLine>2024-04-12T00:00:00</DeadLine>
+    <CreatedAtDate>2024-04-02T19:36:56.9896043+03:00</CreatedAtDate>
+    <StartedDate>2024-04-05T00:00:00</StartedDate>
+    <CompletedDate xsi:nil="true" />
+    <EngineerID xsi:nil="true" />
+  </Task>
+  <Task>
+    <Id>4</Id>
+    <Alias>A4</Alias>
+    <Describtion>Creating a new task.</Describtion>
+    <Complexity>Beginner</Complexity>
+    <Status>Unscheduled</Status>
+    <ScheduledDate>2024-04-05T00:00:00</ScheduledDate>
+    <RequiredEffortTime>P1D</RequiredEffortTime>
+    <DeadLine>2024-04-12T00:00:00</DeadLine>
+    <CreatedAtDate>2024-04-02T19:36:56.991912+03:00</CreatedAtDate>
+    <StartedDate>2024-04-05T00:00:00</StartedDate>
+    <CompletedDate xsi:nil="true" />
+    <EngineerID xsi:nil="true" />
+  </Task>
+  <Task>
+    <Id>5</Id>
+    <Alias>A5</Alias>
+    <Describtion>Task completion and marking as done.</Describtion>
+    <Complexity>Beginner</Complexity>
+    <Status>Unscheduled</Status>
+    <ScheduledDate>2024-04-05T00:00:00</ScheduledDate>
+    <RequiredEffortTime>P1D</RequiredEffortTime>
+    <DeadLine>2024-04-12T00:00:00</DeadLine>
+    <CreatedAtDate>2024-04-02T19:36:56.9942886+03:00</CreatedAtDate>
+    <StartedDate>2024-04-05T00:00:00</StartedDate>
+    <CompletedDate xsi:nil="true" />
+    <EngineerID xsi:nil="true" />
+  </Task>
+  <Task>
+    <Id>6</Id>
+    <Alias>A6</Alias>
+    <Describtion>Add sensors.</Describtion>
+    <Complexity>Beginner</Complexity>
+    <Status>Unscheduled</Status>
+    <ScheduledDate>2024-04-05T00:00:00</ScheduledDate>
+    <RequiredEffortTime>P1D</RequiredEffortTime>
+    <DeadLine>2024-04-12T00:00:00</DeadLine>
+    <CreatedAtDate>2024-04-02T19:36:56.9968282+03:00</CreatedAtDate>
+    <StartedDate>2024-04-05T00:00:00</StartedDate>
+    <CompletedDate xsi:nil="true" />
+    <EngineerID xsi:nil="true" />
+  </Task>
+  <Task>
+    <Id>7</Id>
+    <Alias>A7</Alias>
+    <Describtion>Notifications for upcoming tasks.</Describtion>
+    <Complexity>Beginner</Complexity>
+    <Status>Unscheduled</Status>
+    <ScheduledDate>2024-04-05T00:00:00</ScheduledDate>
+    <RequiredEffortTime>P1D</RequiredEffortTime>
+    <DeadLine>2024-04-12T00:00:00</DeadLine>
+    <CreatedAtDate>2024-04-02T19:36:56.9995551+03:00</CreatedAtDate>
+    <StartedDate>2024-04-05T00:00:00</StartedDate>
+    <CompletedDate xsi:nil="true" />
+    <EngineerID xsi:nil="true" />
+  </Task>
+  <Task>
+    <Id>8</Id>
+    <Alias>A8</Alias>
+    <Describtion>Social media sharing.</Describtion>
+    <Complexity>Beginner</Complexity>
+    <Status>Unscheduled</Status>
+    <ScheduledDate>2024-04-05T00:00:00</ScheduledDate>
+    <RequiredEffortTime>P1D</RequiredEffortTime>
+    <DeadLine>2024-04-12T00:00:00</DeadLine>
+    <CreatedAtDate>2024-04-02T19:36:57.002402+03:00</CreatedAtDate>
+    <StartedDate>2024-04-05T00:00:00</StartedDate>
+    <CompletedDate xsi:nil="true" />
+    <EngineerID xsi:nil="true" />
+  </Task>
+  <Task>
+    <Id>9</Id>
+    <Alias>B1</Alias>
+    <Describtion>Adding categories to tasks.</Describtion>
+    <Complexity>AdvancedBeginner</Complexity>
+    <Status>Unscheduled</Status>
+    <ScheduledDate>2024-04-13T00:00:00</ScheduledDate>
+    <RequiredEffortTime>P1D</RequiredEffortTime>
+    <DeadLine>2024-04-19T00:00:00</DeadLine>
+    <CreatedAtDate>2024-04-02T19:36:57.0054216+03:00</CreatedAtDate>
+    <StartedDate>2024-04-13T00:00:00</StartedDate>
+    <CompletedDate xsi:nil="true" />
+    <EngineerID xsi:nil="true" />
+  </Task>
+  <Task>
+    <Id>10</Id>
+    <Alias>B2</Alias>
+    <Describtion>Filter by category.</Describtion>
+    <Complexity>AdvancedBeginner</Complexity>
+    <Status>Unscheduled</Status>
+    <ScheduledDate>2024-04-13T00:00:00</ScheduledDate>
+    <RequiredEffortTime>P1D</RequiredEffortTime>
+    <DeadLine>2024-04-19T00:00:00</DeadLine>
+    <CreatedAtDate>2024-04-02T19:36:57.0078985+03:00</CreatedAtDate>
+    <StartedDate>2024-04-13T00:00:00</StartedDate>
+    <CompletedDate xsi:nil="true" />
+    <EngineerID xsi:nil="true" />
+  </Task>
+  <Task>
+    <Id>11</Id>
+    <Alias>B3</Alias>
+    <Describtion>Taking and adding photos.</Describtion>
+    <Complexity>AdvancedBeginner</Complexity>
+    <Status>Unscheduled</Status>
+    <ScheduledDate>2024-04-13T00:00:00</ScheduledDate>
+    <RequiredEffortTime>P1D</RequiredEffortTime>
+    <DeadLine>2024-04-19T00:00:00</DeadLine>
+    <CreatedAtDate>2024-04-02T19:36:57.0103471+03:00</CreatedAtDate>
+    <StartedDate>2024-04-13T00:00:00</StartedDate>
+    <CompletedDate xsi:nil="true" />
+    <EngineerID xsi:nil="true" />
+  </Task>
+  <Task>
+    <Id>12</Id>
+    <Alias>B4</Alias>
+    <Describtion>Progress statistics.</Describtion>
+    <Complexity>AdvancedBeginner</Complexity>
+    <Status>Unscheduled</Status>
+    <ScheduledDate>2024-04-13T00:00:00</ScheduledDate>
+    <RequiredEffortTime>P1D</RequiredEffortTime>
+    <DeadLine>2024-04-19T00:00:00</DeadLine>
+    <CreatedAtDate>2024-04-02T19:36:57.012684+03:00</CreatedAtDate>
+    <StartedDate>2024-04-13T00:00:00</StartedDate>
+    <CompletedDate xsi:nil="true" />
+    <EngineerID xsi:nil="true" />
+  </Task>
+  <Task>
+    <Id>13</Id>
+    <Alias>B5</Alias>
+    <Describtion>Sub-tasks for main tasks.</Describtion>
+    <Complexity>AdvancedBeginner</Complexity>
+    <Status>Unscheduled</Status>
+    <ScheduledDate>2024-04-13T00:00:00</ScheduledDate>
+    <RequiredEffortTime>P1D</RequiredEffortTime>
+    <DeadLine>2024-04-19T00:00:00</DeadLine>
+    <CreatedAtDate>2024-04-02T19:36:57.015053+03:00</CreatedAtDate>
+    <StartedDate>2024-04-13T00:00:00</StartedDate>
+    <CompletedDate xsi:nil="true" />
+    <EngineerID xsi:nil="true" />
+  </Task>
+  <Task>
+    <Id>14</Id>
+    <Alias>B6</Alias>
+    <Describtion>Exporting and sharing reports and statistics.</Describtion>
+    <Complexity>AdvancedBeginner</Complexity>
+    <Status>Unscheduled</Status>
+    <ScheduledDate>2024-04-13T00:00:00</ScheduledDate>
+    <RequiredEffortTime>P1D</RequiredEffortTime>
+    <DeadLine>2024-04-19T00:00:00</DeadLine>
+    <CreatedAtDate>2024-04-02T19:36:57.0176594+03:00</CreatedAtDate>
+    <StartedDate>2024-04-13T00:00:00</StartedDate>
+    <CompletedDate xsi:nil="true" />
+    <EngineerID xsi:nil="true" />
+  </Task>
+  <Task>
+    <Id>15</Id>
+    <Alias>C1</Alias>
+    <Describtion>Sorting and organizing by timeline.</Describtion>
+    <Complexity>Intermidate</Complexity>
+    <Status>Unscheduled</Status>
+    <ScheduledDate>2024-04-20T00:00:00</ScheduledDate>
+    <RequiredEffortTime>P2D</RequiredEffortTime>
+    <DeadLine>2024-04-26T00:00:00</DeadLine>
+    <CreatedAtDate>2024-04-02T19:36:57.0219724+03:00</CreatedAtDate>
+    <StartedDate>2024-04-20T00:00:00</StartedDate>
+    <CompletedDate xsi:nil="true" />
+    <EngineerID xsi:nil="true" />
+  </Task>
+  <Task>
+    <Id>16</Id>
+    <Alias>C2</Alias>
+    <Describtion>Daily reminder.</Describtion>
+    <Complexity>Intermidate</Complexity>
+    <Status>Unscheduled</Status>
+    <ScheduledDate>2024-04-20T00:00:00</ScheduledDate>
+    <RequiredEffortTime>P2D</RequiredEffortTime>
+    <DeadLine>2024-04-26T00:00:00</DeadLine>
+    <CreatedAtDate>2024-04-02T19:36:57.0247576+03:00</CreatedAtDate>
+    <StartedDate>2024-04-20T00:00:00</StartedDate>
+    <CompletedDate xsi:nil="true" />
+    <EngineerID xsi:nil="true" />
+  </Task>
+  <Task>
+    <Id>17</Id>
+    <Alias>C3</Alias>
+    <Describtion>Setting goals for tasks.</Describtion>
+    <Complexity>Intermidate</Complexity>
+    <Status>Unscheduled</Status>
+    <ScheduledDate>2024-04-20T00:00:00</ScheduledDate>
+    <RequiredEffortTime>P2D</RequiredEffortTime>
+    <DeadLine>2024-04-26T00:00:00</DeadLine>
+    <CreatedAtDate>2024-04-02T19:36:57.0274098+03:00</CreatedAtDate>
+    <StartedDate>2024-04-20T00:00:00</StartedDate>
+    <CompletedDate xsi:nil="true" />
+    <EngineerID xsi:nil="true" />
+  </Task>
+  <Task>
+    <Id>18</Id>
+    <Alias>C4</Alias>
+    <Describtion>Personal notes and ideas.</Describtion>
+    <Complexity>Intermidate</Complexity>
+    <Status>Unscheduled</Status>
+    <ScheduledDate>2024-04-20T00:00:00</ScheduledDate>
+    <RequiredEffortTime>P2D</RequiredEffortTime>
+    <DeadLine>2024-04-26T00:00:00</DeadLine>
+    <CreatedAtDate>2024-04-02T19:36:57.0302917+03:00</CreatedAtDate>
+    <StartedDate>2024-04-20T00:00:00</StartedDate>
+    <CompletedDate xsi:nil="true" />
+    <EngineerID xsi:nil="true" />
+  </Task>
+  <Task>
+    <Id>19</Id>
+    <Alias>D1</Alias>
+    <Describtion>Completing a time management course.</Describtion>
+    <Complexity>Advanced</Complexity>
+    <Status>Unscheduled</Status>
+    <ScheduledDate>2024-04-27T00:00:00</ScheduledDate>
+    <RequiredEffortTime>P3D</RequiredEffortTime>
+    <DeadLine>2024-05-03T00:00:00</DeadLine>
+    <CreatedAtDate>2024-04-02T19:36:57.0331494+03:00</CreatedAtDate>
+    <StartedDate>2024-04-27T00:00:00</StartedDate>
+    <CompletedDate xsi:nil="true" />
+    <EngineerID xsi:nil="true" />
+  </Task>
+  <Task>
+    <Id>20</Id>
+    <Alias>E1</Alias>
+    <Describtion>Collaboration and shared tasks.</Describtion>
+    <Complexity>Expert</Complexity>
+    <Status>Unscheduled</Status>
+    <ScheduledDate>2024-05-04T00:00:00</ScheduledDate>
+    <RequiredEffortTime>P5D</RequiredEffortTime>
+    <DeadLine>2024-05-10T00:00:00</DeadLine>
+    <CreatedAtDate>2024-04-02T19:36:57.0359897+03:00</CreatedAtDate>
+    <StartedDate>2024-05-04T00:00:00</StartedDate>
+    <CompletedDate xsi:nil="true" />
+    <EngineerID xsi:nil="true" />
+  </Task>
 </ArrayOfTask>
