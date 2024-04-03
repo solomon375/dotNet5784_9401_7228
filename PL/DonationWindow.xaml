@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="DonationWindow" Height="450" Width="439">
+        Title="DonationWindow" Height="450" Width="439" Background="LightSlateGray">
     <Grid>
         <Label Content="card Holder name" HorizontalAlignment="Left" Margin="37,90,0,0" VerticalAlignment="Top" Width="108" Height="30"/>
         <Label Content="card number" HorizontalAlignment="Left" Margin="50,120,0,0" VerticalAlignment="Top" Width="95"/>
@@ -13,12 +13,12 @@
         <Label Content="cvc" HorizontalAlignment="Left" Margin="50,180,0,0" VerticalAlignment="Top" Width="95"/>
         <Label Content="cvv" HorizontalAlignment="Left" Margin="50,210,0,0" VerticalAlignment="Top" Width="95"/>
         <Label Content="amount of donation" HorizontalAlignment="Left" Margin="50,240,0,0" VerticalAlignment="Top" Width="118"/>
-        <TextBox HorizontalAlignment="Left" Margin="198,90,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="95" Height="25"/>
-        <TextBox HorizontalAlignment="Left" Margin="198,120,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="95" Height="25"/>
-        <TextBox HorizontalAlignment="Left" Margin="198,150,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="95" Height="25"/>
-        <TextBox HorizontalAlignment="Left" Margin="198,180,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="95" Height="25"/>
-        <TextBox HorizontalAlignment="Left" Margin="198,210,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="95" Height="25"/>
-        <TextBox HorizontalAlignment="Left" Margin="198,240,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="95" Height="25"/>
+        <TextBox HorizontalAlignment="Left" Margin="198,90,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="95" Height="25"/>
+        <TextBox HorizontalAlignment="Left" Margin="198,120,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="95" Height="25"/>
+        <TextBox HorizontalAlignment="Left" Margin="198,150,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="95" Height="25"/>
+        <TextBox HorizontalAlignment="Left" Margin="198,180,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="95" Height="25"/>
+        <TextBox HorizontalAlignment="Left" Margin="198,210,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="95" Height="25"/>
+        <TextBox HorizontalAlignment="Left" Margin="198,240,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="95" Height="25"/>
         <Button Content="Donation" HorizontalAlignment="Left" Margin="158,313,0,0" VerticalAlignment="Top" Height="44" Width="82" Click="Button_Click"/>
     </Grid>
 </Window>

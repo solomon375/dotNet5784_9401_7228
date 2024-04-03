@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:PL.Task"
         mc:Ignorable="d"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
-        Title="TakeTaskFromManigeerWindow" Height="450" Width="800">
+        Title="TakeTaskFromManigeerWindow" Height="450" Width="800" Background="LightSlateGray">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="140*"/>

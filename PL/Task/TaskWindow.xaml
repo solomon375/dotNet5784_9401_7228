@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:PL.Task"
         mc:Ignorable="d"
         DataContext="{Binding CurrentTask, RelativeSource={RelativeSource self}, Mode=TwoWay}"
-        Title="TaskWindow" Height="560" Width="800">
+        Title="TaskWindow" Height="560" Width="800" Background="LightSlateGray">
     <Grid>
         <Grid>
             <Grid.ColumnDefinitions>

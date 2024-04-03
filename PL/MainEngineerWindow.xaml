@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
         DataContext="{Binding CurrentEngineer, RelativeSource={RelativeSource self}, Mode=TwoWay}"
-        Title="MainEngineerWindow" Height="450" Width="800">
+        Title="MainEngineerWindow" Height="450" Width="800" Background="LightSlateGray">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="100*"/>

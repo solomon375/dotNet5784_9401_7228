@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
-        Title="GunttWindow" Height="450" Width="800">
+        Title="GunttWindow" Height="450" Width="800" Background="LightSlateGray">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="100*"/>
